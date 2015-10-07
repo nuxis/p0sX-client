@@ -1,0 +1,46 @@
+{
+  "name": "p0sX-client",
+  "productName": "P0sXClient",
+  "version": "0.0.0",
+  "description": "Client for p0sX backend",
+  "license": "MIT",
+  "electronVersion": "0.33.6",
+  "repository": "Pr0jectX/p0sX",
+  "author": {
+    "name": "Håvard Lian",
+    "email": "haavard.lian@live.com",
+    "url": "github.com/Pr0jectX/p0sX"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "electronVersion": "0.33.3",
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . p0sX-client --out=dist --ignore='^/dist$' --prune --asar --all --version=0.33.6"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app"
+  ],
+  "dependencies": {
+    "electron-debug": "^0.2.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.33.3",
+    "xo": "^0.9.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
