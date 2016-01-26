@@ -26,10 +26,14 @@ class OrderLineAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Customer, CustomerAdmin)
+class ShiftAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(User, CustomerAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(OrderLine, OrderLineAdmin)
-
+admin.site.register(Shift, ShiftAdmin)

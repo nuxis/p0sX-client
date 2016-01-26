@@ -1,7 +1,7 @@
 from django.db import models
-from rest_framework import serializers
 
-class Customer(models.Model):
+
+class User(models.Model):
     name = models.CharField(max_length=255)
     max_credit = models.IntegerField()
     card = models.CharField(max_length=255)
@@ -38,60 +38,18 @@ class Item(models.Model):
         return self.name
 
 
-
 class Order(models.Model):
-    customer = models.ForeignKey(Customer)
+    customer = models.ForeignKey(User, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.customer) + " " + self.date.strftime('%Y-%m-%d %H:%M:%S')
 
+    @classmethod
+    def create(cls, customer):
+        order = cls(customer=customer)
 
-class Purchase(object):
-    order = None
-    orderlines = None
-
-
-# Serializers define the API representation.
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ('name', 'max_credit', 'card')
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ('id', 'name')
-
-
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        fields = ('id', 'name', 'price', 'stock', 'barcode', 'category')
-
-
-class OrderLineSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderLine
-        fields = ('id', 'ingredients', 'item', 'order')
-
-
-class IngredientSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ingredient
-        fields = ('id', 'name')
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ('id', 'customer', 'date')
-
-
-class PurchaseSerializer(serializers.Serializer):
-    order = OrderSerializer
-    orderlines = OrderLineSerializer
+        return order
 
 
 class OrderLine(models.Model):
@@ -107,3 +65,31 @@ class OrderLine(models.Model):
             s += ", ".join([str(item).lower() for item in self.ingredients.all()])
 
         return s
+
+    @classmethod
+    def create(cls, item, order):
+        line = cls(item=item, order=order)
+        return line
+
+
+class Purchase:
+    def __init__(self, order):
+        self.order = order
+        self.user = order.customer_id
+        self.lines = OrderLine.objects.filter(order=order)
+
+    def __str__(self):
+        s = str(self.order)
+        for line in self.lines:
+            s += '\n' + str(line)
+
+        return s
+
+
+class Shift(models.Model):
+    start = models.DateTimeField(auto_now_add=True, blank=False)
+    end = models.DateTimeField(blank=True, null=True)
+    leader = models.ForeignKey(User)
+
+    def __str__(self):
+        return "Skift ledet av " + str(self.leader) + " som startet " + self.start.strftime('%Y-%m-%d %H:%M:%S')
