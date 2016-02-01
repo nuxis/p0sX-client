@@ -1,46 +1,27 @@
 {
-  "name": "p0sX-client",
-  "productName": "P0sXClient",
-  "version": "0.0.0",
-  "description": "Client for p0sX backend",
+  "name": "P0sX-Client",
+  "version": "0.0.1",
   "license": "MIT",
-  "electronVersion": "0.33.6",
-  "repository": "Pr0jectX/p0sX",
-  "author": {
-    "name": "Håvard Lian",
-    "email": "haavard.lian@live.com",
-    "url": "github.com/Pr0jectX/p0sX"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "electronVersion": "0.33.3",
   "scripts": {
-    "test": "xo",
-    "start": "electron .",
-    "build": "electron-packager . p0sX-client --out=dist --ignore='^/dist$' --prune --asar --all --version=0.33.6"
+    "build": "node_modules/.bin/webpack --progress --profile --display-error-details --display-cached",
+    "watch": "node_modules/.bin/webpack --watch --progress --profile --display-error-details --display-cached",
+    "electron": "electron app"
   },
-  "files": [
-    "index.js",
-    "index.html",
-    "index.css"
-  ],
-  "keywords": [
-    "electron-app"
-  ],
   "dependencies": {
-    "electron-debug": "^0.2.1"
+
   },
   "devDependencies": {
-    "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.33.3",
-    "xo": "^0.9.0"
-  },
-  "xo": {
-    "esnext": true,
-    "envs": [
-      "node",
-      "browser"
-    ]
+    "electron-prebuilt": "^0.36.0",
+    "webpack": "1.12.12",
+    "babel-loader": "^6.2.1",
+    "json-loader": "^0.5.4",
+    "babel-core": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "react": "*",
+    "react-dom": "^0.14.3",
+    "node-fetch": "1.3.3",
+    "es6-shim": "^0.34.0",
+	  "alt": "^0.16.0"
   }
 }
