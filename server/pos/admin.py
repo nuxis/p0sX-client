@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from pos.models import *
 
 
@@ -37,3 +38,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(OrderLine, OrderLineAdmin)
 admin.site.register(Shift, ShiftAdmin)
+

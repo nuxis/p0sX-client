@@ -1,7 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from rest_framework import routers
+
 from pos.views import *
+
+from rest_framework import routers
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.SimpleRouter()
@@ -12,7 +14,7 @@ router.register(r'ingredients', IngredientViewSet)
 router.register(r'items', ItemViewSet)
 router.register(r'orders', OrderViewSet)
 router.register(r'shifts', ShiftViewSet)
-router.register(r'purchases', PurchaseViewSet, "purchase")
+router.register(r'purchases', PurchaseViewSet, 'purchase')
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include(router.urls)),

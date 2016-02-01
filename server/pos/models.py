@@ -31,7 +31,7 @@ class Item(models.Model):
     price = models.IntegerField()
     stock = models.IntegerField()
     barcode = models.CharField(max_length=255)
-    #image = models.ImageField()
+    # image = models.ImageField()
     category = models.ForeignKey(Category)
 
     def __str__(self):
@@ -43,7 +43,7 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.customer) + " " + self.date.strftime('%Y-%m-%d %H:%M:%S')
+        return str(self.customer) + ' ' + self.date.strftime('%Y-%m-%d %H:%M:%S')
 
     @classmethod
     def create(cls, customer):
@@ -61,8 +61,8 @@ class OrderLine(models.Model):
         s = self.item.name
 
         if len(self.ingredients.all()) > 0:
-            s += " med "
-            s += ", ".join([str(item).lower() for item in self.ingredients.all()])
+            s += ' med '
+            s += ', '.join([str(item).lower() for item in self.ingredients.all()])
 
         return s
 
@@ -92,4 +92,4 @@ class Shift(models.Model):
     leader = models.ForeignKey(User)
 
     def __str__(self):
-        return "Skift ledet av " + str(self.leader) + " som startet " + self.start.strftime('%Y-%m-%d %H:%M:%S')
+        return 'Skift ledet av ' + str(self.leader) + ' som startet ' + self.start.strftime('%Y-%m-%d %H:%M:%S')
