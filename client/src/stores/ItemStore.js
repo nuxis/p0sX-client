@@ -31,18 +31,18 @@ class ItemStore {
     handleUpdateItems(category, search_string) {
         var found_items = [];
         var items = this.all_items;
-        if(category != null) {
+        if (category != null) {
             for (var i = 0; i < items.length; i += 1) {
-                if(items[i].category == category)
+                if (items[i].category == category)
                     found_items.push(items[i]);
             }
         }
         else
             found_items = items;
 
-        if(search_string != null) {
+        if (search_string != null) {
             for (var i = 0; i < items.length; i += 1) {
-                if(items[i].name.indexOf(search_string) < 0)
+                if (items[i].name.indexOf(search_string) < 0)
                     found_items.splice(i, 1);
             }
         }

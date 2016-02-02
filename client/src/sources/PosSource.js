@@ -14,7 +14,7 @@ var PosSource = {
                               reject("Failed to get data from server!");
                       }).then(function(json) {
                           resolve(json);
-                      });	  
+                      });
                 });
             },
 
@@ -40,7 +40,7 @@ var PosSource = {
                               reject("Failed to get data from server!");
                       }).then(function(json) {
                           resolve(json);
-                      });	  
+                      });
                 });
             },
 
