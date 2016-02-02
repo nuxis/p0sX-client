@@ -1,10 +1,11 @@
-from django.http import HttpResponse
-from pos.models import *
-from pos.serializers import *
-from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+
+from pos.models import *
+from pos.serializers import *
+
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 
 # ViewSets define the view behavior.
@@ -76,6 +77,6 @@ class PurchaseViewSet(viewsets.ViewSet):
             p = serializer.create(serializer.validated_data)
             print(p)
         else:
-            print("w00t")
+            print('w00t')
 
         return Response(serializer.data)

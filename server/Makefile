@@ -9,7 +9,7 @@ collect_static:
 	$(MANAGE)collected_static collectstatic
 
 flake8:
-	flake8
+	$(ENV)/flake8
 
 migrate:
 	$(MANAGE) migrate
