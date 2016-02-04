@@ -1,62 +1,66 @@
 var alt = require('../alt');
 var ItemActions = require('../actions/ItemActions');
-var ItemSource = require('../sources/ItemSource');
+var PosSource = require('../sources/PosSource');
+var CategoryStore = require('./CategoryStore');
+
 
 class ItemStore {
     constructor() {
         this.all_items = [];
         this.displayed_items = [];
+        this.search = null;
         this.errorMessage = null;
 
         this.bindListeners({
-            handleSetItems: ItemActions.setItems,
-            handleUpdateItems: ItemActions.updateItems,
-            handleFetchItems: ItemActions.fetchItems,
-            handleItemsFailed: ItemActions.itemsFailed,
+            handleSet: ItemActions.set,
+            handleSearch: ItemActions.search,
+            handleFetch: ItemActions.fetch,
+            handleFailed: ItemActions.failed,
         });
 
         this.exportPublicMethods({
-            getCategory: this.getCategory
+            getItem: this.getItem
         });
 
-        this.exportAsync(ItemSource);
+        this.exportAsync(PosSource);
     }
 
-    handleSetItems(items) {
+    handleSet(items) {
         this.all_items = items;
         this.displayed_items = items;
         this.errorMessage = null;
     }
 
-    handleUpdateItems(category, search_string) {
+    handleSearch(search) {
         var found_items = [];
         var items = this.all_items;
-        if (category != null) {
+        if (search.category != null && search.category.id != 0) {
+            console.log(items);
             for (var i = 0; i < items.length; i += 1) {
-                if (items[i].category == category)
+                if (items[i].category == search.category.id)
                     found_items.push(items[i]);
             }
         }
         else
             found_items = items;
 
-        if (search_string != null) {
+        if (search.search_string != null) {
             for (var i = 0; i < items.length; i += 1) {
-                if (items[i].name.indexOf(search_string) < 0)
+                if (items[i].name.indexOf(search.search_string) < 0)
                     found_items.splice(i, 1);
             }
         }
 
-        this.displayed_items = items;
+        this.displayed_items = found_items;
         this.errorMessage = null;
     }
 
-    handleFetchItems() {
+    handleFetch() {
         this.all_items = [];
         this.displayed_items = [];
     }
 
-    handleItemsFailed(errorMessage) {
+    handleFailed(errorMessage) {
         this.errorMessage = errorMessage;
     }
 

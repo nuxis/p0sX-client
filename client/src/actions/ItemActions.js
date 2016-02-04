@@ -1,8 +1,9 @@
 var alt = require('../alt');
 
-class CategoryActions {
-  update(categories) {
-    this.dispatch(categories);
+class ItemActions {
+
+  search(s) {
+      this.dispatch(s);
   }
 
   fetch() {
@@ -13,12 +14,12 @@ class CategoryActions {
     this.dispatch(errorMessage);
   }
   
-  clicked(category) {
-      this.dispatch(category);
+  set(categories) {
+      this.dispatch(categories);
   }
 }
 
-var action = alt.createActions(CategoryActions);
+var action = alt.createActions(ItemActions);
 
 module.exports = action;
 exports.default = action;

@@ -1,5 +1,6 @@
 var alt = require('../alt');
 var CategoryActions = require('../actions/CategoryActions');
+var ItemActions = require('../actions/ItemActions');
 var PosSource = require('../sources/PosSource');
 
 class CategoryStore {
@@ -8,9 +9,9 @@ class CategoryStore {
     this.errorMessage = null;
 
     this.bindListeners({
-      handleUpdateCategories: CategoryActions.updateCategories,
-      handleFetchCategories: CategoryActions.fetchCategories,
-      handleCategoriesFailed: CategoryActions.categoriesFailed,
+      handleUpdate: CategoryActions.update,
+      handleFetch: CategoryActions.fetch,
+      handleFailed: CategoryActions.failed
     });
 
     this.exportPublicMethods({
@@ -21,22 +22,24 @@ class CategoryStore {
     this.exportAsync(PosSource);
   }
 
-  handleUpdateCategories(categories) {
+  handleUpdate(categories) {
+    categories.push({id: 0, name: "All"});
+      
     this.categories = categories;
 	
     this.errorMessage = null;
   }
 
-  handleFetchCategories() {
+  handleFetch() {
     this.categories = [];
   }
 
-  handleCategoriesFailed(errorMessage) {
+  handleFailed(errorMessage) {
     this.errorMessage = errorMessage;
   }
 
   getCategory(id) {
-    var categories = this.getState();
+    var { categories } = this.getState();
     for (var i = 0; i < categories.length; i += 1) {
       if (categories[i].id === id) {
         return categories[i];

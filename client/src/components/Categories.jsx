@@ -2,9 +2,19 @@ var React = require('react');
 var AltContainer = require('alt/AltContainer');
 var CategoryStore = require('../stores/CategoryStore');
 var CategoryActions = require('../actions/CategoryActions');
+var ItemActions = require('../actions/ItemActions');
 
 
-var AllCategories = React.createClass({
+class AllCategories extends React.Component {
+  clicked(ev) {
+    var category = CategoryStore.getCategory(
+      Number(ev.target.getAttribute('data-id'))
+    );
+    var search = {
+        category: category
+    }
+    ItemActions.search(search);
+  }
 
   render() {
     if (this.props.errorMessage) {
@@ -25,7 +35,7 @@ var AllCategories = React.createClass({
       <ul>
         {this.props.categories.map((category, i) => {
           return (
-            <li key={i}>
+            <li key={i} data-id={category.id} onClick={this.clicked}>
               {category.name}
             </li>
           );
@@ -33,12 +43,12 @@ var AllCategories = React.createClass({
       </ul>
     );
   }
-});
+};
 
-var Categories = React.createClass({
+class Categories extends React.Component {
   componentDidMount() {
-    CategoryStore.fetchItems();
-  },
+    CategoryStore.fetchCategories();
+  }
 
   render() {
     return (
@@ -50,6 +60,6 @@ var Categories = React.createClass({
       </div>
     );
   }
-});
+};
 
 module.exports = Categories;

@@ -1,4 +1,5 @@
 import CategoryActions from '../actions/CategoryActions';
+import ItemActions from '../actions/ItemActions';
 import fetch from 'node-fetch';
 
 var PosSource = {
@@ -23,9 +24,9 @@ var PosSource = {
                 return null;
             },
 
-            success: CategoryActions.updateCategories,
-            error: CategoryActions.categoriesFailed,
-            loading: CategoryActions.fetchCategories
+            success: CategoryActions.update,
+            error: CategoryActions.failed,
+            loading: CategoryActions.fetch 
         }
     },
     fetchItems() {
@@ -49,9 +50,9 @@ var PosSource = {
                 return null;
             },
 
-            success: CategoryActions.updateCategories,
-            error: CategoryActions.categoriesFailed,
-            loading: CategoryActions.fetchCategories
+            success: ItemActions.set,
+            error: ItemActions.failed,
+            loading: ItemActions.fetch
         }
     }
 
