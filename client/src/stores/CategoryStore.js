@@ -18,13 +18,18 @@ class CategoryStore {
       getCategory: this.getCategory
     });
 
-    console.log(PosSource);
     this.exportAsync(PosSource);
   }
 
   handleUpdate(categories) {
-    categories.push({id: 0, name: "All"});
-      
+    
+    for(var i = 0; i < categories.length; i++) {
+        categories[i].active = false;
+    }
+    
+    categories.unshift({id: 0, name: "All", active: true});
+    
+    
     this.categories = categories;
 	
     this.errorMessage = null;
@@ -40,13 +45,19 @@ class CategoryStore {
 
   getCategory(id) {
     var { categories } = this.getState();
+    var category = null;
     for (var i = 0; i < categories.length; i += 1) {
       if (categories[i].id === id) {
-        return categories[i];
+        categories[i].active = true;
+        category = categories[i];
+      }
+      else {
+        categories[i].active = false;
       }
     }
-
-    return null;
+    this.state.categories = categories;
+    this.emitChange();
+    return category;
   }
 }
 

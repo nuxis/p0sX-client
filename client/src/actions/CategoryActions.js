@@ -2,19 +2,19 @@ var alt = require('../alt');
 
 class CategoryActions {
   update(categories) {
-    this.dispatch(categories);
+    return categories
   }
 
   fetch() {
-    this.dispatch();
+    return null
   }
 
   failed(errorMessage) {
-    this.dispatch(errorMessage);
+    return errorMessage
   }
   
   clicked(category) {
-      this.dispatch(category);
+      return category
   }
 }
 

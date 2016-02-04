@@ -35,7 +35,6 @@ class ItemStore {
         var found_items = [];
         var items = this.all_items;
         if (search.category != null && search.category.id != 0) {
-            console.log(items);
             for (var i = 0; i < items.length; i += 1) {
                 if (items[i].category == search.category.id)
                     found_items.push(items[i]);

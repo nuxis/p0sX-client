@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    
+    <link rel=stylesheet type="text/css" href="../node_modules/materialize-css/dist/css/materialize.css" />
   </head>
-	<div id="categories"></div>
-    <div id="items"></div>
+      <nav>
+        <div class="nav-wrapper">
+          <form>
+            <div class="input-field">
+              <input id="search" type="search" required>
+              <label for="search"><i class="mdi-action-search"></i></label>
+              <i class="mdi-navigation-close close"></i>
+            </div>
+         </form>
+    </div>
+        </div>
+      
+      </nav>
+      <div class="row">
+        <div class="col s12 m4 l3">
+          
+          <div  id="categories"></div>
+        </div>
+        <div class="col s12 m8 l9" id="items">
+        </div>
+        <div class="col s12 m4 l3" id="cart">
+        </div>
+      </div>
+
 	<script>
       require('./app');
     </script>

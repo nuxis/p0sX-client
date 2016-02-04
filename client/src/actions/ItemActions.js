@@ -3,19 +3,19 @@ var alt = require('../alt');
 class ItemActions {
 
   search(s) {
-      this.dispatch(s);
+      return s
   }
 
   fetch() {
-    this.dispatch();
+    return null
   }
 
   failed(errorMessage) {
-    this.dispatch(errorMessage);
+    return errorMessage
   }
   
   set(categories) {
-      this.dispatch(categories);
+      return categories
   }
 }
 

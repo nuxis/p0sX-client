@@ -1,5 +1,5 @@
 var React = require('react');
-var AltContainer = require('alt/AltContainer');
+var AltContainer = require('alt-container');
 var ItemStore = require('../stores/ItemStore');
 var ItemActions = require('../actions/ItemActions');
 
@@ -18,7 +18,7 @@ class AllItems extends React.Component {
       </ul>
     );
   }
-};
+}; 
 
 class Items extends React.Component {
   componentDidMount() {
@@ -28,7 +28,7 @@ class Items extends React.Component {
   render() {
     return (
       <div>
-        <h1>Items</h1>
+        <h4>Items</h4>
         <AltContainer store={ItemStore}>
           <AllItems />
         </AltContainer>
