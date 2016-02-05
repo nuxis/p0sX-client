@@ -12,7 +12,7 @@ var PosSource = {
                           if(res.ok)
                               return res.json();
                           else
-                              reject("Failed to get data from server!");
+                              reject("Failed to get categories from server!");
                       }).then(function(json) {
                           resolve(json);
                       });
@@ -37,8 +37,10 @@ var PosSource = {
                       .then(function(res) {
                           if(res.ok)
                               return res.json();
-                          else
-                              reject("Failed to get data from server!");
+                          else {
+                              reject("Failed to get items from server!");
+                          }
+                              
                       }).then(function(json) {
                           resolve(json);
                       });

@@ -26,7 +26,7 @@ var Category = React.createClass({
   }
 });
 
-class AllCategories extends React.Component {  
+class CategoryList extends React.Component {  
   renderCategory(category, active) {
       return(
           <Category name={category.name} id={category.id} active={category.active} key={category.id} />
@@ -42,8 +42,8 @@ class AllCategories extends React.Component {
 
     if (CategoryStore.isLoading()) {
       return (
-        <div>
-          <img src="spinner.gif" />
+        <div className="progress">
+          <div className="indeterminate"></div>
         </div>
       )
     }
@@ -67,7 +67,7 @@ class Categories extends React.Component {
       <div>
         <h4>Categories</h4>
         <AltContainer store={CategoryStore}>
-          <AllCategories />
+          <CategoryList />
         </AltContainer>
       </div>
     );
