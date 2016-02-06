@@ -25,8 +25,8 @@
     "es6-shim": "^0.34.0",
     "alt": "^0.18.2",
     "alt-container": "*",
-	"jquery": "*",
-	"hammerjs": "*",
+    "jquery": "*",
+    "hammerjs": "*",
     "materialize-css": "*"
   }
 }
