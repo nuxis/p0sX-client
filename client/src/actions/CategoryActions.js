@@ -1,21 +1,21 @@
 var alt = require('../alt');
 
 class CategoryActions {
-  update(categories) {
-    return categories
-  }
+    update(categories) {
+        return categories
+    }
 
-  fetch() {
-    return null
-  }
+    fetch() {
+        return null
+    }
 
-  failed(errorMessage) {
-    return errorMessage
-  }
-  
-  clicked(category) {
-      return category
-  }
+    failed(errorMessage) {
+        return errorMessage
+    }
+
+    clicked(category) {
+        return category
+    }
 }
 
 var action = alt.createActions(CategoryActions);

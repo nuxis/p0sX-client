@@ -1,55 +1,88 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+    <meta charset="UTF-8">
     <script>
-      var jQuery = $ = require("jquery");
-      var Hammer = require("hammerjs");
+        var jQuery = $ = require("jquery");
+        var Hammer = require("hammerjs");
     </script>
     <link rel=stylesheet type="text/css" href="../node_modules/materialize-css/dist/css/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-      .item-card {
-          margin-bottom: 20px;
-          margin-right: 20px;
-          width: 150px;
-      }
-      
-      .name-truncate {
-        width: 110px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-      <nav>
-        <div class="nav-wrapper">
-          <form>
-            <div class="input-field">
-              <input id="search" type="search" required>
-              <label for="search"><i class="mdi-action-search"></i></label>
-              <i class="mdi-navigation-close close"></i>
-            </div>
-          </form>
-        </div> 
-      </nav>
-      <div class="row">
-        <div class="col s12 m3 l2">       
-          <div  id="categories"></div>
-        </div>
-        <div class="col s12 m6 l7">
-          <div id="items"></div>
-        </div>
-        <div class="col s12 m3 l3">
-            <h3>Cart</h4>
-        </div>
-      </div>
+        .item-card {
+            margin-bottom: 20px;
+            margin-right: 20px;
+            width: 150px;
+        }
 
-	<script>
-      require('./app');
+        .name-truncate {
+            width: 110px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal({
+                dismissible: true, // Modal can be dismissed by clicking outside of the modal
+                opacity: .5, // Opacity of modal background
+                in_duration: 300, // Transition in duration
+                out_duration: 200, // Transition out duration
+                ready: function() {  }, // Callback for Modal open
+                complete: function() { } // Callback for Modal close
+            });
+
+        });
     </script>
-    <script src="../node_modules/materialize-css/dist/js/materialize.js"></script>
-  <body>
-  </body>
+</head>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">p0sX</a>
+        <ul class="right">
+            <li><a class="btn waves-effect waves-light modal-trigger" href="#change-user" title="Change user">Håvard Lian</a></li>
+            <li><a href="#modal1" class="modal-trigger"><i class="material-icons">settings</i></a></li>
+        </ul>
+    </div>
+</nav>
+<div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Settings</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+    </div>
+</div>
+<div id="change-user" class="modal">
+    <div class="modal-content">
+      <h4>Change user</h4>
+      <div className="input-field">
+        <input placeholder="RFID" type="text" id="user" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m3 l2">
+        <div id="categories"></div>
+    </div>
+    <div class="col s12 m6 l7">
+        <div id="items"></div>
+    </div>
+    <div class="col s12 m3 l3">
+        <div id="cart"></div>
+    </div>
+</div>
+<script>
+    require('./app');
+</script>
+<script src="../node_modules/materialize-css/dist/js/materialize.js"></script>
+<body>
+</body>
 </html>

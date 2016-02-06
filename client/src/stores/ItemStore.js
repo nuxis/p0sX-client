@@ -40,13 +40,19 @@ class ItemStore {
                     found_items.push(items[i]);
             }
         }
-        else
-            found_items = items;
-
-        if (search.search_string != null) {
-            for (var i = 0; i < items.length; i += 1) {
-                if (items[i].name.indexOf(search.search_string) < 0)
+        else {
+            items.forEach((item) => {
+                found_items.push(item);
+            })
+        }
+            
+           
+        if (search.search_string != null && search.search_string.length > 0) {
+            for (var i = 0; i < found_items.length; i += 1) {
+                if (found_items[i].name.toLowerCase().indexOf(search.search_string) < 0) {
                     found_items.splice(i, 1);
+                    i--;
+                }
             }
         }
 
@@ -64,14 +70,15 @@ class ItemStore {
     }
 
     getItem(id) {
-        var { items } = this.getState();
-        for (var i = 0; i < items.length; i += 1) {
-            if (items[i].id === id) {
-                return items[i];
-            }
-        }
+        var { displayed_items } = this.getState();
+        var i = null;
+        displayed_items.forEach((item) => {
+           if(item.id == id) {
+               i = item;
+           } 
+        });
 
-        return null;
+        return i;
     }
 }
 

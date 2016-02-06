@@ -11,8 +11,9 @@ var Category = React.createClass({
         category: CategoryStore.getCategory(this.props.id)
     }
     ItemActions.search(search);
+    $("#search").val('').blur();
   },
-    
+
   render() {
     let categoryClass = classNames({
       'collection-item': true,
@@ -20,17 +21,26 @@ var Category = React.createClass({
     });
     return(
       <a className={categoryClass} key={this.props.key} data-id={this.props.id} onClick={this.clicked}>
-        {this.props.name}
+          {this.props.name}
       </a>
     );
   }
 });
 
-class CategoryList extends React.Component {  
+class CategoryList extends React.Component {
   renderCategory(category, active) {
       return(
           <Category name={category.name} id={category.id} active={category.active} key={category.id} />
       );
+  }
+  
+  search(ev) {
+      var s = {
+          search_string: ev.target.value,
+          category: CategoryStore.getActiveCategory()
+      };
+      
+      ItemActions.search(s);
   }
 
   render() {
@@ -50,10 +60,16 @@ class CategoryList extends React.Component {
 
     var items = this.props.categories.map(this.renderCategory);
     return (
-      <div className="collection">
-        {items}
+      <div>
+        <div className="input-field">
+            <input id="search" type="text" onKeyUp={this.search} /> 
+            <label htmlFor="search">Search</label>      
+        </div>
+        <div className="collection">
+            {items}
+        </div>
       </div>
-    ); 
+    );
   }
 };
 

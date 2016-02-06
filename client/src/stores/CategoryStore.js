@@ -15,7 +15,8 @@ class CategoryStore {
     });
 
     this.exportPublicMethods({
-      getCategory: this.getCategory
+      getCategory: this.getCategory,
+      getActiveCategory: this.getActiveCategory
     });
 
     this.exportAsync(PosSource);
@@ -41,6 +42,18 @@ class CategoryStore {
 
   handleFailed(errorMessage) {
     this.errorMessage = errorMessage;
+  }
+  
+  getActiveCategory() {
+      var { categories } = this.getState();
+      var category = null;
+      categories.forEach((cat) => {
+         if(cat.active) {
+            category = cat;
+            return
+         } 
+      });
+      return category;
   }
 
   getCategory(id) {
