@@ -41,3 +41,4 @@ node_modules
 *.njsproj
 *.sln
 .vs/
+.idea/

@@ -35,3 +35,32 @@
 	display: inline-block;
 	font-weight: bold;
 }
+
+.checkout{
+  width: 100%;
+  padding-top: 10px;
+  background-color: white;
+  padding-bottom: 10px;
+}
+
+.cart {
+  display: inline-block;
+  right: 0 !important;
+  left: auto !important;
+  height: 100%;
+  z-index: auto;
+}
+
+.full-height {
+    height: 100%;
+}
+
+#cart-list {
+    height: calc(100% - 40px);
+}
+
+.pos-container {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 100px);
+}
