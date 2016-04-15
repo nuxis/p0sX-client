@@ -1,13 +1,6 @@
-from pos.models import *
+from pos.models.stock import *
 
 from rest_framework import serializers
-
-
-# Serializers define the API representation.
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'name', 'max_credit', 'card')
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -38,12 +31,6 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'customer', 'date')
-
-
-class ShiftSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Shift
-        fields = ('id', 'start', 'end', 'leader')
 
 
 class PurchaseSerializer(serializers.Serializer):

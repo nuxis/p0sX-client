@@ -1,8 +1,13 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from pos.models import *
-from pos.serializers import *
+from pos.models.shift import Shift
+from pos.models.stock import Category, Ingredient, Item, Order, OrderLine, Purchase
+from pos.models.user import User
+
+from pos.serializers.shift import ShiftSerializer
+from pos.serializers.stock import CategorySerializer, IngredientSerializer, ItemSerializer, OrderLineSerializer, OrderSerializer, PurchaseSerializer
+from pos.serializers.user import CustomerSerializer
 
 from rest_framework import viewsets
 from rest_framework.response import Response

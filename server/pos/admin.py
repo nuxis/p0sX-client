@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from pos.models import *
+from pos.models.shift import Shift
+from pos.models.stock import Category, Ingredient, Item, Order, OrderLine
+from pos.models.user import User
 
 
 class CustomerAdmin(admin.ModelAdmin):
@@ -38,4 +40,3 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(OrderLine, OrderLineAdmin)
 admin.site.register(Shift, ShiftAdmin)
-
