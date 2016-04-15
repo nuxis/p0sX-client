@@ -42,3 +42,4 @@ node_modules
 *.sln
 .vs/
 .idea/
+build/

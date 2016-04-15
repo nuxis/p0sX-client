@@ -3,7 +3,11 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: './index.jsx',
-    output: { path: __dirname, filename: 'build/app.js' },
+    output: {
+        path: __dirname, filename: 'build/app.js',
+        sourceMapFilename: 'build/app.map'
+    },
+    devtool: '#source-map',
     module: {
         loaders: [
           {
@@ -20,5 +24,5 @@ module.exports = {
               loader: 'json-loader'
           }
         ]
-    },
+    }
 };

@@ -1,12 +1,11 @@
-import {Modal, Button} from 'react-materialize';
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 
-export default class IngredientModal extends Component {
-
+class Modal extends Component {
     render() {
-        const { onClose } = this.props;
+        const { onClose, id, item, ingredients } = this.props;
         return (
-            <div id="ingredient-modal" className="modal modal-fixed-footer">
+            <div id={id} className="modal modal-fixed-footer">
                 <div className="modal-content">
                     <h4>Add ingredients</h4>
                     <p>A bunch of text</p>
@@ -18,3 +17,5 @@ export default class IngredientModal extends Component {
         )
     }
 }
+
+export default Modal;

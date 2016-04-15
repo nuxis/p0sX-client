@@ -1,17 +1,18 @@
 import React from 'react'
 import VisibleItemList from '../containers/VisibleItemList'
 import CategoryContainer from '../containers/CategoryContainer'
-import Cart from '../components/Cart.jsx';
-import {Navbar, NavItem} from 'react-materialize';
+import VisibleCartList from '../containers/VisibleCartList';
+import {Navbar} from 'react-materialize';
+import IngredientModal from './Modal.jsx';
 
 const App = () => (
     <div>
-        <Navbar brand='p0sX' right>
-        </Navbar>
+        <Navbar brand='p0sX' right />
+        <IngredientModal id="ingredient-modal" />
         <div id="content" className="row pos-container">
             <CategoryContainer />
             <VisibleItemList />
-            <Cart />
+            <VisibleCartList />
         </div>
     </div>
 );

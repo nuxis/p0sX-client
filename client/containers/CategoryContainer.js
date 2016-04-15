@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { setActiveCategory, addCategories } from '../actions';
+import { setActiveCategory } from '../actions';
 import CategoryList from '../components/CategoryList.jsx';
 
 
@@ -14,9 +14,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onCategoryClick: (category) => {
         dispatch(setActiveCategory(category))
-    },
-    onAddCategories: (categories) => {
-        dispatch(addCategories(categories))
     }
   };
 };

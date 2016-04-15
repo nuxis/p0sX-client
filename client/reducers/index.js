@@ -1,9 +1,10 @@
 const initialState = {
   items: [],
+  ingredients: {},
   cart: {
       addedIds: [],
-      quantityById: {},
-      ingredientsById: {}
+      addedSpecials: [],
+      quantityById: {}
   },
   selectedCategory: 0,
   categories: [{
@@ -11,8 +12,6 @@ const initialState = {
       name: "All"
   }]
 };
-
-let nextId = 2;
 
 const categories = (state, action) => {
     switch (action.type) {
@@ -28,72 +27,61 @@ const categories = (state, action) => {
                 selectedCategory: action.id
             });
     }
-
 };
 
-const addedIds = (state = initialState.cart.addedIds, action)=> {
+function addedIds(state = initialState.cart.addedIds, action) {
     switch (action.type) {
         case 'ADD_TO_CART':
             if (state.indexOf(action.item) !== -1) {
-                return state;
+                return state
             }
             return [ ...state, action.item ];
-        default:
+        case 'REMOVE_ITEM':
             return state;
+        default:
+            return state
     }
-};
+}
 
-const quantityById = (state = initialState.cart.quantityById, action) =>{
+function quantityById(state = initialState.cart.quantityById, action) {
+    const { item } = action;
     switch (action.type) {
         case 'ADD_TO_CART':
-            const { item } = action;
             return Object.assign({}, state, {
                 [item]: (state[item] || 0) + 1
             });
+        case 'REMOVE_ITEM':
+            if(state[item] != undefined) {
+                state[item] > 0 ? state[item]--:state;
+            }
+            return state;
         default:
             return state
     }
-};
-
-const ingredientsById = (state = initialState.cart.ingredientsById, action, items) =>{
-    switch (action.type) {
-        case 'ADD_TO_CART':
-            const item = itemFromId(items, action.item);
-            return Object.assign({}, state, {
-                [action.item]: item.ingredients
-            });
-        default:
-            return state
-    }
-};
-
-const itemFromId = (items, id) => {
-    for(var i = 0; i < items.length; i++) {
-        if(items[i].id === id) {
-            return items[i];
-        }
-    }
-    return undefined;
-};
-
-const cart = (state, action) => {
-    return {
-        addedIds: addedIds(state.cart.addedIds, action),
-        quantityById: quantityById(state.cart.quantityById, action),
-        ingredientsById: ingredientsById(state.cart.ingredientsById, action, state.items)
-    }
-};
+}
 
 const posApp = (state = initialState, action) => {
     console.log(state);
     switch (action.type) {
+        case 'REMOVE_ITEM':
         case 'ADD_TO_CART':
             return Object.assign({}, state, {
-                cart: cart(state, action)
+                cart: {
+                    addedIds: addedIds(state.cart.addedIds, action),
+                    quantityById: quantityById(state.cart.quantityById, action)
+                }
+            });
+        case 'EMPTY_CART':
+            return Object.assign({}, state, {
+                cart: initialState.cart
             });
         case 'SET_ITEMS':
             return Object.assign({}, state, {
                 items: action.items
+            });
+        case 'SET_INGREDIENTS':
+            return Object.assign({}, state, {
+                ingredients: action.ingredients
             });
         case 'ADD_CATEGORIES':
         case 'SET_ACTIVE_CATEGORY':

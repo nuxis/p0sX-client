@@ -1,20 +1,32 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
+import { setItemsAsync } from '../actions';
 import Item from './Item.jsx';
 
-const ItemList = ({ items, onItemClick }) => (
-  <div  className="col s12 m6 l7">
-    <h4>Items</h4>
-    <div>
-        {items.map(item =>
-        <Item
-            key={item.id}
-            {...item}
-            onClick={() => onItemClick(item.id)}
-        />
-        )}
-    </div>
-  </div>
-);
+class ItemList extends Component {
+
+    componentDidMount() {
+        this.props.getInitialData();
+    }
+
+    render() {
+        const { items, onItemClick } = this.props;
+
+        return (
+            <div  className="col s12 m6 l7">
+                <h4>Items</h4>
+                <div>
+                    {items.map(item =>
+                        <Item
+                            key={item.id}
+                            {...item}
+                            onClick={() => onItemClick(item.id, item.can_have_ingredients)}
+                        />
+                    )}
+                </div>
+            </div>
+        )
+    }
+}
 
 ItemList.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({

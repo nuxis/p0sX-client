@@ -1,20 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import Category from './Category.jsx';
-import axios from 'axios';
-import IngredientModal from './IngredientModal.jsx';
+import IngredientModal from './Modal.jsx';
 
-export default class CategoryList extends Component {  
-    componentDidMount() {
-        var callback = this.props.onAddCategories;
-        axios.get('http://127.0.0.1:8000/categories/?format=json')
-        .then(function (response) {
-            callback(response.data);
-        })
-        .catch(function (response) {
-            console.log(response);
-        });
-    }
-
+export default class CategoryList extends Component {
     render() {
         const {categories, onCategoryClick, selectedCategory} = this.props;     
         return (
@@ -38,7 +26,7 @@ export default class CategoryList extends Component {
 CategoryList.propTypes = {
     categories: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired
     }).isRequired).isRequired,
     selectedCategory: PropTypes.number.isRequired,
     onCategoryClick: PropTypes.func.isRequired

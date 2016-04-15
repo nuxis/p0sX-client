@@ -5,24 +5,12 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware  } from 'redux'
 import posApp from './reducers'
 import App from './components/App.jsx'
-import { setItems, addCategories } from './actions';
+import { setItemsAsync } from './actions';
 import axios from 'axios';
-import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 
-let store = createStore(posApp, applyMiddleware(thunk));
+let store = createStore(posApp, applyMiddleware(thunkMiddleware));
 
-var setItemsAsync = () => {
-    axios.get('http://127.0.0.1:8000/items/?format=json')
-    .then(function (response) {
-        store.dispatch(setItems(response.data));
-    })
-    .catch(function (response) {
-        console.log(response);
-    });
-};
-
-setItemsAsync();
-   
 render(
     <Provider store={store}>
         <App />
