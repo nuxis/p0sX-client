@@ -9,13 +9,11 @@ const Cart = ({ items, cart, onEmptyCart, onRemoveItem, onPurchase, total }) => 
             <a className="btn-floating waves-effect waves-light right red" onClick={onEmptyCart}><i className="material-icons">delete</i></a>
         </h4>
         <ul className="collection">
-            {items.map(entry =>
+            {cart.map((entry, i) =>
                 <CartEntry
-                    key={entry.id}
+                    key={i}
                     {...entry}
-                    count={cart.quantityById[entry.id]}
-                    ingredients={[]}
-                    removeItem={() => onRemoveItem(entry.id)}
+                    removeItem={() => onRemoveItem(i)}
                 />
             )}
         </ul>

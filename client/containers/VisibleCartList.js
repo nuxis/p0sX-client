@@ -2,20 +2,25 @@ import { connect } from 'react-redux';
 import { emptyCart, removeItem } from '../actions';
 import Cart from '../components/Cart.jsx';
 
+const itemById = (items, id) => {
+    var f = null;
+    items.forEach(i => {
+        if(i.id == id)
+            f = i;
+    });
+    return f;
+};
+
 const getVisibleItems = (items, cart) => {
-    return items.filter(i => {
-        return cart.addedIds.indexOf(i.id) != -1 && cart.quantityById[i.id] > 0;
+    return cart.map(entry => {
+        return Object.assign(entry, itemById(items, entry.id));
     });
 };
 
 const getTotalPrice = (items, cart) => {
-    var total = 0;
-    items.forEach(i => {
-        if(cart.addedIds.indexOf[i.id] != -1 && cart.quantityById[i.id]) {
-            total += i.price * cart.quantityById[i.id];
-        }
-    });
-    return total;
+    return cart.reduce((total, entry) => {
+        return total + itemById(items, entry.id).price;
+    }, 0);
 };
 
 const mapStateToProps = (state) => {

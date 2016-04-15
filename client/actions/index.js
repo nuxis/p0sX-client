@@ -16,26 +16,26 @@ export const setInitialData = () => {
     return (dispatch) => {
         axios.all([getIngredients(), getItems(), getCategories()])
         .then(axios.spread((ingredients, items, categories) => {
+            dispatch(addCategories(categories.data));
             dispatch(setItems(items.data));
             dispatch(setIngredients(ingredients.data));
-            dispatch(addCategories(categories.data));
         }));
     }
 };
 
 export const addToCart = (item, ingredients) => {
-  return {
-      type: 'ADD_TO_CART',
-      item: item,
-      ingredients: ingredients
-  }
+    return {
+        type: 'ADD_TO_CART',
+        item: item,
+        ingredients: ingredients
+    }
 };
 
 export const setItems = (items) => {
-  return {
-    type: 'SET_ITEMS',
-    items: items
-  }
+    return {
+        type: 'SET_ITEMS',
+        items: items
+    }
 };
 
 export const setIngredients = (ingredients) => {
@@ -46,28 +46,36 @@ export const setIngredients = (ingredients) => {
 };
 
 export const addCategories = (categories) => {
-  return {
-    type: 'ADD_CATEGORIES',
-    categories: categories
-  }
+    return {
+        type: 'ADD_CATEGORIES',
+        categories: categories
+    }
 };
 
 export const emptyCart = () => {
-  return {
-    type: 'EMPTY_CART'
-  }
+    return {
+       type: 'EMPTY_CART'
+    }
 };
 
 export const removeItem = (item) => {
-  return {
-    type: 'REMOVE_ITEM',
-    item: item
-  }
+    return {
+        type: 'REMOVE_ITEM',
+        item: item
+    }
 };
 
 export const setActiveCategory = (id) => {
-  return {
-    type: 'SET_ACTIVE_CATEGORY',
-    id: id
-  }
+    return {
+        type: 'SET_ACTIVE_CATEGORY',
+        id: id
+    }
+};
+
+export const openModal = (item) => {
+    $("#ingredient-modal").openModal();
+    return {
+        type: 'SET_ACTIVE_ITEM',
+        item: item
+    }
 };

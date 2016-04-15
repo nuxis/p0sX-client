@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addToCart, setInitialData } from '../actions';
+import { addToCart, setInitialData, openModal } from '../actions';
 import ItemList from '../components/ItemList.jsx';
 import { render } from 'react-dom'
 const getVisibleItems = (items, category) => {
@@ -21,8 +21,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item, can_have_ingredients) => {
             if(can_have_ingredients) {
-                console.log("should open modal...");
-                $("#ingredient-modal").openModal();
+                dispatch(openModal(item));
             }
             else{
                 dispatch(addToCart(item));

@@ -8,6 +8,8 @@ logs
 npm-debug.log*
 
 app/app.js
+build/app.js
+build/app.map
 
 # Runtime data
 pids
@@ -42,4 +44,3 @@ node_modules
 *.sln
 .vs/
 .idea/
-build/
