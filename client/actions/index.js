@@ -23,10 +23,10 @@ export const setInitialData = () => {
     }
 };
 
-export const addToCart = (item, ingredients) => {
+export const addToCart = (item, ingredients = []) => {
     return {
         type: 'ADD_TO_CART',
-        item: item,
+        id: item,
         ingredients: ingredients
     }
 };
@@ -61,7 +61,7 @@ export const emptyCart = () => {
 export const removeItem = (item) => {
     return {
         type: 'REMOVE_ITEM',
-        item: item
+        id: item
     }
 };
 

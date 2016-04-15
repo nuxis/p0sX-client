@@ -1,33 +1,42 @@
 import { connect } from 'react-redux';
 import { emptyCart, removeItem } from '../actions';
 import Cart from '../components/Cart.jsx';
+import {getItemById, getIngredientById} from '../reducers';
 
-const itemById = (items, id) => {
-    var f = null;
-    items.forEach(i => {
-        if(i.id == id)
-            f = i;
-    });
-    return f;
-};
 
-const getVisibleItems = (items, cart) => {
+const getVisibleItems = (state, cart) => {
     return cart.map(entry => {
-        return Object.assign(entry, itemById(items, entry.id));
+        var item = Object.assign({}, getItemById(state, entry.id));
+        item =  Object.assign(item, entry);
+
+        item.price = item.price + item.ingredients.reduce((total, ingredient) => {
+            return total + parseInt(getIngredientById(state, ingredient).price);
+        }, 0);
+
+        item.ingredients = item.ingredients.map(ingredient => {
+            return getIngredientById(state, ingredient);
+        });
+
+
+        return item;
     });
 };
 
-const getTotalPrice = (items, cart) => {
+const getTotalPrice = (state, cart) => {
     return cart.reduce((total, entry) => {
-        return total + itemById(items, entry.id).price;
+        total += getItemById(state, entry.id).price;
+        total += entry.ingredients.reduce((sum, ingredient) => {
+            return sum + parseInt(getIngredientById(state, ingredient).price);
+        }, 0);
+        return total;
     }, 0);
 };
 
 const mapStateToProps = (state) => {
     return {
-        items: getVisibleItems(state.items, state.cart),
+        items: getVisibleItems(state, state.cart),
         cart: state.cart,
-        total: getTotalPrice(state.items, state.cart)
+        total: getTotalPrice(state, state.cart)
     };
 };
 

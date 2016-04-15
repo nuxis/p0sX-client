@@ -1,21 +1,22 @@
 const initialState = {
-  items: [],
-  ingredients: [],
-  cart: [],
-  selectedCategory: 0,
-  categories: [{
-      id: 0,
-      name: "All"
-  }]
+    items: [],
+    ingredients: [],
+    cart: [],
+    selectedCategory: 0,
+    categories: [{
+        id: 0,
+        name: "All"
+    }],
+    currentItem: 1
 };
 
 const categories = (state, action) => {
     switch (action.type) {
         case 'ADD_CATEGORIES':
-           return [
+           return Object.assign([], [
                 ...state,
                 ...action.categories
-           ];
+           ]);
         default:
             return state;
     }
@@ -30,17 +31,29 @@ const selectedCategory = (state, action) => {
     }
 };
 
+const currentItem = (state, action) => {
+    switch (action.type) {
+        case 'SET_ACTIVE_ITEM':
+            return action.item;
+        default:
+            return state;
+    }
+};
+
 function cart(state, action) {
     switch (action.type) {
         case 'ADD_TO_CART':
-            return [ ...state, {
-                id: action.item,
-                ingredients: action.ingredients
-            }];
+            return [
+                ...state,
+                {
+                    id: action.id,
+                    ingredients: action.ingredients
+                }
+            ];
         case 'REMOVE_ITEM':
             return [
-                ...state.slice(0, action.item),
-                ...state.slice(action.item + 1)
+                ...state.slice(0, action.id),
+                ...state.slice(action.id + 1)
             ];
         case 'EMPTY_CART':
             return [];
@@ -52,7 +65,7 @@ function cart(state, action) {
 function ingredients(state, action) {
     switch (action.type) {
         case 'SET_INGREDIENTS':
-            return action.ingredients;
+            return [...action.ingredients];
         default:
             return state;
     }
@@ -61,7 +74,7 @@ function ingredients(state, action) {
 function items(state, action) {
     switch (action.type) {
         case 'SET_ITEMS':
-            return Object.assign([], action.items);
+            return [...action.items];
         default:
             return state;
     }
@@ -73,6 +86,25 @@ export default (state = initialState, action) => {
         selectedCategory: selectedCategory(state.selectedCategory, action),
         ingredients: ingredients(state.ingredients, action),
         items: items(state.items, action),
-        categories: categories(state.categories, action)
+        categories: categories(state.categories, action),
+        currentItem: currentItem(state.currentItem, action)
     });
+};
+
+export const getItemById = (state, id) => {
+    var f = {};
+    state.items.forEach(i => {
+        if(i.id == id)
+            f = i;
+    });
+    return f;
+};
+
+export const getIngredientById = (state, id) => {
+    var f = {};
+    state.ingredients.forEach(i => {
+        if(i.id == id)
+            f = i;
+    });
+    return f;
 };
