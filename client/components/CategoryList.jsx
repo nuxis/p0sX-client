@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Category from './Category.jsx';
-import IngredientModal from './Modal.jsx';
+import IngredientModal from './IngredientModal.jsx';
 
 export default class CategoryList extends Component {
     render() {

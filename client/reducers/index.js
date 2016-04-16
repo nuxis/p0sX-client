@@ -57,6 +57,11 @@ const currentItem = (state, action, item) => {
                        action.id
                    ]
                 });
+        case 'ADD_CURRENT_TO_CART':
+            return {
+                id: 0,
+                ingredients: []
+            };
         default:
             return state;
     }

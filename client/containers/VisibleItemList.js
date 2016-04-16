@@ -21,6 +21,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item, can_have_ingredients) => {
             if(can_have_ingredients) {
+                $("#ingredient-modal").openModal();
                 dispatch(openModal(item));
             }
             else{

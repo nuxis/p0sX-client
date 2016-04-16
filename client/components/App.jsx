@@ -3,7 +3,7 @@ import VisibleItemList from '../containers/VisibleItemList'
 import CategoryContainer from '../containers/CategoryContainer'
 import VisibleCartList from '../containers/VisibleCartList';
 import {Navbar} from 'react-materialize';
-import IngredientModal from './Modal.jsx';
+import IngredientModal from './IngredientModal.jsx';
 
 const App = () => (
     <div>
@@ -13,7 +13,7 @@ const App = () => (
             <VisibleItemList />
             <VisibleCartList />
         </div>
-        <IngredientModal id="ingredient-modal" />
+        <IngredientModal />
     </div>
 );
 

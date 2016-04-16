@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import {getItemById} from '../reducers';
 import {toggleIngredient, addCurrentItemToCart} from '../actions'
 
-class Modal extends Component {
+class IngredientModal extends Component {
     render() {
-        const { onClose, id, item, ingredients, onIngredientClick, currentItem } = this.props;
+        const { onClose, item, ingredients, onIngredientClick, currentItem } = this.props;
         return (
-            <div id={id} className="modal modal-fixed-footer">
+            <div id="ingredient-modal" className="modal modal-fixed-footer">
                 <div className="modal-content">
                     <h4>Select ingredients for {item.name}</h4>
                     <ul className="collection">
                     {ingredients.map(ingredient =>
-                        <li className="collection-item" key={ingredient.id} style={{fontSize: "20px"}} onClick={() => onIngredientClick(ingredient.id)} >
+                        <li className="collection-item" key={ingredient.id} onClick={() => onIngredientClick(ingredient.id)} >
                             <input onClick={() => onIngredientClick(ingredient.id)}
                                    id={"ingredient-" + ingredient.id}
                                    checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
@@ -54,4 +54,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Modal);
+)(IngredientModal);

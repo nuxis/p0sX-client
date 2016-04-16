@@ -79,7 +79,6 @@ export const setActiveCategory = (id) => {
 };
 
 export const openModal = (item) => {
-    $("#ingredient-modal").openModal();
     return {
         type: 'SET_ACTIVE_ITEM',
         item: item
