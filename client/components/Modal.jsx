@@ -10,15 +10,15 @@ class Modal extends Component {
             <div id={id} className="modal modal-fixed-footer">
                 <div className="modal-content">
                     <h4>Select ingredients for {item.name}</h4>
-                    <ul>
+                    <ul className="collection">
                     {ingredients.map(ingredient =>
-                        <li key={ingredient.id} style={{fontSize: "20px"}} >
-                            <input onChange={() => onIngredientClick(ingredient.id)}
+                        <li className="collection-item" key={ingredient.id} style={{fontSize: "20px"}} onClick={() => onIngredientClick(ingredient.id)} >
+                            <input onClick={() => onIngredientClick(ingredient.id)}
                                    id={"ingredient-" + ingredient.id}
                                    checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
                                    type="checkbox"
                             />
-                            <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name}</label>
+                            <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name} {ingredient.price},-</label>
                         </li>
                     )}
                     </ul>

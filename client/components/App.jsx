@@ -8,12 +8,12 @@ import IngredientModal from './Modal.jsx';
 const App = () => (
     <div>
         <Navbar brand='p0sX' right />
-        <IngredientModal id="ingredient-modal" />
         <div id="content" className="row pos-container">
             <CategoryContainer />
             <VisibleItemList />
             <VisibleCartList />
         </div>
+        <IngredientModal id="ingredient-modal" />
     </div>
 );
 
