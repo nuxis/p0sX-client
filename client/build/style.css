@@ -28,12 +28,17 @@
 }
 
 .name-truncate {
-	width: 110px;
+	width: 105px;
+	margin-left: 2px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: inline-block;
 	font-weight: bold;
+}
+
+.price {
+	margin-right: 3px;
 }
 
 .checkout{

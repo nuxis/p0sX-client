@@ -3,12 +3,10 @@ import React, { PropTypes } from 'react'
 const Item = ({ onClick, name, price, stock }) => (
     <div className="item-card waves-effect waves-green z-depth-1 hoverable" onClick={onClick}>
         <div className="card-image">
-        <img src="http://placehold.it/150x150"/>
+            <img src="http://placehold.it/150x150"/>
         </div>
-        <div className="name-truncate">{name}</div>
-        <span className="right grey-text">{price} Kr.</span>
-        <br />
-        Stock: {stock} left
+        <span className="name-truncate">{name}</span>
+        <span className="right price grey-text">{price} Kr.</span>
     </div>
 );
 
