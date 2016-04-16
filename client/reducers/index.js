@@ -7,7 +7,10 @@ const initialState = {
         id: 0,
         name: "All"
     }],
-    currentItem: 1
+    currentItem: {
+        id: 0,
+        ingredients: []
+    }
 };
 
 const categories = (state, action) => {
@@ -31,16 +34,35 @@ const selectedCategory = (state, action) => {
     }
 };
 
-const currentItem = (state, action) => {
+const currentItem = (state, action, item) => {
     switch (action.type) {
         case 'SET_ACTIVE_ITEM':
-            return action.item;
+            return {
+                id: action.item,
+                ingredients: Object.assign([], item.ingredients)
+            };
+        case 'TOGGLE_INGREDIENT':
+            var index = state.ingredients.indexOf(action.id);
+            if(index != -1)
+                return Object.assign([], state, {
+                    ingredients: [
+                        ...state.ingredients.slice(0, index),
+                        ...state.ingredients.slice(index+1)
+                    ]
+                });
+            else
+                return Object.assign({}, state, {
+                   ingredients: [
+                       ...state.ingredients,
+                       action.id
+                   ]
+                });
         default:
             return state;
     }
 };
 
-function cart(state, action) {
+function cart(state, action, currentItem) {
     switch (action.type) {
         case 'ADD_TO_CART':
             return [
@@ -48,6 +70,14 @@ function cart(state, action) {
                 {
                     id: action.id,
                     ingredients: action.ingredients
+                }
+            ];
+        case 'ADD_CURRENT_TO_CART':
+            return [
+                ...state,
+                {
+                    id: currentItem.id,
+                    ingredients: Object.assign([], currentItem.ingredients)
                 }
             ];
         case 'REMOVE_ITEM':
@@ -81,14 +111,16 @@ function items(state, action) {
 }
 
 export default (state = initialState, action) => {
-    return Object.assign({}, state, {
-        cart: cart(state.cart, action),
+    var s = Object.assign({}, state, {
+        cart: cart(state.cart, action, state.currentItem),
         selectedCategory: selectedCategory(state.selectedCategory, action),
         ingredients: ingredients(state.ingredients, action),
         items: items(state.items, action),
         categories: categories(state.categories, action),
-        currentItem: currentItem(state.currentItem, action)
+        currentItem: currentItem(state.currentItem, action, getItemById(state, action.item))
     });
+    console.log(s);
+    return s;
 };
 
 export const getItemById = (state, id) => {

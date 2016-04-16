@@ -1,51 +1,50 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import {getItemById} from '../reducers';
+import {toggleIngredient, addCurrentItemToCart} from '../actions'
 
 class Modal extends Component {
     render() {
-        const { onClose, id, item, ingredients } = this.props;
+        const { onClose, id, item, ingredients, onIngredientClick, currentItem } = this.props;
         return (
             <div id={id} className="modal modal-fixed-footer">
-                <form id="ingredient-form" action="#">
-                    <div className="modal-content">
-                        <h4>Add ingredients to {item.name}</h4>
-                        <ul>
-                            {ingredients.map(ingredient =>
-                                <li key={ingredient.id}>
-                                    <input value="true" type="checkbox" name={ingredient.id} id={"ingredient-" + ingredient.id} />
-                                    <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name}</label>
-                                </li>
-                            )}
-                        </ul>
-                    </div>
-                    <div className="modal-footer">
-                        <button href="#!" type="submit" onClick={onClose} className="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
-                    </div>
-                </form>
-            </div>
+                <div className="modal-content">
+                    <h4>Add ingredients to {item.name}</h4>
+                    <ul>
+                        {ingredients.map(ingredient =>
+                            <li key={ingredient.id}>
+                                <input onChange={() => onIngredientClick(ingredient.id)}
+                                       id={"ingredient-" + ingredient.id}
+                                       checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
+                                       type="checkbox"/>
+                                <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name}</label>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+                <div className="modal-footer">
+                    <button href="#!" type="submit" onClick={onClose} className="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
+                </div>
+        </div>
         )
     }
 }
 
-
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
-        item: getItemById(state, state.currentItem)
+        currentItem: state.currentItem,
+        item: getItemById(state, state.currentItem.id)
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClose: (e) => {
-            var data = $('#ingredient-form').serialize();
-            console.log(data);
-
-
-
-            e.preventDefault();
-            console.log("Closed");
+        onClose: () => {
+            dispatch(addCurrentItemToCart());
+        },
+        onIngredientClick: (id) => {
+            dispatch(toggleIngredient(id));
         }
     };
 };

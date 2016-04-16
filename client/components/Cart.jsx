@@ -1,9 +1,6 @@
 import React, { PropTypes } from 'react';
 import CartEntry from './CartEntry.jsx';
 import CheckoutButton from './CheckoutButton.jsx';
-import {getIngredientById} from '../reducers';
-
-
 
 const Cart = ({ items, cart, onEmptyCart, onRemoveItem, onPurchase, total }) => (
     <div className="col s12 m3 l3">

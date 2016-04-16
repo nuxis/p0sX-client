@@ -23,6 +23,12 @@ export const setInitialData = () => {
     }
 };
 
+export const addCurrentItemToCart = () => {
+    return {
+        type: 'ADD_CURRENT_TO_CART'
+    }
+};
+
 export const addToCart = (item, ingredients = []) => {
     return {
         type: 'ADD_TO_CART',
@@ -77,5 +83,13 @@ export const openModal = (item) => {
     return {
         type: 'SET_ACTIVE_ITEM',
         item: item
+    }
+};
+
+export const toggleIngredient = (id) => {
+    "use strict";
+    return {
+        type: 'TOGGLE_INGREDIENT',
+        id: id
     }
 };

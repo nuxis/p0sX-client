@@ -9,9 +9,12 @@ const getVisibleItems = (state, cart) => {
         var item = Object.assign({}, getItemById(state, entry.id));
         item =  Object.assign(item, entry);
 
-        item.price = item.price + item.ingredients.reduce((total, ingredient) => {
+
+
+        item.price = item.ingredients.reduce((total, ingredient) => {
+            console.log(total);
             return total + parseInt(getIngredientById(state, ingredient).price);
-        }, 0);
+        }, item.price);
 
         item.ingredients = item.ingredients.map(ingredient => {
             return getIngredientById(state, ingredient);
