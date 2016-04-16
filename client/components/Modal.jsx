@@ -9,23 +9,25 @@ class Modal extends Component {
         return (
             <div id={id} className="modal modal-fixed-footer">
                 <div className="modal-content">
-                    <h4>Add ingredients to {item.name}</h4>
+                    <h4>Select ingredients for {item.name}</h4>
                     <ul>
-                        {ingredients.map(ingredient =>
-                            <li key={ingredient.id}>
-                                <input onChange={() => onIngredientClick(ingredient.id)}
-                                       id={"ingredient-" + ingredient.id}
-                                       checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
-                                       type="checkbox"/>
-                                <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name}</label>
-                            </li>
-                        )}
+                    {ingredients.map(ingredient =>
+                        <li key={ingredient.id} style={{fontSize: "20px"}} >
+                            <input onChange={() => onIngredientClick(ingredient.id)}
+                                   id={"ingredient-" + ingredient.id}
+                                   checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
+                                   type="checkbox"
+                            />
+                            <label htmlFor={"ingredient-" + ingredient.id}>{ingredient.name}</label>
+                        </li>
+                    )}
                     </ul>
                 </div>
                 <div className="modal-footer">
-                    <button href="#!" type="submit" onClick={onClose} className="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
+                    <a href="#!" onClick={onClose} className="modal-action modal-close waves-effect waves-green btn-flat">Add to cart</a>
+                    <a href="#!" className="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
                 </div>
-        </div>
+            </div>
         )
     }
 }
