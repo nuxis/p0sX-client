@@ -10,6 +10,7 @@ npm-debug.log*
 build/
 main.js
 main.js.map
+settings.json
 
 # Runtime data
 pids
