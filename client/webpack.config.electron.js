@@ -14,11 +14,11 @@ export default {
   },
 
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    }),
+    //new webpack.optimize.UglifyJsPlugin({
+    //  compressor: {
+    //    warnings: false
+    //  }
+    //}),
     new webpack.BannerPlugin(
       'require("source-map-support").install();',
       { raw: true, entryOnly: false }
