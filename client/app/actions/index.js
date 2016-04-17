@@ -1,18 +1,20 @@
 import axios from 'axios';
+import settings from '../settings'
 
-//let BASE_ADDRESS = settings.get('server_address')
+let BASE_ADDRESS = settings.get('server_address')
+
+console.log(settings)
 
 const getItems = () => {
-    //return axios.get(`${BASE_ADDRESS}/items/?format=json`)
-    return axios.get('http://127.0.0.1:8000/items/?format=json')
+    return axios.get(`${BASE_ADDRESS}/items/?format=json`)
 }
 
 const getCategories = () => {
-    return axios.get('http://127.0.0.1:8000/categories/?format=json');
+    return axios.get(`${BASE_ADDRESS}/categories/?format=json`);
 };
 
 const getIngredients = () => {
-    return axios.get('http://127.0.0.1:8000/ingredients/?format=json');
+    return axios.get(`${BASE_ADDRESS}/ingredients/?format=json`);
 };
 
 export const setInitialData = () => {
