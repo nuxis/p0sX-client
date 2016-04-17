@@ -1,7 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from pos.views import *
+from pos.views.shift import ShiftViewSet
+from pos.views.stock import CategoryViewSet, IngredientViewSet, ItemViewSet, OrderLineViewSet, OrderViewSet, PurchaseViewSet
+from pos.views.user import UserViewSet
 
 from rest_framework import routers
 
