@@ -10,7 +10,7 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
     // Initialize the window to our specified dimensions
-    mainWindow = new BrowserWindow({ width: 1200, height: 900, icon: __dirname + '/static/pi_logo.png', frame: true});
+    mainWindow = new BrowserWindow({ width: 1024, height: 768, icon: __dirname + '/static/pi_logo.png', frame: true});
 
     // Tell Electron where to load the entry point from
     mainWindow.loadURL('file://' + __dirname + '/app/app.html');
