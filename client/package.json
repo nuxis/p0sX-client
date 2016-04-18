@@ -8,8 +8,8 @@
     "lint-jsx": "./node_modules/.bin/eslint app/**/**.jsx",
     "electron": "electron ./",
     "build": "npm run build-main && npm run build-renderer",
-    "build-main": "node -r babel-register ./node_modules/.bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer": "node -r babel-register ./node_modules/.bin/webpack --config webpack.config.production.js --progress --profile --colors"
+    "build-main": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config webpack.config.electron.js --progress --profile --colors",
+    "build-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config webpack.config.production.js --progress --profile --colors"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
