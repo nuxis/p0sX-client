@@ -1,21 +1,31 @@
-import React, { PropTypes, Component } from 'react';
-import { setItemsAsync } from '../actions';
-import Item from './Item.jsx';
+import React from 'react'
+import Item from './Item.jsx'
 
-class ItemList extends Component {
-
-    componentDidMount() {
-        this.props.getInitialData();
-    }
-
-    render() {
-        const { items, onItemClick } = this.props;
+const ItemList = React.createClass({
+    componentDidMount: function () {
+        this.props.getInitialData()
+    },
+    propTypes: {
+        items: React.PropTypes.arrayOf(React.PropTypes.shape({
+            id: React.PropTypes.number.isRequired,
+            name: React.PropTypes.string.isRequired,
+            barcode: React.PropTypes.string.isRequired,
+            stock: React.PropTypes.number.isRequired,
+            category: React.PropTypes.number.isRequired,
+            can_have_ingredients: React.PropTypes.bool.isRequired,
+            price: React.PropTypes.number.isRequired
+        }).isRequired).isRequired,
+        onItemClick: React.PropTypes.func.isRequired,
+        getInitialData: React.PropTypes.func.isRequired
+    },
+    render: function () {
+        const { items, onItemClick } = this.props
 
         return (
-            <div  className="col s12 m6 l7">
+            <div className='col s12 m6 l7'>
                 <h4>Items</h4>
                 <div>
-                    {items.map(item =>
+                    {items.map((item) =>
                         <Item
                             key={item.id}
                             {...item}
@@ -26,19 +36,6 @@ class ItemList extends Component {
             </div>
         )
     }
-}
+})
 
-ItemList.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        barcode: PropTypes.string.isRequired,
-        stock: PropTypes.number.isRequired,
-        category: PropTypes.number.isRequired,
-        can_have_ingredients: PropTypes.bool.isRequired,
-        price: PropTypes.number.isRequired
-    }).isRequired).isRequired,
-    onItemClick: PropTypes.func.isRequired
-};
-
-export default ItemList;
+export default ItemList
