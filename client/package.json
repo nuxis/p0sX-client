@@ -4,6 +4,7 @@
   "license": "MIT",
   "main": "main.js",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint",
     "electron": "electron ./",
     "build": "npm run build-main && npm run build-renderer",
     "build-main": "node -r babel-register ./node_modules/.bin/webpack --config webpack.config.electron.js --progress --profile --colors",
@@ -28,6 +29,9 @@
     "classnames": "2.2.3",
     "electron-prebuilt": "^0.37.6",
     "electron-settings": "^1.0.4",
+    "eslint-config-standard": "^5.1.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-standard": "^1.3.2",
     "fs": "0.0.2",
     "hammerjs": "2.0.6",
     "jquery": "2.2.3",
