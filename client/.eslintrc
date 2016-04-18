@@ -1,6 +1,17 @@
 {
-  "extends": "standard",
-  "rules": {
-    "indent": ["error", 4]
-  }
+    "plugins": [
+        "react"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "extends": [
+        "standard",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+        "indent": ["error", 4]
+    }
 }
