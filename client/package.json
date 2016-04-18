@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
+    "lint-jsx": "./node_modules/.bin/eslint app/**/**.jsx",
     "electron": "electron ./",
     "build": "npm run build-main && npm run build-renderer",
     "build-main": "node -r babel-register ./node_modules/.bin/webpack --config webpack.config.electron.js --progress --profile --colors",
