@@ -12,8 +12,18 @@ let get_items = () => {
   return get('/items/?format=json')
 }
 
+let get_users = () => {
+  return get('/users/?format=json')
+}
+
+let get_user = (user_id) => {
+  return get(`/users/${user_id}/?format=json`)
+}
+
 module.exports = {
   get_categories,
   get_ingredients,
-  get_items
+  get_items,
+  get_users,
+  get_user
 }

@@ -6,7 +6,7 @@ export const setInitialData = () => {
     axios.all([
       get_categories(),
       get_ingredients(),
-      get_items()
+      get_items(),
     ])
     .then(axios.spread((categories, ingredients, items) => {
       dispatch(addCategories(categories.data))
@@ -79,7 +79,6 @@ export const openModal = (item) => {
 }
 
 export const toggleIngredient = (id) => {
-  "use strict"
   return {
     type: 'TOGGLE_INGREDIENT',
     id: id
