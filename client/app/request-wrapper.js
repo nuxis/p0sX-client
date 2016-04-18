@@ -27,7 +27,7 @@ let post = (endpoint, data) => {
   return axios.post(url, options)
 }
 
-module.exports = {
+export default {
   get,
   post
 }

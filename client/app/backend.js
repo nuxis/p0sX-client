@@ -20,7 +20,7 @@ let get_user = (user_id) => {
   return get(`/users/${user_id}/?format=json`)
 }
 
-module.exports = {
+export default {
   get_categories,
   get_ingredients,
   get_items,
