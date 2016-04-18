@@ -26,6 +26,7 @@ class Item(models.Model):
     barcode = models.CharField(max_length=255)
     # image = models.ImageField()
     category = models.ForeignKey(Category)
+    can_have_ingredients = models.BooleanField(blank=False, default=False)
 
     def __str__(self):
         return self.name

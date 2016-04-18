@@ -12,7 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ('id', 'name', 'price', 'stock', 'barcode', 'category')
+        fields = ('id', 'name', 'price', 'stock', 'barcode', 'category', 'can_have_ingredients')
 
 
 class OrderLineSerializer(serializers.ModelSerializer):
