@@ -24,21 +24,20 @@
 .item-card {
 	margin-bottom: 20px;
 	margin-right: 20px;
-	width: 150px;
+	width: 120px;
 }
 
 .name-truncate {
-	width: 105px;
+	width: 118px;
 	margin-left: 2px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: inline-block;
-	font-weight: bold;
+	line-height: 100%;
 }
 
 .price {
-	margin-right: 3px;
+	margin-left: 2px;
 }
 
 .checkout{

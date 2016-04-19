@@ -12,10 +12,10 @@ const Item = React.createClass({
         return (
             <div className='item-card waves-effect waves-green z-depth-1 hoverable' onClick={onClick}>
                 <div className='card-image'>
-                    <img src='http://placehold.it/150x150'/>
+                    <img src='http://placehold.it/120x120'/>
                 </div>
-                <span className='name-truncate'>{name}</span>
-                <span className='right price grey-text'>{price} Kr.</span>
+                <div className='name-truncate'>{name}</div>
+                <div className='price grey-text'>{price} Kr.</div>
             </div>
         )
     }
