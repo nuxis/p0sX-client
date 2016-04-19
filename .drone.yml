@@ -17,17 +17,17 @@ notify:
     recipients:
       - kradalby@kradalby.no
 
-# deploy:
-#   rsync:
-#     user: www
-#     host: onyx.fap.no
-#     port: 22
-#     source: out/
-#     target: /usr/local/www/kradalby.no/pub/jobb/
-#     delete: false
-#     recursive: true
-#     exclude:
-#     when:
-#         branch: master
-#     commands:
-#       - echo "Done"
+deploy:
+  rsync:
+    user: www
+    host: onyx.fap.no
+    port: 22
+    source: release/
+    target: /storage/www/p0sX/
+    delete: false
+    recursive: true
+    exclude:
+    when:
+        branch: master
+    commands:
+      - echo "Done"
