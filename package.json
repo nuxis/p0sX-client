@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "pack": "node -r babel-register pack.js",
-    "pack-all": "npm run package -- --all",
+    "pack-all": "npm run pack -- --all",
     "lint": "node ./node_modules/.bin/eslint",
     "lint-jsx": "node ./node_modules/.bin/eslint app/**/**.jsx",
     "electron": "electron ./",
