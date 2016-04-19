@@ -8,7 +8,7 @@ export default {
 
   output: {
     path: __dirname,
-    filename: './build/main.js'
+    filename: './app/main.js'
   },
 
   plugins: [

@@ -8,6 +8,7 @@ build:
       - npm set progress=false
       - npm install
       - npm install rcedit
+      - npm run build
       - npm run dist
       - ls -lah release/
 

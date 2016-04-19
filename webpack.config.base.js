@@ -12,7 +12,7 @@ export default {
     }]
   },
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'app'),
     filename: 'app.js',
     libraryTarget: 'commonjs2'
   },

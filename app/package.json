@@ -7,6 +7,9 @@
         "url": "https://github.com/nuxis/p0sX.git"
     },
     "license": "MIT",
-    "author": "Lian og Dalby",
-    "main": "../main.js"
+    "author": {
+        "name" : "Håvard Lian",
+        "email" : "kradalby@kradalby.no"
+    },
+    "main": "main.js"
 }
