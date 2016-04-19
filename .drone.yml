@@ -5,6 +5,7 @@ build:
       - apt update
       - apt upgrade -y
       - npm install
+      - npm install rcedit
       - npm run build
       - npm run pack-all
       - ls -lah release/
