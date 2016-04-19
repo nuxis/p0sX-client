@@ -115,7 +115,7 @@ function pack(plat, arch, cb) {
   const opts = Object.assign({}, DEFAULT_OPTS, iconObj, {
     platform: plat,
     arch,
-    prune: true,
+    prune: false,
     'app-version': pkg.version || DEFAULT_OPTS.version,
     out: `release/${plat}-${arch}`
   });
