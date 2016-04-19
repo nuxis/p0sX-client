@@ -6,6 +6,7 @@ build:
       - apt upgrade -y
       - apt install -y wine
       - npm install
+      - npm run build
       - npm run pack-all
       - ls -lah release/
 
