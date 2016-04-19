@@ -6,8 +6,6 @@
     "scripts": {
         "postinstall": "install-app-deps",
         "dist": "build",
-        "pack": "node -r babel-register pack.js",
-        "pack-all": "npm run pack -- --all",
         "lint": "node ./node_modules/.bin/eslint",
         "lint-jsx": "node ./node_modules/.bin/eslint app/**/**.jsx",
         "electron": "electron ./app",
