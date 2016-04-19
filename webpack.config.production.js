@@ -1,10 +1,9 @@
 import webpack from 'webpack';
 import baseConfig from './webpack.config.base';
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
   ...baseConfig,
-
-  devtool: 'source-map',
 
   entry: './app/app',
 
@@ -30,7 +29,11 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
-    })
+    }),
+	new CopyWebpackPlugin([
+	  { from: 'app/app.html' },
+	  { from: 'static/', to: 'static/' },
+	])
     //new webpack.optimize.UglifyJsPlugin({
     //  compressor: {
     //    screw_ie8: true,

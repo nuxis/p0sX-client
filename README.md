@@ -7,8 +7,8 @@ Install dependencies:
     npm install
 
 Create a settings file:
-
-    cp settings.json.example settings.json
+	mkdir build
+    cp settings.json.example build/settings.json
 
 Build:
 
