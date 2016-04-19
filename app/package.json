@@ -1,0 +1,11 @@
+{
+    "name": "p0sX",
+    "version": "0.0.1",
+    "description": "p0sX is a Point of Sales application",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nuxis/p0sX.git"
+    },
+    "license": "MIT",
+    "main": "../main.js"
+}

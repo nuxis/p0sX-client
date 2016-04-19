@@ -4,11 +4,11 @@ build:
     commands:
       - apt update
       - apt upgrade -y
+      - apt-get install ruby ruby-dev gcc make icnsutils graphicsmagick xz-utils gem install fpm gcc-multilib g++-multilib
       - npm set progress=false
       - npm install
       - npm install rcedit
-      - npm run build
-      - npm run pack-all
+      - npm run dist
       - ls -lah release/
 
 notify:
