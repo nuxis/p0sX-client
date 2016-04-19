@@ -12,9 +12,10 @@ const CartEntry = React.createClass({
         return (
             <li className='collection-item avatar'>
                 <img src='http://placehold.it/150x150' alt='' className='circle' />
-                <span className='title'>{name} {price} Kr.</span>
+                <span className='title'>{name}</span>
                 <p>
-                    {ingredients.length ? <span>Med </span> : ''}
+                    {price} Kr.<br />
+                    {ingredients.length ? "Med " : ''}
                     {ingredients.map((ingredient, i) =>
                         <span key={ingredient.id}>{ingredient.name}{i < ingredients.length - 1 ? ', ' : ''}</span>
                     )}
