@@ -13,7 +13,6 @@ const argv = require('minimist')(process.argv.slice(2));
 const pkg = require('./package.json');
 const deps = Object.keys(pkg.dependencies);
 const devDeps = Object.keys(pkg.devDependencies);
-const rcedit = require('rcedit')
 
 const appName = argv.name || argv.n || pkg.productName;
 const shouldUseAsar = argv.asar || argv.a || false;
