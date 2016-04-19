@@ -29,7 +29,7 @@ deploy:
     delete: false
     recursive: true
     exclude:
-    when:
-        branch: master
+        #    when:
+        #        branch: master
     commands:
       - echo "Done"
