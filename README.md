@@ -1,4 +1,5 @@
 # p0sX Client
+[![Build Status](https://drone.fap.no/api/badges/nuxis/p0sX-client/status.svg)](https://drone.fap.no/nuxis/p0sX-client)
 
 ## Development
 
