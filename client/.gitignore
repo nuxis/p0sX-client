@@ -7,9 +7,10 @@ logs
 *.log
 npm-debug.log*
 
-app/app.js
-build/app.js
-build/app.map
+build/
+main.js
+main.js.map
+settings.json
 
 # Runtime data
 pids
