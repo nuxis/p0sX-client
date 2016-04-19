@@ -1,0 +1,33 @@
+build:
+    image: kradalby/ci-tox:latest
+    pull: true
+    commands:
+      - apt update
+      - apt upgrade -y
+      - apt install -y wine
+      - npm install
+      - npm run pack-all
+      - ls -lah release/
+
+notify:
+  email:
+    from: drone@fap.no
+    host: smtp.stud.ntnu.no
+    port: 25
+    recipients:
+      - kradalby@kradalby.no
+
+# deploy:
+#   rsync:
+#     user: www
+#     host: onyx.fap.no
+#     port: 22
+#     source: out/
+#     target: /usr/local/www/kradalby.no/pub/jobb/
+#     delete: false
+#     recursive: true
+#     exclude:
+#     when:
+#         branch: master
+#     commands:
+#       - echo "Done"
