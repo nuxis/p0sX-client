@@ -48,6 +48,8 @@
     "redux": "^3.4.0",
     "redux-thunk": "2.0.1",
     "webpack": "^1.13.0",
-	"copy-webpack-plugin": "*"
+	"copy-webpack-plugin": "*",
+	"eslint": "*",
+	"del": "*"
   }
 }
