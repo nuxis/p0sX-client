@@ -7,5 +7,6 @@
         "url": "https://github.com/nuxis/p0sX.git"
     },
     "license": "MIT",
+    "author": "Lian og Dalby",
     "main": "../main.js"
 }

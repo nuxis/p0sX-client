@@ -4,7 +4,7 @@ build:
     commands:
       - apt update
       - apt upgrade -y
-      - apt-get install ruby ruby-dev gcc make icnsutils graphicsmagick xz-utils gem gcc-multilib g++-multilib
+      - apt-get install ruby ruby-dev gcc make icnsutils graphicsmagick xz-utils gem gcc-multilib g++-multilib -y
       - npm set progress=false
       - npm install
       - npm install rcedit
