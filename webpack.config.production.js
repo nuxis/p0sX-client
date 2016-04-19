@@ -32,7 +32,6 @@ const config = {
     }),
 	new CopyWebpackPlugin([
 	  { from: 'app/app.html' },
-	  { from: 'settings.json' },
 	  { from: 'static/', to: 'static/' },
 	])
     //new webpack.optimize.UglifyJsPlugin({
