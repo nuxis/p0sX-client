@@ -1,5 +1,5 @@
 build:
-    image: kradalby/ci-tox:latest
+    image: kradalby/ci-node:latest
     pull: true
     commands:
       - apt update
