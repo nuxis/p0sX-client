@@ -5,7 +5,7 @@ build:
       - apt update
       - apt upgrade -y
       - npm install
-      - npm install rcedit win32 mac
+      - npm install rcedit win32 mac plist
       - npm run build
       - npm run pack-all
       - ls -lah release/
