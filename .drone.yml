@@ -9,7 +9,7 @@ build:
       - npm install
       - npm run build
       - npm run dist:all
-        #      - npm run dist:darwin
+      - npm run dist:darwin
       - ls -lah dist
 
 notify:
