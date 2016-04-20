@@ -9,7 +9,7 @@ build:
       - npm install
       - npm install rcedit
       - npm run build
-      - npm run dist
+      - npm run dist:all
       - ls -lah dist
 
 notify:
