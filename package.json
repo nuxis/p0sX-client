@@ -7,6 +7,7 @@
         "postinstall": "install-app-deps",
         "dist": "build",
         "dist:all": "build -d --platform all --arch all",
+        "dist:darwin": "build -d --platform darwin --arch x64",
         "lint": "node ./node_modules/.bin/eslint",
         "lint-jsx": "node ./node_modules/.bin/eslint app/**/**.jsx",
         "electron": "electron ./app",
