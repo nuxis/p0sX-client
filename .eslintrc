@@ -12,6 +12,10 @@
         "plugin:react/recommended"
     ],
     "rules": {
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "camelcase": 2
+    },
+    "env": {
+        "jquery": true
     }
 }

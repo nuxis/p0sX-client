@@ -1,6 +1,5 @@
 import React from 'react'
 import Category from './Category.jsx'
-// import IngredientModal from './IngredientModal.jsx'
 
 const CategoryList = React.createClass({
     propTypes: {
@@ -29,7 +28,6 @@ const CategoryList = React.createClass({
             </div>
         )
     }
-
 })
 
 export default CategoryList

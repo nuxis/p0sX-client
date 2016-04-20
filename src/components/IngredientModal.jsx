@@ -6,10 +6,10 @@ import {toggleIngredient, addCurrentItemToCart} from '../actions'
 const IngredientModal = React.createClass({
     propTypes: {
         onClose: React.PropTypes.func.isRequired,
-        item: React.PropTypes.node.isRequired,
-        ingredients: React.PropTypes.node.isRequired,
+        item: React.PropTypes.object.isRequired,
+        ingredients: React.PropTypes.array.isRequired,
         onIngredientClick: React.PropTypes.func.isRequired,
-        currentItem: React.PropTypes.node.isRequired
+        currentItem: React.PropTypes.object.isRequired
     },
     render: function () {
         const { onClose, item, ingredients, onIngredientClick, currentItem } = this.props
