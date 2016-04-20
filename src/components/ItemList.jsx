@@ -12,6 +12,7 @@ const ItemList = React.createClass({
             barcode: React.PropTypes.string.isRequired,
             stock: React.PropTypes.number.isRequired,
             category: React.PropTypes.number.isRequired,
+            // eslint-disable-next-line camelcase
             can_have_ingredients: React.PropTypes.bool.isRequired,
             price: React.PropTypes.number.isRequired
         }).isRequired).isRequired,
@@ -22,13 +23,14 @@ const ItemList = React.createClass({
         const { items, onItemClick } = this.props
 
         return (
-            <div style={{height: "calc(100% - 30px)"}} className='col s12 m6 l7'>
+            <div style={{height: 'calc(100% - 30px)'}} className='col s12 m6 l7'>
                 <h4>Items</h4>
-                <div className="item-list" style={{overflowY: "auto", height: "calc(100% - 10px)"}}>
+                <div className='item-list' style={{overflowY: 'auto', height: 'calc(100% - 10px)'}}>
                     {items.map((item) =>
                         <Item
                             key={item.id}
                             {...item}
+                            // eslint-disable-next-line camelcase
                             onClick={() => onItemClick(item.id, item.can_have_ingredients)}
                         />
                     )}

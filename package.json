@@ -14,13 +14,14 @@
         "dist:linux": "npm run dist:linux32 && npm run dist:linux64",
         "dist:linux32": "build -d --platform linux --arch ia32",
         "dist:linux64": "build -d --platform linux --arch x64",
-        "lint": "node ./node_modules/.bin/eslint",
-        "lint-jsx": "node ./node_modules/.bin/eslint app/**/**.jsx",
+        "lint-js": "node ./node_modules/eslint/bin/eslint.js src/**/**.js",
+        "lint-jsx": "node ./node_modules/eslint/bin/eslint.js src/**/**.jsx",
+        "lint": "npm run lint-js && npm run lint-jsx",
         "electron": "electron ./app",
         "build": "npm run build-main && npm run build-renderer",
-        "build-main": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config webpack.config.electron.js --progress --profile --colors",
-        "build-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config webpack.config.production.js --progress --profile --colors",
-        "watch-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config webpack.config.production.js --progress --profile --colors --watch"
+        "build-main": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/electron.js --progress --profile --colors",
+        "build-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors",
+        "watch-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors --watch"
     },
     "bin": {
         "electron": "./node_modules/.bin/electron"

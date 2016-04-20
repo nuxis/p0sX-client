@@ -129,7 +129,7 @@ export default (state = initialState, action) => {
     return s
 }
 
-export const getItemById = (state, id) => {
+const getItemById = (state, id) => {
     var f = {}
     state.items.forEach((i) => {
         if (i.id === id) {
@@ -139,7 +139,7 @@ export const getItemById = (state, id) => {
     return f
 }
 
-export const getIngredientById = (state, id) => {
+const getIngredientById = (state, id) => {
     var f = {}
     state.ingredients.forEach((i) => {
         if (i.id === id) {
@@ -147,4 +147,9 @@ export const getIngredientById = (state, id) => {
         }
     })
     return f
+}
+
+export {
+    getItemById,
+    getIngredientById
 }

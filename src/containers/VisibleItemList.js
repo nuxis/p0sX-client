@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { addToCart, setInitialData, openModal } from '../actions'
 import ItemList from '../components/ItemList.jsx'
-// import { render } from 'react-dom'
+
 const getVisibleItems = (items, category) => {
     if (category === 0) {
         return items
@@ -18,7 +18,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        // eslint-disable-next-line camelcase
         onItemClick: (item, can_have_ingredients) => {
+            // eslint-disable-next-line camelcase
             if (can_have_ingredients) {
                 $('#ingredient-modal').openModal()
                 dispatch(openModal(item))

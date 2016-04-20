@@ -9,7 +9,6 @@ const getVisibleItems = (state, cart) => {
         item = Object.assign(item, entry)
 
         item.price = item.ingredients.reduce((total, ingredient) => {
-            console.log(total)
             return total + parseInt(getIngredientById(state, ingredient).price)
         }, item.price)
 

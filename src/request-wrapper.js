@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 import settings from './settings'
 
 const HEADERS = {
@@ -8,7 +7,7 @@ const HEADERS = {
 
 const BASE_URL = settings.get('server_address')
 
-let get = (endpoint) => {
+const get = (endpoint) => {
     let url = `${BASE_URL}${endpoint}`
     let options = {
         headers: HEADERS,
@@ -17,7 +16,7 @@ let get = (endpoint) => {
     return axios.get(url, options)
 }
 
-let post = (endpoint, data) => {
+const post = (endpoint, data) => {
     let url = `${BASE_URL}${endpoint}`
     let options = {
         headers: HEADERS,
@@ -27,7 +26,8 @@ let post = (endpoint, data) => {
     return axios.post(url, options)
 }
 
-export default {
+export {
     get,
     post
 }
+

@@ -8,7 +8,7 @@ const Item = React.createClass({
         stock: React.PropTypes.number.isRequired
     },
     render: function () {
-        const { onClick, name, price, stock } = this.props
+        const { onClick, name, price } = this.props
         return (
             <div className='item-card waves-effect waves-green z-depth-1 hoverable' onClick={onClick}>
                 <div className='card-image'>
