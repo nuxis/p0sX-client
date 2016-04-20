@@ -10,10 +10,11 @@ Install dependencies:
     npm install
 
 Create a settings file:
-	mkdir build
+
+    mkdir build
     cp settings.json.example build/settings.json
 
-Build:
+Build the js:
 
     npm run build
 
