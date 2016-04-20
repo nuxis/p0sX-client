@@ -1,45 +1,48 @@
 import webpack from 'webpack';
 import baseConfig from './webpack.config.base';
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
-  ...baseConfig,
+    ...baseConfig,
 
-  devtool: 'source-map',
+    entry: './src/app',
 
-  entry: './app/app',
+    output: {
+        ...baseConfig.output,
 
-  output: {
-    ...baseConfig.output,
+        publicPath: '../app/'
+    },
 
-    publicPath: '../build/'
-  },
+    module: {
+        ...baseConfig.module,
 
-  module: {
-    ...baseConfig.module,
+        loaders: [
+            baseConfig.module.loaders
+        ]
+    },
 
-    loaders: [
-        baseConfig.module.loaders
-    ]
-  },
+    plugins: [
+        ...baseConfig.plugins,
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.DefinePlugin({
+            __DEV__: false,
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        })
+        //new CopyWebpackPlugin([
+        //  { from: 'app/app.html' },
+        //  { from: 'static/', to: 'static/' },
+        //])
+        //new webpack.optimize.UglifyJsPlugin({
+        //  compressor: {
+        //    screw_ie8: true,
+        //    warnings: false
+        //  }
+        //})
+    ],
 
-  plugins: [
-    ...baseConfig.plugins,
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      __DEV__: false,
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    })
-    //new webpack.optimize.UglifyJsPlugin({
-    //  compressor: {
-    //    screw_ie8: true,
-    //    warnings: false
-    //  }
-    //})
-  ],
-
-  target: 'electron-renderer'
+    target: 'electron-renderer'
 };
 
 export default config;

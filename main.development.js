@@ -16,9 +16,10 @@ app.on('ready', () => {
         icon: `${__dirname}/static/pi_logo.png`,
         frame: true
     })
+    mainWindow.openDevTools()
 
     // Tell Electron where to load the entry point from
-    mainWindow.loadURL(`file://${__dirname}/app/app.html`)
+    mainWindow.loadURL(`file://${__dirname}/app.html`)
 
     // Clear out the main window when the app is closed
     mainWindow.on('closed', () => {

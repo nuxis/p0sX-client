@@ -1,13 +1,17 @@
 build:
-    image: kradalby/ci-tox:latest
+    image: kradalby/ci-node-electron:latest
     pull: true
     commands:
       - apt update
       - apt upgrade -y
-      - apt install -y wine
+      - gem update fpm
+      - npm set progress=false
       - npm install
-      - npm run pack-all
-      - ls -lah release/
+      - npm run build
+      # - npm run dist:darwin
+      - npm run dist:win32
+      - npm run dist:linux
+      - ls -lah dist
 
 notify:
   email:
@@ -17,17 +21,17 @@ notify:
     recipients:
       - kradalby@kradalby.no
 
-# deploy:
-#   rsync:
-#     user: www
-#     host: onyx.fap.no
-#     port: 22
-#     source: out/
-#     target: /usr/local/www/kradalby.no/pub/jobb/
-#     delete: false
-#     recursive: true
-#     exclude:
-#     when:
-#         branch: master
-#     commands:
-#       - echo "Done"
+deploy:
+  rsync:
+    user: www
+    host: onyx.fap.no
+    port: 22
+    source: dist/
+    target: /storage/www/p0sX/
+    delete: false
+    recursive: true
+    exclude:
+        when:
+            branch: master
+    commands:
+      - echo "Done"
