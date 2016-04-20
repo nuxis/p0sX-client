@@ -18,7 +18,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        // eslint-disable-next-line camelcase
         onItemClick: (item, can_have_ingredients) => {
+            // eslint-disable-next-line camelcase
             if (can_have_ingredients) {
                 $('#ingredient-modal').openModal()
                 dispatch(openModal(item))

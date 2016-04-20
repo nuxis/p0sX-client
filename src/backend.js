@@ -16,8 +16,8 @@ const getUsers = () => {
     return get('/users/?format=json')
 }
 
-const getUser = (user_id) => {
-    return get(`/users/${user_id}/?format=json`)
+const getUser = (userId) => {
+    return get(`/users/${userId}/?format=json`)
 }
 
 export {
