@@ -1,6 +1,6 @@
 import webpack from 'webpack';
-import baseConfig from './webpack.config.base';
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+import baseConfig from './base';
+// var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
     ...baseConfig,

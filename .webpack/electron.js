@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import baseConfig from './webpack.config.base';
+import baseConfig from './base';
 
 export default {
   ...baseConfig,
