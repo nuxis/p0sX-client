@@ -13,7 +13,7 @@
     ],
     "rules": {
         "indent": ["error", 4],
-        "camelcase": 1
+        "camelcase": 2
     },
     "env": {
         "jquery": true
