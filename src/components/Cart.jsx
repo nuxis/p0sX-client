@@ -5,8 +5,8 @@ import classNames from 'classnames'
 
 const Cart = React.createClass({
     propTypes: {
-        items: React.PropTypes.node.isRequired,
-        cart: React.PropTypes.node.isRequired,
+        items: React.PropTypes.array.isRequired,
+        cart: React.PropTypes.array.isRequired,
         onEmptyCart: React.PropTypes.func.isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         onPurchase: React.PropTypes.func.isRequired,

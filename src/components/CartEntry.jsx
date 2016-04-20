@@ -4,7 +4,7 @@ const CartEntry = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
-        ingredients: React.PropTypes.node.isRequired,
+        ingredients: React.PropTypes.array.isRequired,
         removeItem: React.PropTypes.func.isRequired
     },
     render: function () {
