@@ -1,0 +1,42 @@
+### Feature or Bug?
+- [] Feature
+- [] Bug
+
+### Feature
+Strip this part away if you are reporting a bug.
+
+#### What would you like?
+
+#### How should it work?
+
+#### Checklist
+
+- []
+- []
+- []
+
+### Bug
+Strip this part away if this is a feature request.
+
+#### Description
+
+**Expected behavior**
+
+**Current behaviour**
+
+**Possible Solution**
+
+#### Steps to reproduce:
+
+1. Open ...
+2. Click ...
+3. $
+
+#### Environment
+Operating system:
+Arch:
+Node version:
+NPM version:
+
+
+#### Stacktrace/Code/Screenshot
