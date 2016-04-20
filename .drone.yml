@@ -4,12 +4,11 @@ build:
     commands:
       - apt update
       - apt upgrade -y
-      - apt install p7zip
       - gem update fpm
       - npm set progress=false
       - npm install
       - npm run build
-      - npm run dist:darwin
+      # - npm run dist:darwin
       - npm run dist:win32
       - npm run dist:linux
       - ls -lah dist
