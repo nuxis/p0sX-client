@@ -4,6 +4,7 @@ build:
     commands:
       - apt update
       - apt upgrade -y
+      - apt install p7zip
       - gem update fpm
       - npm set progress=false
       - npm install
