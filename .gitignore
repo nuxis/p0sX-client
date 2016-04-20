@@ -4,6 +4,7 @@ app/main.js
 app/app.js
 app/settings.json
 dist/
+main.js
 
 
 # Created by https://www.gitignore.io/api/osx,windows,vim,intellij,visualstudio,node
@@ -14,7 +15,8 @@ dist/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
