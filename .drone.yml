@@ -8,8 +8,9 @@ build:
       - npm set progress=false
       - npm install
       - npm run build
-      - npm run dist:all
       - npm run dist:darwin
+      - npm run dist:win32
+      - npm run dist:linux
       - ls -lah dist
 
 notify:
