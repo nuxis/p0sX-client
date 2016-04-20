@@ -56,6 +56,9 @@
         "app-bundle-id": "org.nuxis.p0sX",
         "productName": "p0sX",
         "iconUrl": "./build/app.ico",
+        "directories": {
+            "output": "./release"
+        },
         "osx": {
             "icon-size": 512,
             "contents": [

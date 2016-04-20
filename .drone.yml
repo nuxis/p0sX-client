@@ -1,10 +1,10 @@
 build:
-    image: kradalby/ci-node:latest
+    image: kradalby/ci-node-electron:latest
     pull: true
     commands:
       - apt update
       - apt upgrade -y
-      - apt-get install ruby ruby-dev gcc make icnsutils graphicsmagick xz-utils gem gcc-multilib g++-multilib -y
+      - gem update fpm
       - npm set progress=false
       - npm install
       - npm install rcedit
