@@ -1,6 +1,6 @@
 ### Feature or Bug?
-- [] Feature
-- [] Bug
+- [ ] Feature
+- [ ] Bug
 
 ### Feature
 Strip this part away if you are reporting a bug.
@@ -11,9 +11,9 @@ Strip this part away if you are reporting a bug.
 
 #### Checklist
 
-- []
-- []
-- []
+- [ ] Thing 1
+- [ ] Thing 2
+- [ ] Thing 3
 
 ### Bug
 Strip this part away if this is a feature request.
