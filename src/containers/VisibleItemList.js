@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import { addToCart, setInitialData, openModal } from '../actions'
 import ItemList from '../components/ItemList.jsx'
 
-// import { render } from 'react-dom'
 const getVisibleItems = (items, category) => {
     if (category === 0) {
         return items

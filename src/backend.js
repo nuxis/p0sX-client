@@ -1,22 +1,22 @@
 import { get } from './request-wrapper'
 
-let get_categories = () => {
+export const get_categories = () => {
     return get('/categories/?format=json')
 }
 
-let get_ingredients = () => {
+export const get_ingredients = () => {
     return get('/ingredients/?format=json')
 }
 
-let get_items = () => {
+export const get_items = () => {
     return get('/items/?format=json')
 }
 
-let get_users = () => {
+export const get_users = () => {
     return get('/users/?format=json')
 }
 
-let get_user = (user_id) => {
+export const get_user = (user_id) => {
     return get(`/users/${user_id}/?format=json`)
 }
 
