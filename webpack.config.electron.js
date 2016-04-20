@@ -4,7 +4,7 @@ import baseConfig from './webpack.config.base';
 export default {
   ...baseConfig,
 
-  entry: './main.development',
+  entry: './src/main',
 
   output: {
     path: __dirname,
