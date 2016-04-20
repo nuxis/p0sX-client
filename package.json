@@ -56,7 +56,7 @@
     "build": {
         "app-bundle-id": "org.nuxis.p0sX",
         "productName": "p0sX",
-        "iconUrl": "./build/app.ico",
+        "iconUrl": "https://github.com/nuxis/p0sX-client/raw/drone/build/icon.ico",
         "osx": {
             "icon-size": 256,
             "contents": [
