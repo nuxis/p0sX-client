@@ -2,37 +2,29 @@ import webpack from 'webpack';
 import baseConfig from './base';
 
 export default {
-  ...baseConfig,
+    ...baseConfig,
 
-  entry: './src/main',
+    entry: './src/main',
 
-  output: {
-    path: __dirname,
-    filename: './app/main.js'
-  },
+    output: {
+        ...baseConfig.output,
 
-  plugins: [
-    //new webpack.optimize.UglifyJsPlugin({
-    //  compressor: {
-    //    warnings: false
-    //  }
-    //}),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    })
-  ],
+        filename: 'main.js',
+        publicPath: './app'
+    },
 
-  target: 'electron-main',
+    plugins: [
+    ],
 
-  node: {
-    __dirname: false,
-    __filename: false
-  },
+    target: 'electron-main',
 
-  externals: [
-    ...baseConfig.externals,
-    'font-awesome'
-  ]
+    node: {
+        __dirname: false,
+        __filename: false
+    },
+
+    externals: [
+        ...baseConfig.externals,
+        'font-awesome'
+    ]
 };
