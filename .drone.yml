@@ -7,7 +7,6 @@ build:
       - gem update fpm
       - npm set progress=false
       - npm install
-      - npm install rcedit
       - npm run build
       - npm run dist:all
       - ls -lah dist
