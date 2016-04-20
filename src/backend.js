@@ -1,4 +1,4 @@
-import { get, post } from './request-wrapper'
+import { get } from './request-wrapper'
 
 let get_categories = () => {
     return get('/categories/?format=json')

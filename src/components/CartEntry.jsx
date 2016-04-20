@@ -15,12 +15,12 @@ const CartEntry = React.createClass({
                 <span className='title'>{name}</span>
                 <p>
                     {price} Kr.<br />
-                    {ingredients.length ? "Med " : ''}
+                    {ingredients.length ? 'Med ' : ''}
                     {ingredients.map((ingredient, i) =>
                         <span key={ingredient.id}>{ingredient.name}{i < ingredients.length - 1 ? ', ' : ''}</span>
                     )}
                 </p>
-                <a href='#!' className='secondary-content' onClick={removeItem}><i className='material-icons small red-text'>delete</i></a>
+                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={removeItem}><i className='material-icons small red-text'>delete</i></a>
             </li>
         )
     }
