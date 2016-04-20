@@ -1,29 +1,29 @@
 import { get } from './request-wrapper'
 
-export const get_categories = () => {
+const getCategories = () => {
     return get('/categories/?format=json')
 }
 
-export const get_ingredients = () => {
+const getIngredients = () => {
     return get('/ingredients/?format=json')
 }
 
-export const get_items = () => {
+const getItems = () => {
     return get('/items/?format=json')
 }
 
-export const get_users = () => {
+const getUsers = () => {
     return get('/users/?format=json')
 }
 
-export const get_user = (user_id) => {
+const getUser = (user_id) => {
     return get(`/users/${user_id}/?format=json`)
 }
 
-export default {
-    get_categories,
-    get_ingredients,
-    get_items,
-    get_users,
-    get_user
+export {
+    getCategories,
+    getIngredients,
+    getItems,
+    getUsers,
+    getUser
 }

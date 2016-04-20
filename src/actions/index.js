@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { get_categories, get_ingredients, get_items } from './../backend'
+import { getCategories, getIngredients, getItems } from './../backend'
 
-export const setInitialData = () => {
+const setInitialData = () => {
     return (dispatch) => {
         axios.all([
-            get_categories(),
-            get_ingredients(),
-            get_items()
+            getCategories(),
+            getIngredients(),
+            getItems()
         ])
         .then(axios.spread((categories, ingredients, items) => {
             dispatch(addCategories(categories.data))
@@ -16,13 +16,13 @@ export const setInitialData = () => {
     }
 }
 
-export const addCurrentItemToCart = () => {
+const addCurrentItemToCart = () => {
     return {
         type: 'ADD_CURRENT_TO_CART'
     }
 }
 
-export const addToCart = (item, ingredients = []) => {
+const addToCart = (item, ingredients = []) => {
     return {
         type: 'ADD_TO_CART',
         id: item,
@@ -30,57 +30,71 @@ export const addToCart = (item, ingredients = []) => {
     }
 }
 
-export const setItems = (items) => {
+const setItems = (items) => {
     return {
         type: 'SET_ITEMS',
         items: items
     }
 }
 
-export const setIngredients = (ingredients) => {
+const setIngredients = (ingredients) => {
     return {
         type: 'SET_INGREDIENTS',
         ingredients: ingredients
     }
 }
 
-export const addCategories = (categories) => {
+const addCategories = (categories) => {
     return {
         type: 'ADD_CATEGORIES',
         categories: categories
     }
 }
 
-export const emptyCart = () => {
+const emptyCart = () => {
     return {
         type: 'EMPTY_CART'
     }
 }
 
-export const removeItem = (item) => {
+const removeItem = (item) => {
     return {
         type: 'REMOVE_ITEM',
         id: item
     }
 }
 
-export const setActiveCategory = (id) => {
+const setActiveCategory = (id) => {
     return {
         type: 'SET_ACTIVE_CATEGORY',
         id: id
     }
 }
 
-export const openModal = (item) => {
+const openModal = (item) => {
     return {
         type: 'SET_ACTIVE_ITEM',
         item: item
     }
 }
 
-export const toggleIngredient = (id) => {
+const toggleIngredient = (id) => {
     return {
         type: 'TOGGLE_INGREDIENT',
         id: id
     }
+}
+
+export {
+    setInitialData,
+    addCurrentItemToCart,
+    addToCart,
+    setItems,
+    setIngredients,
+    addCategories,
+    emptyCart,
+    removeItem,
+    setActiveCategory,
+    openModal,
+    toggleIngredient
 }

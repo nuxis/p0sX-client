@@ -7,7 +7,7 @@ const HEADERS = {
 
 const BASE_URL = settings.get('server_address')
 
-export const get = (endpoint) => {
+const get = (endpoint) => {
     let url = `${BASE_URL}${endpoint}`
     let options = {
         headers: HEADERS,
@@ -16,7 +16,7 @@ export const get = (endpoint) => {
     return axios.get(url, options)
 }
 
-export const post = (endpoint, data) => {
+const post = (endpoint, data) => {
     let url = `${BASE_URL}${endpoint}`
     let options = {
         headers: HEADERS,
@@ -26,7 +26,7 @@ export const post = (endpoint, data) => {
     return axios.post(url, options)
 }
 
-export default {
+export {
     get,
     post
 }
