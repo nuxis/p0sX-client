@@ -2,7 +2,4 @@
 import ElectronSettings from 'electron-settings'
 import { remote } from 'electron'
 
-export default new ElectronSettings({
-    configDirPath: remote.app.getAppPath(),
-    configFileName: 'settings'
-})
+export default new ElectronSettings()
