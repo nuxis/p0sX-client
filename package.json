@@ -57,7 +57,7 @@
         "productName": "p0sX",
         "iconUrl": "./build/app.ico",
         "osx": {
-            "icon-size": 512,
+            "icon-size": 256,
             "contents": [
                 {
                     "x": 425,
