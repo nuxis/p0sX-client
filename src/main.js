@@ -13,7 +13,6 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
-        icon: `${__dirname}/static/pi_logo.png`,
         frame: true
     })
     mainWindow.openDevTools()
