@@ -2,9 +2,6 @@ import React from 'react'
 import Item from './Item.jsx'
 
 const ItemList = React.createClass({
-    componentDidMount: function () {
-        this.props.getInitialData()
-    },
     propTypes: {
         items: React.PropTypes.arrayOf(React.PropTypes.shape({
             id: React.PropTypes.number.isRequired,
