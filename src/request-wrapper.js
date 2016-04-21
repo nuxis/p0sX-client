@@ -36,7 +36,6 @@ const post = (endpoint, data) => {
 
 export {
     get,
-    post,
-
+    post
 }
 
