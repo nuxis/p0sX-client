@@ -14,7 +14,6 @@ const CategoryList = React.createClass({
         const {categories, onCategoryClick, selectedCategory} = this.props
         return (
             <div className='col s12 m3 l2'>
-                <h4>Categories</h4>
                 <div className='collection'>
                     {categories.map((category) =>
                         <Category

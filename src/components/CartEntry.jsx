@@ -11,14 +11,13 @@ const CartEntry = React.createClass({
         const { name, price, ingredients, removeItem } = this.props
         return (
             <li className='collection-item avatar'>
-                <img src='http://placehold.it/150x150' alt='' className='circle' />
-                <span className='title'>{name}</span>
+                <img src='http://placehold.it/120x120' alt='' className='circle' />
+                <span className='title'>{name} {ingredients.length ? 'med' : ''}</span>
                 <p>
-                    {price} Kr.<br />
-                    {ingredients.length ? 'Med ' : ''}
                     {ingredients.map((ingredient, i) =>
-                        <span key={ingredient.id}>{ingredient.name}{i < ingredients.length - 1 ? ', ' : ''}</span>
+                        <span key={ingredient.id}>{ingredient.name}{i < ingredients.length - 1 ? ', ' : <br />}</span>
                     )}
+                    {price} Kr.
                 </p>
                 <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={removeItem}><i className='material-icons small red-text'>delete</i></a>
             </li>

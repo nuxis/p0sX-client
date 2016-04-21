@@ -44,7 +44,7 @@ const currentItem = (state, action, item) => {
     case 'TOGGLE_INGREDIENT':
         var index = state.ingredients.indexOf(action.id)
         if (index !== -1) {
-            return Object.assign([], state, {
+            return Object.assign({}, state, {
                 ingredients: [
                     ...state.ingredients.slice(0, index),
                     ...state.ingredients.slice(index + 1)

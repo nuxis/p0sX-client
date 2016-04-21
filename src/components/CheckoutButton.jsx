@@ -15,7 +15,7 @@ const CheckoutButton = React.createClass({
         })
 
         return (
-            <button className={btnClass} onClick={total ? onClick : undefined}>
+            <button style={{padding: '0 1rem 0 1rem', width: '70%'}} className={btnClass} onClick={total ? onClick : undefined}>
                 Total: {total},-
             </button>
         )

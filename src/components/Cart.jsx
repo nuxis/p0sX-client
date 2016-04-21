@@ -19,13 +19,9 @@ const Cart = React.createClass({
         })
 
         return (
-            <div style={{height: 'calc(100% - 10px)'}} className='col s12 m3 l3'>
-                <h4>
-                    Cart
-                    <a className='btn-floating waves-effect waves-light right red' onClick={onEmptyCart}><i className='material-icons'>delete</i></a>
-                </h4>
-                <div className='cart-list' style={{overflowY: 'auto', height: 'calc(100% - 84px)'}}>
-                    <ul className={listClass}>
+            <div style={{height: '100%'}} className='col s12 m3 l3'>
+                <div className='cart-list' style={{overflowY: 'auto', height: 'calc(100% - 54px)', margin: '7.25px 0 5px 0'}}>
+                    <ul style={{margin: '0 0 0 0'}} className={listClass}>
                         {items.map((entry, i) =>
                             <CartEntry
                                 key={i}
@@ -38,6 +34,7 @@ const Cart = React.createClass({
                     </ul>
                 </div>
                 <CheckoutButton onClick={() => onPurchase()} total={total} />
+                <a style={{padding: '0 1rem 0 1rem', width: '25%'}} className='btn-large waves-effect waves-light right red' onClick={onEmptyCart}><i className='material-icons'>delete</i></a>
             </div>
         )
     }
