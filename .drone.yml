@@ -18,6 +18,8 @@ notify:
     from: drone@fap.no
     host: smtp.stud.ntnu.no
     port: 25
+    when:
+        branch: master
     recipients:
       - kradalby@kradalby.no
 
@@ -30,8 +32,7 @@ deploy:
     target: /storage/www/p0sX/
     delete: false
     recursive: true
-    exclude:
-        when:
-            branch: master
+    when:
+        branch: master
     commands:
       - echo "Done"
