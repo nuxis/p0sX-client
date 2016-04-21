@@ -7,8 +7,9 @@ build:
       - gem update fpm
       - npm set progress=false
       - npm install
+      - npm install 7zip-bin-linux
       - npm run build
-      # - npm run dist:darwin
+      - npm run dist:darwin
       - npm run dist:win32
       - npm run dist:linux
       - ls -lah dist
