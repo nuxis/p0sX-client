@@ -62,7 +62,7 @@
         "productName": "p0sX",
         "iconUrl": "https://github.com/nuxis/p0sX-client/raw/drone/build/icon.ico",
         "osx": {
-            "target": ["dmg"],
+            "target": ["zip"],
             "icon-size": 64,
             "contents": [
                 {
