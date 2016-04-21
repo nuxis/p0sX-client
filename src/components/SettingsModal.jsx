@@ -14,16 +14,31 @@ const SettingsModal = React.createClass({
             <div id='settings-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Change settings</h4>
-                    <div className='row'>
-                        <div className='input-field col s12'>
-                            <input id='server' type='text' className='validate' />
-                            <label htmlFor='server'>Server</label>
-                        </div>
-                        <div className='input-field col s12'>
-                            <input id='token' type='text' className='validate' />
-                            <label htmlFor='token'>Token</label>
-                        </div>
-                    </div>
+                    <ul className='collapsible' data-collapsible='accordion'>
+                        <li className='active'>
+                            <div className='collapsible-header active'><i className='material-icons'>list</i>Shifts</div>
+                            <div className='collapsible-body'>
+                                <p>
+                                    Settings about shifts and so on...
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div className='collapsible-header red-text'><i className='material-icons black-text'>vpn_key</i>Here be dragons</div>
+                            <div className='collapsible-body'>
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input id='server' type='text' className='validate' />
+                                        <label htmlFor='server'>Server</label>
+                                    </div>
+                                    <div className='input-field col s12'>
+                                        <input id='token' type='text' className='validate' />
+                                        <label htmlFor='token'>Token</label>
+                                    </div>
+                                </div>
+                            </div>
+                         </li>
+                    </ul>
                 </div>
                 <div className='modal-footer'>
                     <a href='#!' onClick={() => onSave(initial)} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
