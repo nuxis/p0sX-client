@@ -1,6 +1,7 @@
 import React from 'react'
 import CartEntry from './CartEntry.jsx'
 import CheckoutButton from './CheckoutButton.jsx'
+import EmptyCartButton from './EmptyCartButton.jsx'
 import classNames from 'classnames'
 
 const Cart = React.createClass({
@@ -34,7 +35,8 @@ const Cart = React.createClass({
                     </ul>
                 </div>
                 <CheckoutButton onClick={() => onPurchase()} total={total} />
-                <a style={{padding: '0 1rem 0 1rem', width: '25%'}} className='btn-large waves-effect waves-light right red' onClick={onEmptyCart}><i className='material-icons'>delete</i></a>
+                <EmptyCartButton onClick={onEmptyCart} entries={items.length} />
+                
             </div>
         )
     }

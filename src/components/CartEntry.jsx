@@ -19,7 +19,9 @@ const CartEntry = React.createClass({
                     )}
                     {price} Kr.
                 </p>
-                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={removeItem}><i className='material-icons small red-text'>delete</i></a>
+                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={removeItem} title='Remove item'>
+                    <i className='material-icons small red-text'>delete</i>
+                </a>
             </li>
         )
     }
