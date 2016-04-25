@@ -8,7 +8,9 @@ var HEADERS = {
 var BASE_URL = settings.get('server_address')
 
 settings.watch('api_auth_token', (token) => {
-    HEADERS['Authorization'] = `Token ${token.now}`
+    HEADERS = Object.assign({}, HEADERS, {
+        'Authorization': `Token ${token.now}`
+    })
 })
 
 settings.watch('server_address', (server) => {
