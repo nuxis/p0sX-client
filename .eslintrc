@@ -1,6 +1,7 @@
 {
     "plugins": [
-        "react"
+        "react",
+        "immutable"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -13,7 +14,9 @@
     ],
     "rules": {
         "indent": ["error", 4],
-        "camelcase": 2
+        "camelcase": 2,
+        "immutable/no-let": 2,
+        "immutable/no-mutation": 2
     },
     "env": {
         "jquery": true

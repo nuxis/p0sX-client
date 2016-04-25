@@ -8,8 +8,8 @@ const HEADERS = {
 const BASE_URL = settings.get('server_address')
 
 const get = (endpoint) => {
-    let url = `${BASE_URL}${endpoint}`
-    let options = {
+    const url = `${BASE_URL}${endpoint}`
+    const options = {
         headers: HEADERS,
         timeout: 2000
     }
@@ -17,8 +17,8 @@ const get = (endpoint) => {
 }
 
 const post = (endpoint, data) => {
-    let url = `${BASE_URL}${endpoint}`
-    let options = {
+    const url = `${BASE_URL}${endpoint}`
+    const options = {
         headers: HEADERS,
         timeout: 2000,
         data: data

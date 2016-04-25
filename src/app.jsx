@@ -7,7 +7,7 @@ import posApp from './reducers'
 import App from './components/App.jsx'
 import thunkMiddleware from 'redux-thunk'
 
-let store = createStore(posApp, applyMiddleware(thunkMiddleware))
+const store = createStore(posApp, applyMiddleware(thunkMiddleware))
 
 render(
     <Provider store={store}>
