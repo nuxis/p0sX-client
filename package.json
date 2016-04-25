@@ -1,8 +1,6 @@
 {
     "name": "p0sX",
     "version": "0.0.1",
-    "license": "MIT",
-    "main": "main.js",
     "scripts": {
         "postinstall": "install-app-deps",
         "dist": "build",
@@ -43,6 +41,7 @@
         "electron-builder": "^3.9.0",
         "electron-prebuilt": "^0.37.6",
         "electron-settings": "^1.0.4",
+        "electron-squirrel-startup": "*",
         "eslint": "*",
         "eslint-config-standard": "^5.1.0",
         "eslint-plugin-promise": "^1.1.0",
