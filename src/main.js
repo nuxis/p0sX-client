@@ -20,13 +20,11 @@ function handleSquirrelEvent () {
     const exeName = path.basename(process.execPath)
 
     const spawn = function (command, args) {
-        let spawnedProcess
-
         try {
-            spawnedProcess = ChildProcess.spawn(command, args, {detached: true})
+            return ChildProcess.spawn(command, args, {detached: true})
         } catch (error) {}
 
-        return spawnedProcess
+        return undefined
     }
 
     const spawnUpdate = function (args) {
@@ -68,8 +66,6 @@ function handleSquirrelEvent () {
     }
 }
 
-let mainWindow = null
-
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
@@ -78,7 +74,7 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
     // Initialize the window to our specified dimensions
-    mainWindow = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
         frame: true
@@ -90,6 +86,5 @@ app.on('ready', () => {
 
     // Clear out the main window when the app is closed
     mainWindow.on('closed', () => {
-        mainWindow = null
     })
 })
