@@ -4,14 +4,15 @@ import classNames from 'classnames'
 const CheckoutButton = React.createClass({
     propTypes: {
         onClick: React.PropTypes.func.isRequired,
-        total: React.PropTypes.number.isRequired
+        total: React.PropTypes.number.isRequired,
+        active: React.PropTypes.bool.isRequired
     },
     render: function () {
-        const {onClick, total} = this.props
-        var btnClass = classNames('btn', 'btn-large', 'green', {
-            'disabled': total === 0,
-            'waves-effect': total > 0,
-            'waves-light': total > 0
+        const {onClick, total, active} = this.props
+        var btnClass = classNames('btn', 'btn-large', {
+            'disabled': !active,
+            'waves-effect': active,
+            'waves-light': active
         })
 
         return (
