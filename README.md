@@ -19,6 +19,9 @@ Style rules:
 - Indent: 4 spaces
 - camelCase
 - react/recommended
+- eslint-plugin-immutable
+    - no-let
+    - no-mutation
 
 ### Setup
 
