@@ -1,11 +1,21 @@
 import axios from 'axios'
 import settings from './settings'
 
-const HEADERS = {
+var HEADERS = {
     'Authorization': `Token ${settings.get('api_auth_token')}`
 }
 
-const BASE_URL = settings.get('server_address')
+var BASE_URL = settings.get('server_address')
+
+settings.watch('api_auth_token', (token) => {
+    HEADERS = Object.assign({}, HEADERS, {
+        'Authorization': `Token ${token.now}`
+    })
+})
+
+settings.watch('server_address', (server) => {
+    BASE_URL = server.now
+})
 
 const get = (endpoint) => {
     const url = `${BASE_URL}${endpoint}`
