@@ -7,7 +7,6 @@ import classNames from 'classnames'
 const Cart = React.createClass({
     propTypes: {
         items: React.PropTypes.array.isRequired,
-        cart: React.PropTypes.array.isRequired,
         onEmptyCart: React.PropTypes.func.isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         onPurchase: React.PropTypes.func.isRequired,
@@ -36,7 +35,6 @@ const Cart = React.createClass({
                 </div>
                 <CheckoutButton onClick={() => onPurchase()} total={total} />
                 <EmptyCartButton onClick={onEmptyCart} entries={items.length} />
-                
             </div>
         )
     }

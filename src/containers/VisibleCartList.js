@@ -30,7 +30,6 @@ const getTotalPrice = (state, cart) => {
 const mapStateToProps = (state) => {
     return {
         items: getVisibleItems(state, state.cart),
-        cart: state.cart,
         total: getTotalPrice(state, state.cart)
     }
 }
