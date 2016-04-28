@@ -41,9 +41,14 @@ body {
 	width: 120px;
 }
 
+.item-card img {
+    width: 120px;
+    height: 120px;
+}
+
 .name-truncate {
-	width: 118px;
-	margin-left: 2px;
+	width: 120px;
+	padding-left: 2px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -56,10 +61,8 @@ body {
 }
 
 .price {
-	margin-left: 2px;
+	padding-left: 2px;
 }
-
-
 
 .checkout{
   width: 100%;
@@ -107,4 +110,3 @@ body {
 .collection .collection-item.avatar {
     min-height: 56px !important;
 }
-.center-btn { text-align: center }

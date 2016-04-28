@@ -27,6 +27,7 @@ const Cart = React.createClass({
                                 key={i}
                                 price={entry.price}
                                 name={entry.name}
+                                image={entry.image || './static/planet.png'}
                                 ingredients={entry.ingredients}
                                 removeItem={() => onRemoveItem(i)}
                             />
