@@ -5,7 +5,6 @@ const Item = React.createClass({
         onClick: React.PropTypes.func.isRequired,
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
-        stock: React.PropTypes.number.isRequired,
         image: React.PropTypes.string
     },
     render: function () {
