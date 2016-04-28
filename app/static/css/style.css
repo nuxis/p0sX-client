@@ -1,8 +1,8 @@
 @font-face {
-	font-family: 'Material Icons';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Material Icons'), local('MaterialIcons-Regular'), url(./../font/icons.woff2) format('woff2');
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(./../font/icons.woff2) format('woff2');
 }
 
 body {
@@ -35,10 +35,12 @@ body {
 }
 
 .item-card {
-	margin-bottom: 20px;
-	margin-right: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px;
     margin-left: 10px;
-	width: 120px;
+    width: 120px;
+    border-radius: 3px;
+    border: 1px solid lightgray;
 }
 
 .item-card img {
@@ -47,21 +49,21 @@ body {
 }
 
 .name-truncate {
-	width: 120px;
-	padding-left: 2px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	line-height: 100%;
+    width: 120px;
+    padding-left: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 100%;
 }
 
 
 .hide {
-	display: none;
+    display: none;
 }
 
 .price {
-	padding-left: 2px;
+    padding-left: 2px;
 }
 
 .checkout{
@@ -90,21 +92,21 @@ body {
 }
 
 ::-webkit-scrollbar {
-	width: 6px;
+    width: 6px;
 }
 ::-webkit-scrollbar-track {
-	background-color: #eaeaea;
-	border-left: 1px solid #ccc;
-	-webkit-border-radius: 12px;
-	border-radius: 12px;
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
 }
 ::-webkit-scrollbar-thumb {
-	background-color: #ccc;
-	-webkit-border-radius: 12px;
-	border-radius: 12px;
+    background-color: #ccc;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background-color: #aaa;
+    background-color: #aaa;
 }
 
 .collection .collection-item.avatar {
