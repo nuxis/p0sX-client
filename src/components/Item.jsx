@@ -11,7 +11,7 @@ const Item = React.createClass({
     render: function () {
         const { onClick, name, price, image } = this.props
         return (
-            <div className='item-card waves-effect waves-green z-depth-1 hoverable' onClick={onClick}>
+            <div className='item-card waves-effect z-depth-1 hoverable' onClick={onClick}>
                 <img src={image} />
                 <div className='name-truncate'>{name}</div>
                 <div className='price grey-text'>{price} Kr.</div>
