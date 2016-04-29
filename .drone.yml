@@ -37,17 +37,6 @@ notify:
         when:
             branch: master
 
-
-    #  email:
-    #    from: drone@fap.no
-    #    host: smtp.stud.ntnu.no
-    #    port: 25
-    #    when:
-    #        branch: master
-    #    recipients:
-    #      - kradalby@kradalby.no
-    #
-
 deploy:
   rsync:
     user: www
