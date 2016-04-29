@@ -3,6 +3,10 @@
 
 Icon made by [Freepik](http://www.freepik.com "Freepik") from [www.flaticon.com](http://www.flaticon.com "Flaticon") is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/ "Creative Commons BY 3.0")
 
+## Contributing
+
+Please read the [guidelines](https://github.com/nuxis/p0sX-client/blob/master/.github/CONTRIBUTING.md) before contributing.
+
 ## Development
 Stack:
 
