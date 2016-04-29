@@ -13,7 +13,7 @@ const Item = React.createClass({
             <div className='item-card waves-effect z-depth-1 hoverable' onClick={onClick}>
                 <img src={image} />
                 <div className='name-truncate'>{name}</div>
-                <div className='price grey-text'>{price} Kr.</div>
+                <div className='price grey-text text-darken-1'>{price} Kr.</div>
             </div>
         )
     }

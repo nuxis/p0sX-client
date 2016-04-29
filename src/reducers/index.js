@@ -74,7 +74,7 @@ function cart (state, action, currentItem) {
         return [
             ...state,
             {
-                id: action.id,
+                item: action.id,
                 ingredients: action.ingredients
             }
         ]
@@ -82,7 +82,7 @@ function cart (state, action, currentItem) {
         return [
             ...state,
             {
-                id: currentItem.id,
+                item: currentItem.id,
                 ingredients: Object.assign([], currentItem.ingredients)
             }
         ]
