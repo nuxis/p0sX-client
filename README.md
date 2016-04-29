@@ -47,7 +47,7 @@ There is an example settings.json file in the build/ folder. It may be wise to c
 
 The settings file will be located at:
 
-    Windows: C:\Users\me\AppData\Roaming\p0sX\electron-settings\settings.json
+    Windows: C:\Users\me\AppData\Roaming\p0sX\settings.json
     OS X: ~/Library/Application Support/p0sX/settings.json
     Linux: ~/.config/p0sX/settings.json
 
