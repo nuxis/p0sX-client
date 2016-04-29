@@ -9,6 +9,7 @@ build:
           - npm set progress=false
           - npm install
           - npm install 7zip-bin-linux
+          - npm run lint
           - npm run build
           # - npm run dist:darwin
           - npm run dist:win32
@@ -23,6 +24,7 @@ build:
           - apt upgrade -y
           - npm set progress=false
           - npm install
+          - npm run lint
           - npm run build
         when:
             branch: "!master"
