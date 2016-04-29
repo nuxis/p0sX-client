@@ -1,18 +1,31 @@
 build:
-    image: kradalby/ci-node-electron:latest
-    pull: true
-    commands:
-      - apt update
-      - apt upgrade -y
-      - gem update fpm
-      - npm set progress=false
-      - npm install
-      - npm install 7zip-bin-linux
-      - npm run build
-      # - npm run dist:darwin
-      - npm run dist:win32
-      - npm run dist:linux
-      - ls -lah dist
+    bundle:
+        image: kradalby/ci-node-electron:latest
+        pull: true
+        commands:
+          - apt update
+          - apt upgrade -y
+          - gem update fpm
+          - npm set progress=false
+          - npm install
+          - npm install 7zip-bin-linux
+          - npm run build
+          # - npm run dist:darwin
+          - npm run dist:win32
+          - npm run dist:linux
+        when:
+            branch: master
+    builder:
+        image: kradalby/ci-node-electron:latest
+        pull: true
+        commands:
+          - apt update
+          - apt upgrade -y
+          - npm set progress=false
+          - npm install
+          - npm run build
+        when:
+            branch: "!master"
 
 notify:
   email:
