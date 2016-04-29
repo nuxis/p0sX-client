@@ -30,10 +30,12 @@ build:
             branch: "!master"
 
 notify:
-  slack:
-    webhook_url: https://hooks.slack.com/services/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
-    channel: teknisk-dev
-    username: drone
+    slack:
+        webhook_url: https://hooks.slack.com/services/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
+        channel: teknisk-dev
+        username: drone
+        when:
+            branch: master
 
 
     #  email:
