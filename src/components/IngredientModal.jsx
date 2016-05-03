@@ -19,11 +19,12 @@ const IngredientModal = React.createClass({
                     <h4>Select ingredients for {item.name}</h4>
                     <ul className='collection'>
                     {ingredients.map((ingredient) =>
-                        <li className='collection-item' key={ingredient.id} onClick={() => onIngredientClick(ingredient.id)} >
-                            <input onClick={() => onIngredientClick(ingredient.id)}
-                                   id={'ingredient-' + ingredient.id}
-                                   checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
-                                   type='checkbox'
+                        <li className='collection-item' key={ingredient.id} onClick={(e) => onIngredientClick(e, ingredient.id)}>
+                            <input
+                                onClick={(e) => e.stopPropagation()}
+                                id={'ingredient-' + ingredient.id}
+                                checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
+                                type='checkbox'
                             />
                             <label htmlFor={'ingredient-' + ingredient.id}>{ingredient.name} {ingredient.price},-</label>
                         </li>
@@ -52,7 +53,8 @@ const mapDispatchToProps = (dispatch) => {
         onClose: () => {
             dispatch(addCurrentItemToCart())
         },
-        onIngredientClick: (id) => {
+        onIngredientClick: (e, id) => {
+            e.stopPropagation()
             dispatch(toggleIngredient(id))
         }
     }

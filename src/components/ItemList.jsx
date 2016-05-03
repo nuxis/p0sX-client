@@ -11,7 +11,8 @@ const ItemList = React.createClass({
             category: React.PropTypes.number.isRequired,
             // eslint-disable-next-line camelcase
             can_have_ingredients: React.PropTypes.bool.isRequired,
-            price: React.PropTypes.number.isRequired
+            price: React.PropTypes.number.isRequired,
+            image: React.PropTypes.string
         }).isRequired).isRequired,
         onItemClick: React.PropTypes.func.isRequired,
         getInitialData: React.PropTypes.func.isRequired
@@ -20,13 +21,14 @@ const ItemList = React.createClass({
         const { items, onItemClick } = this.props
 
         return (
-            <div style={{height: 'calc(100% - 30px)'}} className='col s12 m6 l7'>
-                <h4>Items</h4>
-                <div className='item-list' style={{overflowY: 'auto', height: 'calc(100% - 10px)'}}>
+            <div style={{height: '100%', marginTop: '7.25px'}} className='col s12 m6 l7'>
+                <div className='item-list' style={{overflowY: 'auto', height: '100%'}}>
                     {items.map((item) =>
                         <Item
                             key={item.id}
-                            {...item}
+                            name={item.name}
+                            price={item.price}
+                            image={item.image || './static/planet.png'}
                             // eslint-disable-next-line camelcase
                             onClick={() => onItemClick(item.id, item.can_have_ingredients)}
                         />

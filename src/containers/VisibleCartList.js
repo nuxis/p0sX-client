@@ -5,7 +5,7 @@ import {getItemById, getIngredientById} from '../reducers'
 
 const getVisibleItems = (state, cart) => {
     return cart.map((entry) => {
-        var item = Object.assign({}, getItemById(state, entry.id))
+        var item = Object.assign({}, getItemById(state, entry.item))
         return Object.assign(item, entry, {
             price: entry.ingredients.reduce((total, ingredient) => {
                 return total + parseInt(getIngredientById(state, ingredient).price)
@@ -19,7 +19,7 @@ const getVisibleItems = (state, cart) => {
 
 const getTotalPrice = (state, cart) => {
     return cart.reduce((total, entry) => {
-        total += getItemById(state, entry.id).price
+        total += getItemById(state, entry.item).price
         total += entry.ingredients.reduce((sum, ingredient) => {
             return sum + parseInt(getIngredientById(state, ingredient).price)
         }, 0)
@@ -30,7 +30,6 @@ const getTotalPrice = (state, cart) => {
 const mapStateToProps = (state) => {
     return {
         items: getVisibleItems(state, state.cart),
-        cart: state.cart,
         total: getTotalPrice(state, state.cart)
     }
 }
