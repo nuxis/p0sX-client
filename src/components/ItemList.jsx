@@ -1,5 +1,5 @@
 import React from 'react'
-import Item from './Item.jsx'
+import ItemGroup from './ItemGroup.jsx'
 
 const ItemList = React.createClass({
     propTypes: {
@@ -23,23 +23,9 @@ const ItemList = React.createClass({
         return (
             <div style={{height: '100%', marginTop: '7.25px'}} className='col s12 m6 l7'>
                 <div className='item-list' style={{overflowY: 'auto', height: '100%'}}>
-                    {items.map((entry) => {
-                        return (
-                            <div>
-                                <h5>{entry.category.name}</h5>
-                                {entry.items.map((item) =>
-                                    <Item
-                                        key={item.id}
-                                        name={item.name}
-                                        price={item.price}
-                                        image={item.image || './static/planet.png'}
-                                        // eslint-disable-next-line camelcase
-                                        onClick={() => onItemClick(item.id, item.can_have_ingredients)}
-                                    />
-                                )}
-                            </div>
-                        )
-                    })}
+                    {items.map((entry) =>
+                        <ItemGroup category={entry.category.name} items={entry.items} onItemClick={onItemClick} />
+                    )}
                 </div>
             </div>
         )
