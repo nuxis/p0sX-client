@@ -149,7 +149,18 @@ const getIngredientById = (state, id) => {
     return f
 }
 
+const getCategoryById = (state, id) => {
+    var f = {}
+    state.categories.forEach((i) => {
+        if (i.id === id) {
+            f = i
+        }
+    })
+    return f
+}
+
 export {
     getItemById,
-    getIngredientById
+    getIngredientById,
+    getCategoryById
 }

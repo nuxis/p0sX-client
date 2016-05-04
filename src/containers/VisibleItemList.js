@@ -1,18 +1,28 @@
 import { connect } from 'react-redux'
 import { addToCart, setInitialData, openModal } from '../actions'
 import ItemList from '../components/ItemList.jsx'
+import { getCategoryById } from '../reducers'
 
-const getVisibleItems = (items, category) => {
+const getVisibleItems = (state, category) => {
     if (category === 0) {
-        return items
+        var categories = state.categories.filter((c) => c.id !== 0)
+        return categories.map((c) => {
+            return {
+                category: c,
+                items: state.items.filter((i) => i.category === c.id)
+            }
+        })
     } else {
-        return items.filter((i) => i.category === category)
+        return [{
+            category: getCategoryById(state, category),
+            items: state.items.filter((i) => i.category === category)
+        }]
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        items: getVisibleItems(state.items, state.selectedCategory)
+        items: getVisibleItems(state, state.selectedCategory)
     }
 }
 
