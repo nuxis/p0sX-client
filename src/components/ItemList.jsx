@@ -4,15 +4,8 @@ import ItemGroup from './ItemGroup.jsx'
 const ItemList = React.createClass({
     propTypes: {
         items: React.PropTypes.arrayOf(React.PropTypes.shape({
-            id: React.PropTypes.number.isRequired,
-            name: React.PropTypes.string.isRequired,
-            barcode: React.PropTypes.string.isRequired,
-            stock: React.PropTypes.number.isRequired,
-            category: React.PropTypes.number.isRequired,
-            // eslint-disable-next-line camelcase
-            can_have_ingredients: React.PropTypes.bool.isRequired,
-            price: React.PropTypes.number.isRequired,
-            image: React.PropTypes.string
+            category: React.PropTypes.object.isRequired,
+            items: React.PropTypes.array.isRequired
         }).isRequired).isRequired,
         onItemClick: React.PropTypes.func.isRequired,
         getInitialData: React.PropTypes.func.isRequired
@@ -24,7 +17,7 @@ const ItemList = React.createClass({
             <div style={{height: '100%', marginTop: '7.25px'}} className='col s12 m6 l7'>
                 <div className='item-list' style={{overflowY: 'auto', height: '100%'}}>
                     {items.map((entry) =>
-                        <ItemGroup category={entry.category.name} items={entry.items} onItemClick={onItemClick} />
+                        <ItemGroup key={entry.category.id} category={entry.category.name} items={entry.items} onItemClick={onItemClick} />
                     )}
                 </div>
             </div>
