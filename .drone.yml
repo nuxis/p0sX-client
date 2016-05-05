@@ -29,6 +29,9 @@ build:
         when:
             branch: "!master"
 
+cache:
+    mount:
+        - node_modules
 notify:
     slack:
         webhook_url: https://hooks.slack.com/services/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
