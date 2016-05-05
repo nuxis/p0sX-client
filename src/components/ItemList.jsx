@@ -14,7 +14,7 @@ const ItemList = React.createClass({
         const { items, onItemClick } = this.props
 
         return (
-            <div style={{height: '100%', marginTop: '7.25px'}} className='col s12 m6 l7'>
+            <div style={{height: '100%', marginTop: '7.25px', padding: '0 0 0 0'}} className='col s12 m6 l7'>
                 <div className='item-list' style={{overflowY: 'auto', height: '100%'}}>
                     {items.map((entry) =>
                         <ItemGroup key={entry.category.id} category={entry.category.name} items={entry.items} onItemClick={onItemClick} />
