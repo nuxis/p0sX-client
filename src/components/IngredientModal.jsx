@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {getItemById} from '../reducers'
+import {getItemById} from '../store'
 import {toggleIngredient, addCurrentItemToCart} from '../actions'
 
 const IngredientModal = React.createClass({
@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
         currentItem: state.currentItem,
-        item: getItemById(state, state.currentItem.id)
+        item: getItemById(state.currentItem.id)
     }
 }
 

@@ -1,17 +1,17 @@
 import { connect } from 'react-redux'
 import { emptyCart, removeItem } from '../actions'
 import Cart from '../components/Cart.jsx'
-import {getItemById, getIngredientById} from '../reducers'
+import {getItemById, getIngredientById} from '../store'
 
 const getVisibleItems = (state, cart) => {
     return cart.map((entry) => {
-        var item = Object.assign({}, getItemById(state, entry.item))
+        var item = Object.assign({}, getItemById(entry.item))
         return Object.assign(item, entry, {
             price: entry.ingredients.reduce((total, ingredient) => {
-                return total + parseInt(getIngredientById(state, ingredient).price)
+                return total + parseInt(getIngredientById(ingredient).price)
             }, item.price),
             ingredients: entry.ingredients.map((ingredient) => {
-                return getIngredientById(state, ingredient)
+                return getIngredientById(ingredient)
             })
         })
     })
@@ -19,9 +19,9 @@ const getVisibleItems = (state, cart) => {
 
 const getTotalPrice = (state, cart) => {
     return cart.reduce((total, entry) => {
-        total += getItemById(state, entry.item).price
+        total += getItemById(entry.item).price
         total += entry.ingredients.reduce((sum, ingredient) => {
-            return sum + parseInt(getIngredientById(state, ingredient).price)
+            return sum + parseInt(getIngredientById(ingredient).price)
         }, 0)
         return total
     }, 0)
