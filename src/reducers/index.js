@@ -3,10 +3,10 @@ import { routerReducer } from 'react-router-redux'
 function categories (state = [], action) {
     switch (action.type) {
     case 'ADD_CATEGORIES':
-        return Object.assign([], [
+        return [
             ...state,
             ...action.categories
-        ])
+        ]
     default:
         return state
     }
@@ -27,24 +27,26 @@ function currentItem (state = {}, action, items) {
         var item = items.find(item => item.id === action.item)
         return {
             id: item.id,
-            ingredients: Object.assign([], item.ingredients)
+            ingredients: [...item.ingredients]
         }
     case 'TOGGLE_INGREDIENT':
         var index = state.ingredients.indexOf(action.id)
         if (index !== -1) {
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 ingredients: [
                     ...state.ingredients.slice(0, index),
                     ...state.ingredients.slice(index + 1)
                 ]
-            })
+            }
         } else {
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 ingredients: [
                     ...state.ingredients,
                     action.id
                 ]
-            })
+            }
         }
     case 'ADD_CURRENT_TO_CART':
         return {
@@ -66,12 +68,12 @@ function cart (state = [], action, currentItem) {
                 ingredients: action.ingredients
             }
         ]
-    case 'ADD_CURRENT_TO_CART':
+        case 'ADD_CURRENT_TO_CART':
         return [
             ...state,
             {
                 item: currentItem.id,
-                ingredients: Object.assign([], currentItem.ingredients)
+                ingredients: [...currentItem.ingredients]
             }
         ]
     case 'REMOVE_ITEM':
@@ -116,3 +118,4 @@ function rootReducer (state, action) {
     }
 }
 export default rootReducer
+
