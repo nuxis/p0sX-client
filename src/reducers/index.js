@@ -27,7 +27,7 @@ function currentItem (state = {}, action, items) {
         var item = items.find(item => item.id === action.item)
         return {
             id: item.id,
-            ingredients: [...item.ingredients]
+            ingredients: item.ingredients ? [...item.ingredients] : []
         }
     case 'TOGGLE_INGREDIENT':
         var index = state.ingredients.indexOf(action.id)
@@ -73,7 +73,7 @@ function cart (state = [], action, currentItem) {
             ...state,
             {
                 item: currentItem.id,
-                ingredients: [...currentItem.ingredients]
+                ingredients: currentItem.ingredients ? [...currentItem.ingredients] : []
             }
         ]
     case 'REMOVE_ITEM':
@@ -107,6 +107,7 @@ function items (state = [], action) {
 }
 
 function rootReducer (state, action) {
+    console.log(state)
     return {
         ingredients: ingredients(state.ingredients, action),
         items: items(state.items, action),
