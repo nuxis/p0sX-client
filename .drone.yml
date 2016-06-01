@@ -31,7 +31,7 @@ build:
 
 notify:
     slack:
-        webhook_url: https://hooks.slack.com/services/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
+        webhook_url: https://hooks.slack.com/services/T03UG586F/$$SLACK_TOKEN_1/$$SLACK_TOKEN_2
         channel: teknisk-dev
         username: drone
         when:
