@@ -2,14 +2,25 @@ import path from 'path';
 
 export default {
     module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            loaders: ['babel-loader'],
-            exclude: /node_modules/
-        }, {
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                loaders: ['babel-loader'],
+                exclude: /node_modules/
+            },
+            {
                 test: /\.json$/,
                 loader: 'json-loader'
-            }]
+            },
+            {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=255000'
+            }
+        ]
     },
     output: {
         path: path.join(__dirname, '..', 'app'),
