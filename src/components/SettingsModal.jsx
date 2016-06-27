@@ -76,6 +76,7 @@ const mapDispatchToProps = (dispatch) => {
 const open = () => {
     $('#server').val(settings.get('server_address'))
     $('#token').val(settings.get('api_auth_token'))
+	// eslint-disable-next-line no-undef
     Materialize.updateTextFields()
     $('#settings-modal').openModal()
 }

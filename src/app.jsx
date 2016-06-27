@@ -51,7 +51,6 @@ const Wrapper = React.createClass({
     }
 })
 
-
 const mapStateToProps = () => {
     return {}
 }

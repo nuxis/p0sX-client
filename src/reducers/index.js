@@ -68,7 +68,7 @@ function cart (state = [], action, currentItem) {
                 ingredients: action.ingredients
             }
         ]
-        case 'ADD_CURRENT_TO_CART':
+    case 'ADD_CURRENT_TO_CART':
         return [
             ...state,
             {
