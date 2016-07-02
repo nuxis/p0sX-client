@@ -19,7 +19,8 @@
     "build": "npm run build-main && npm run build-renderer",
     "build-main": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/electron.js --progress --profile --colors",
     "build-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors",
-    "watch-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors --watch"
+    "watch-renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors --watch",
+    "start": "npm run build && npm run electron"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
