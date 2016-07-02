@@ -1,31 +1,18 @@
-const initialState = {
-    items: [],
-    ingredients: [],
-    cart: [],
-    selectedCategory: 0,
-    categories: [{
-        id: 0,
-        name: 'All'
-    }],
-    currentItem: {
-        id: 0,
-        ingredients: []
-    }
-}
+import { routerReducer } from 'react-router-redux'
 
-const categories = (state, action) => {
+function categories (state = [], action) {
     switch (action.type) {
     case 'ADD_CATEGORIES':
-        return Object.assign([], [
+        return [
             ...state,
             ...action.categories
-        ])
+        ]
     default:
         return state
     }
 }
 
-const selectedCategory = (state, action) => {
+function selectedCategory (state = 0, action) {
     switch (action.type) {
     case 'SET_ACTIVE_CATEGORY':
         return action.id
@@ -34,29 +21,32 @@ const selectedCategory = (state, action) => {
     }
 }
 
-const currentItem = (state, action, item) => {
+function currentItem (state = {}, action, items) {
     switch (action.type) {
     case 'SET_ACTIVE_ITEM':
+        var item = items.find(item => item.id === action.item)
         return {
-            id: action.item,
-            ingredients: Object.assign([], item.ingredients)
+            id: item.id,
+            ingredients: item.ingredients ? [...item.ingredients] : []
         }
     case 'TOGGLE_INGREDIENT':
         var index = state.ingredients.indexOf(action.id)
         if (index !== -1) {
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 ingredients: [
                     ...state.ingredients.slice(0, index),
                     ...state.ingredients.slice(index + 1)
                 ]
-            })
+            }
         } else {
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 ingredients: [
                     ...state.ingredients,
                     action.id
                 ]
-            })
+            }
         }
     case 'ADD_CURRENT_TO_CART':
         return {
@@ -68,7 +58,7 @@ const currentItem = (state, action, item) => {
     }
 }
 
-function cart (state, action, currentItem) {
+function cart (state = [], action, currentItem) {
     switch (action.type) {
     case 'ADD_TO_CART':
         return [
@@ -83,7 +73,7 @@ function cart (state, action, currentItem) {
             ...state,
             {
                 item: currentItem.id,
-                ingredients: Object.assign([], currentItem.ingredients)
+                ingredients: currentItem.ingredients ? [...currentItem.ingredients] : []
             }
         ]
     case 'REMOVE_ITEM':
@@ -98,7 +88,7 @@ function cart (state, action, currentItem) {
     }
 }
 
-function ingredients (state, action) {
+function ingredients (state = [], action) {
     switch (action.type) {
     case 'SET_INGREDIENTS':
         return [...action.ingredients]
@@ -107,7 +97,7 @@ function ingredients (state, action) {
     }
 }
 
-function items (state, action) {
+function items (state = [], action) {
     switch (action.type) {
     case 'SET_ITEMS':
         return [...action.items]
@@ -116,40 +106,17 @@ function items (state, action) {
     }
 }
 
-export default (state = initialState, action) => {
-    var s = Object.assign({}, state, {
-        cart: cart(state.cart, action, state.currentItem),
-        selectedCategory: selectedCategory(state.selectedCategory, action),
+function rootReducer (state, action) {
+    console.log(state)
+    return {
         ingredients: ingredients(state.ingredients, action),
         items: items(state.items, action),
+        selectedCategory: selectedCategory(state.selectedCategory, action),
         categories: categories(state.categories, action),
-        currentItem: currentItem(state.currentItem, action, getItemById(state, action.item))
-    })
-    console.log(s)
-    return s
+        currentItem: currentItem(state.currentItem, action, state.items),
+        cart: cart(state.cart, action, state.currentItem),
+        routing: routerReducer(state.routing, action)
+    }
 }
+export default rootReducer
 
-const getItemById = (state, id) => {
-    var f = {}
-    state.items.forEach((i) => {
-        if (i.id === id) {
-            f = i
-        }
-    })
-    return f
-}
-
-const getIngredientById = (state, id) => {
-    var f = {}
-    state.ingredients.forEach((i) => {
-        if (i.id === id) {
-            f = i
-        }
-    })
-    return f
-}
-
-export {
-    getItemById,
-    getIngredientById
-}

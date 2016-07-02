@@ -28,12 +28,12 @@ const SettingsModal = React.createClass({
                             <div className='collapsible-body'>
                                 <div className='row'>
                                     <div className='input-field col s12'>
-                                        <input id='server' type='text' className='validate' />
-                                        <label htmlFor='server'>Server</label>
+                                        <input id='server' type='url' className='validate' />
+                                        <label className='active' htmlFor='server'>Server</label>
                                     </div>
                                     <div className='input-field col s12'>
                                         <input id='token' type='text' className='validate' />
-                                        <label htmlFor='token'>Token</label>
+                                        <label className='active' htmlFor='token'>Token</label>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,6 @@ const SettingsModal = React.createClass({
 
 const mapStateToProps = (state) => {
     var allSettings = settings.get()
-
     return {
         initial: Object.getOwnPropertyNames(allSettings).length === 0
     }
@@ -74,7 +73,19 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+const open = () => {
+    $('#server').val(settings.get('server_address'))
+    $('#token').val(settings.get('api_auth_token'))
+	// eslint-disable-next-line no-undef
+    Materialize.updateTextFields()
+    $('#settings-modal').openModal()
+}
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(SettingsModal)
+
+export {
+    open
+}
