@@ -48,7 +48,7 @@ const getOpenOrders = () => {
     return new Promise(function (resolve, reject) {
         getOrders().then(function (response) {
             const openOrders = response.filter((order) => {
-                return order.state === 0
+                return order.state === ORDER_STATE.OPEN
             })
             resolve(openOrders)
         }).catch(function (error) {
@@ -61,7 +61,7 @@ const getInProgressOrders = () => {
     return new Promise(function (resolve, reject) {
         getOrders().then(function (response) {
             const inProgressOrders = response.filter((order) => {
-                return order.state === 1
+                return order.state === ORDER_STATE.IN_PROGRESS
             })
             resolve(inProgressOrders)
         }).catch(function (error) {
