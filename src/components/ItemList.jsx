@@ -28,7 +28,7 @@ const ItemList = React.createClass({
                             key={item.id}
                             name={item.name}
                             price={item.price}
-                            image={item.image || './static/planet.png'}
+                            image={item.image || require('../images/planet.png')}
                             // eslint-disable-next-line camelcase
                             onClick={() => onItemClick(item.id, item.can_have_ingredients)}
                         />
