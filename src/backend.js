@@ -1,5 +1,21 @@
 import { get, post } from './request-wrapper'
 
+const ORDER_STATE = {
+    'OPEN': 0,
+    'IN_PROGRESS': 1,
+    'DELIVERED': 2
+}
+
+const PAYMENT_METHOD = {
+    'CASH': 0,
+    'CREW': 1,
+    'CARD': 2,
+    'VIPPS': 3,
+    'MCASH': 4,
+    'MOBILEPAY': 5,
+    'IZETTLE': 6
+}
+
 const getCategories = () => {
     return get('/categories/?format=json')
 }
@@ -32,7 +48,7 @@ const getOpenOrders = () => {
     return new Promise(function (resolve, reject) {
         getOrders().then(function (response) {
             const openOrders = response.filter((order) => {
-                order.state === 0
+                return order.state === 0
             })
             resolve(openOrders)
         }).catch(function (error) {
@@ -44,10 +60,10 @@ const getOpenOrders = () => {
 const getInProgressOrders = () => {
     return new Promise(function (resolve, reject) {
         getOrders().then(function (response) {
-            const openOrders = response.filter((order) => {
-                order.state === 1
+            const inProgressOrders = response.filter((order) => {
+                return order.state === 1
             })
-            resolve(openOrders)
+            resolve(inProgressOrders)
         }).catch(function (error) {
             reject(error)
         })
@@ -55,6 +71,8 @@ const getInProgressOrders = () => {
 }
 
 export {
+    ORDER_STATE,
+    PAYMENT_METHOD,
     getCategories,
     getIngredients,
     getItems,
