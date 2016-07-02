@@ -5,6 +5,7 @@ app/app.js
 app/settings.json
 dist/
 secrets.yml
+.tern-port
 
 
 # Created by https://www.gitignore.io/api/osx,windows,vim,intellij,visualstudio,node
