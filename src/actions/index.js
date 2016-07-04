@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCategories, getIngredients, getItems } from './../backend'
+import { getCategories, getIngredients, getItems } from '../common/api'
 
 const setInitialData = () => {
     return (dispatch) => {

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import CustomerOrder from './CustomerOrder.jsx'
-import { getOpenOrders } from '../backend.js'
+import CustomerOrder from './CustomerOrder'
+import { getOpenOrders } from '../../common/api'
 
 class CustomerOrder extends Component {
 
@@ -9,7 +9,7 @@ class CustomerOrder extends Component {
 
     return (
       <div className="new-orders">
-        {orders.map((order) => 
+        {orders.map((order) =>
             <CustomerOrder orderNumber={order.id}/>
           )}
       </div>
