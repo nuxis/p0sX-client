@@ -2,6 +2,8 @@ import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
 import 'materialize-css'
+import axios from 'axios'
+import { fromJS, Map } from 'immutable'
 // CSS
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'materialize-css/bin/materialize.css'
@@ -15,8 +17,17 @@ import SettingsModal, { open as openSettings } from './components/SettingsModal.
 import {Navbar, NavItem, Icon} from 'react-materialize'
 import { Router, Route, IndexRoute, Link } from 'react-router'
 import store, {history} from './store'
-import settings from './settings'
+import settings from './common/settings'
 import { setInitialData } from './actions'
+
+
+// Global axios defaults
+axios.defaults.baseURL = settings.get('server_address')
+// For convenience, transforms the response to ImmutableJS
+axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data) => fromJS(data))
+// Set auth_token
+axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
+
 
 const Wrapper = React.createClass({
     propTypes: {
