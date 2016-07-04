@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import settings from '../settings'
+import settings from '../common/settings'
 import { setInitialData } from '../actions'
 
 const SettingsModal = React.createClass({
