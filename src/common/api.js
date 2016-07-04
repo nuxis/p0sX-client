@@ -1,4 +1,4 @@
-import { get, post } from './request-wrapper'
+import axios from 'axios'
 
 const ORDER_STATE = {
     'OPEN': 0,
@@ -17,31 +17,31 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return get('/categories/?format=json')
+    return axios.get('/categories/?format=json')
 }
 
 const getIngredients = () => {
-    return get('/ingredients/?format=json')
+    return axios.get('/ingredients/?format=json')
 }
 
 const getItems = () => {
-    return get('/items/?format=json')
+    return axios.get('/items/?format=json')
 }
 
 const getUsers = () => {
-    return get('/users/?format=json')
+    return axios.get('/users/?format=json')
 }
 
 const getUser = (userId) => {
-    return get(`/users/${userId}/?format=json`)
+    return axios.get(`/users/${userId}/?format=json`)
 }
 
 const postPurchase = (purchase) => {
-    return post('/purchases/', purchase)
+    return axios.post('/purchases/', purchase)
 }
 
 const getOrders = () => {
-    return get('/orders/?format=json')
+    return axios.get('/orders/?format=json')
 }
 
 const getOpenOrders = () => {
