@@ -12,9 +12,9 @@
 ### Branch naming
 Branches should be named accuratly and follow the following convention:
 
-(feature|bug)-description-owner
+owner/(feature|bug)/description
 
-Example: feature-imagegallery-kradalby
+Example: kradalby/feature/imagegallery
 
 ### Commit messages
 Commit messages should be descriptive and accuratly describe the changes done.
