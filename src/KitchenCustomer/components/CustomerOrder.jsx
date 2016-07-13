@@ -2,21 +2,19 @@ import React, { Component, PropTypes } from 'react'
 
 class CustomerOrder extends Component {
 
-  render() {
-    const { orderNumber } = this.props
+    render () {
+        const { orderNumber } = this.props
 
-    return (
+        return (
       <div>
         {orderNumber}
       </div>
     )
-  }
+    }
 }
-
 
 CustomerOrder.propTypes = {
-  orderNumber: PropTypes.number.isRequired
+    orderNumber: PropTypes.number.isRequired
 }
-
 
 export default CustomerOrder
