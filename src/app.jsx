@@ -3,86 +3,53 @@ import React from 'react'
 import { render } from 'react-dom'
 import 'materialize-css'
 import axios from 'axios'
-import { fromJS, Map } from 'immutable'
+import { fromJS } from 'immutable'
+
 // CSS
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'materialize-css/bin/materialize.css'
 import './css/style.css'
 
-import { Provider, connect } from 'react-redux'
-import Kiosk from './containers/Kiosk'
-import Kitchen from './containers/Kitchen'
-import IngredientModal from './components/IngredientModal.jsx'
-import SettingsModal, { open as openSettings } from './components/SettingsModal.jsx'
-import {Navbar, NavItem, Icon} from 'react-materialize'
-import { Router, Route, IndexRoute, Link } from 'react-router'
-import store, {history} from './store'
+import { Provider } from 'react-redux'
+import Kiosk from './Kiosk/Kiosk'
+import { useRouterHistory, Router, Route, IndexRoute } from 'react-router'
+import { createHashHistory } from 'history'
+import { syncHistoryWithStore } from 'react-router-redux'
 import settings from './common/settings'
-import { setInitialData } from './actions'
 
+import configureStore from './configureStore'
+import { getAllKioskData } from './Kiosk/actions'
+import Wrapper from './Wrapper'
 
 // Global axios defaults
+// eslint-disable-next-line immutable/no-mutation
 axios.defaults.baseURL = settings.get('server_address')
+
 // For convenience, transforms the response to ImmutableJS
+// eslint-disable-next-line immutable/no-mutation
 axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data) => fromJS(data))
+
 // Set auth_token
+// eslint-disable-next-line immutable/no-mutation
 axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
 
+const hashHistory = useRouterHistory(createHashHistory)()
 
-const Wrapper = React.createClass({
-    propTypes: {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.arrayOf(React.PropTypes.node),
-            React.PropTypes.node
-        ]),
-        getInitialData: React.PropTypes.func.isRequired
-    },
-    componentDidMount: function () {
-        var allSettings = settings.get()
-        if (Object.getOwnPropertyNames(allSettings).length === 0) {
-            console.log('Need sum config')
-            openSettings()
-        } else {
-            this.props.getInitialData()
-        }
-    },
-    render: function () {
-        return (
-            <div>
-                <Navbar brand='p0sX' right>
-                    <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
-                    <Link to='/'>Kiosk</Link>
-                    <Link to='/kitchen'>Kitchen</Link>
-                </Navbar>
-                {this.props.children}
-                <IngredientModal />
-                <SettingsModal />
-            </div>
-        )
-    }
-})
+const store = configureStore(hashHistory)
 
-const mapStateToProps = () => {
-    return {}
-}
+console.log(store.getState())
+store.dispatch(getAllKioskData())
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getInitialData: () => {
-            dispatch(setInitialData())
-        }
-    }
-}
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(hashHistory, store)
 
 const routes = (
     <Provider store={store}>
         <Router history={history}>
-            <Route path='/' component={connect(mapStateToProps, mapDispatchToProps)(Wrapper)}>
+            <Route path='/' component={Wrapper}>
                 <IndexRoute component={Kiosk}/>
-                <Route path='kitchen' component={Kitchen}/>
-                <Route path='customer' component={Kitchen}/>
             </Route>
         </Router>
     </Provider>
-)
+    )
 render(routes, document.getElementById('app'))
