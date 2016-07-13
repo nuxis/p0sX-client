@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
-import { emptyCart, removeItem } from '../actions'
-import Cart from '../components/Cart.jsx'
-import {getItemById, getIngredientById} from '../store'
+import { emptyCart, removeItemFromCart } from './actions'
+import Cart from './components/Cart.jsx'
 
 const getVisibleItems = (state, cart) => {
     return cart.map((entry) => {
@@ -19,9 +18,9 @@ const getVisibleItems = (state, cart) => {
 
 const getTotalPrice = (state, cart) => {
     return cart.reduce((total, entry) => {
-        total += getItemById(entry.item).price
+        total += entry.item.price
         total += entry.ingredients.reduce((sum, ingredient) => {
-            return sum + parseInt(getIngredientById(ingredient).price)
+            return sum + parseInt(ingredient.price)
         }, 0)
         return total
     }, 0)
@@ -40,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(emptyCart())
         },
         onRemoveItem: (item) => {
-            dispatch(removeItem(item))
+            dispatch(removeItemFromCart(item))
         },
         onPurchase: () => {
             console.log('Purchase')

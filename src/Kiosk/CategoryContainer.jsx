@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
-import { setActiveCategory } from '../actions'
-import CategoryList from '../components/CategoryList.jsx'
+import { setActiveCategory } from './actions'
+import CategoryList from './components/CategoryList.jsx'
+import { getCategories, getSelectedCategory } from './selectors'
 
 const mapStateToProps = (state) => {
     return {
-        categories: state.categories,
-        selectedCategory: state.selectedCategory
+        categories: getCategories(state),
+        selectedCategory: getSelectedCategory(state)
     }
 }
 

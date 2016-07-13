@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
-import { addToCart, setInitialData, openModal } from '../actions'
-import ItemList from '../components/ItemList.jsx'
+import { addItemToCart, openIngredientModalForItem } from './actions'
+import ItemList from './components/ItemList.jsx'
+import { getSelectedCategory, getItems } from './selectors'
 
 const getVisibleItems = (items, category) => {
     if (category === 0) {
@@ -12,7 +13,7 @@ const getVisibleItems = (items, category) => {
 
 const mapStateToProps = (state) => {
     return {
-        items: getVisibleItems(state.items, state.selectedCategory)
+        items: getVisibleItems(getItems(state), getSelectedCategory(state))
     }
 }
 
@@ -23,13 +24,10 @@ const mapDispatchToProps = (dispatch) => {
             // eslint-disable-next-line camelcase
             if (can_have_ingredients) {
                 $('#ingredient-modal').openModal()
-                dispatch(openModal(item))
+                dispatch(openIngredientModalForItem(item))
             } else {
-                dispatch(addToCart(item))
+                dispatch(addItemToCart(item))
             }
-        },
-        getInitialData: () => {
-            dispatch(setInitialData())
         }
     }
 }
