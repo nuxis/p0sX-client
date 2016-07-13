@@ -17,33 +17,34 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return axios.get('/categories/?format=json')
+    return axios.get('/categories/?format=json').then(res => res.data)
 }
 
 const getIngredients = () => {
-    return axios.get('/ingredients/?format=json')
+    return axios.get('/ingredients/?format=json').then(res => res.data)
 }
 
 const getItems = () => {
-    return axios.get('/items/?format=json')
+    return axios.get('/items/?format=json').then(res => res.data)
 }
 
 const getUsers = () => {
-    return axios.get('/users/?format=json')
+    return axios.get('/users/?format=json').then(res => res.data)
 }
 
 const getUser = (userId) => {
-    return axios.get(`/users/${userId}/?format=json`)
+    return axios.get(`/users/${userId}/?format=json`).then(res => res.data)
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/', purchase)
+    return axios.post('/purchases/', purchase).then(res => res.data)
 }
 
 const getOrders = () => {
-    return axios.get('/orders/?format=json')
+    return axios.get('/orders/?format=json').then(res => res.data)
 }
 
+// Something probably has to be done here...
 const getOpenOrders = () => {
     return new Promise(function (resolve, reject) {
         getOrders().then(function (response) {
