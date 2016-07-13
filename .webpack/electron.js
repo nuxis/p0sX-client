@@ -5,10 +5,8 @@ export default {
     ...baseConfig,
 
     entry: './src/main',
-
     output: {
         ...baseConfig.output,
-
         filename: 'main.js',
         publicPath: './app'
     },
