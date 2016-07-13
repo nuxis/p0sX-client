@@ -12,15 +12,16 @@ const CategoryList = React.createClass({
     },
     render: function () {
         const {categories, onCategoryClick, selectedCategory} = this.props
+        console.log('CATEHORYLIST: ', categories)
         return (
             <div className='col s12 m3 l2'>
                 <div className='collection'>
                     {categories.map((category) =>
                         <Category
-                            key={category.id}
-                            {...category}
-                            active = {selectedCategory === category.id}
-                            onClick={() => onCategoryClick(category.id)}
+                            key={category.get('id')}
+                            name={category.get('name')}
+                            active = {selectedCategory === category.get('id')}
+                            onClick={() => onCategoryClick(category.get('id'))}
                         />
                     )}
                 </div>

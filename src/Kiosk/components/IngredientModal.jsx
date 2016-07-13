@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {getItemById} from '../store'
-import {toggleIngredient, addCurrentItemToCart} from '../actions'
+// import {getItemById} from '../store'
+import { toggleIngredient, addCurrentItemToCart } from '../actions'
+import { getIngredients, getCurrentItem } from '../selectors'
 
 const IngredientModal = React.createClass({
     propTypes: {
@@ -12,21 +13,22 @@ const IngredientModal = React.createClass({
         currentItem: React.PropTypes.object.isRequired
     },
     render: function () {
-        const { onClose, item, ingredients, onIngredientClick, currentItem } = this.props
+        const { onClose, ingredients, onIngredientClick, currentItem } = this.props
+        console.log('IngredientModal: ', currentItem, ingredients)
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4>Select ingredients for {item.name}</h4>
+                    <h4>Select ingredients for {currentItem.get('name')}</h4>
                     <ul className='collection'>
                     {ingredients.map((ingredient) =>
-                        <li className='collection-item' key={ingredient.id} onClick={(e) => onIngredientClick(e, ingredient.id)}>
+                        <li className='collection-item' key={ingredient.get('id')} onClick={(e) => onIngredientClick(e, ingredient)}>
                             <input
                                 onClick={(e) => e.stopPropagation()}
-                                id={'ingredient-' + ingredient.id}
-                                checked={currentItem.ingredients.indexOf(ingredient.id) !== -1}
+                                id={'ingredient-' + ingredient.get('id')}
+                                checked={currentItem.get('ingredients').includes(ingredient)}
                                 type='checkbox'
                             />
-                            <label htmlFor={'ingredient-' + ingredient.id}>{ingredient.name} {ingredient.price},-</label>
+                            <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
                         </li>
                     )}
                     </ul>
@@ -42,9 +44,8 @@ const IngredientModal = React.createClass({
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: state.ingredients,
-        currentItem: state.currentItem,
-        item: getItemById(state.currentItem.id)
+        ingredients: getIngredients(state),
+        currentItem: getCurrentItem(state)
     }
 }
 
@@ -53,9 +54,9 @@ const mapDispatchToProps = (dispatch) => {
         onClose: () => {
             dispatch(addCurrentItemToCart())
         },
-        onIngredientClick: (e, id) => {
+        onIngredientClick: (e, ingredient) => {
             e.stopPropagation()
-            dispatch(toggleIngredient(id))
+            dispatch(toggleIngredient(ingredient))
         }
     }
 }

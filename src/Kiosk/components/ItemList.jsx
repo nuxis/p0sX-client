@@ -25,12 +25,12 @@ const ItemList = React.createClass({
                 <div className='item-list' style={{overflowY: 'auto', height: '100%'}}>
                     {items.map((item) =>
                         <Item
-                            key={item.id}
-                            name={item.name}
-                            price={item.price}
-                            image={item.image || require('../images/planet.png')}
+                            key={item.get('id')}
+                            name={item.get('name')}
+                            price={item.get('price')}
+                            image={item.get('image') || require('../../images/planet.png')}
                             // eslint-disable-next-line camelcase
-                            onClick={() => onItemClick(item.id, item.can_have_ingredients)}
+                            onClick={() => onItemClick(item.get('id'), item.get('can_have_ingredients'))}
                         />
                     )}
                 </div>
