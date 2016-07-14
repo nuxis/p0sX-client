@@ -3,13 +3,17 @@ import * as actions from './actions'
 
 // CATEGORIES
 
-const categoriesInit = new List()
+const mainCategory = new Map({
+    id: 0,
+    name: 'All'
+})
+const categoriesInit = List().push(mainCategory)
 
 export function categories (state = categoriesInit, action) {
     console.log('categories state: ', state, action)
     switch (action.type) {
     case actions.SET_CATEGORIES:
-        return action.categories
+        return categoriesInit.concat(action.categories)
     default:
         return state
     }
@@ -25,7 +29,7 @@ export function selectedCategory (state = selectedCategoryInit, action) {
     console.log('selectedCategory state: ', state, action)
     switch (action.type) {
     case actions.SET_ACTIVE_CATEGORY:
-        return action.category.id
+        return action.category.get('id')
     default:
         return state
     }
@@ -36,6 +40,12 @@ export function selectedCategory (state = selectedCategoryInit, action) {
 // CURRENTITEM
 
 const currentItemInit = new Map({
+    // TODO: CHANGE THIS
+    // The Item is initiatet here because its needed since we render
+    // IngredientModal at init, this behaviour should be changed.
+    item: Map({
+        name: 'NOTHING'
+    }),
     ingredients: List()
 })
 
