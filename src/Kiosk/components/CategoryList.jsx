@@ -1,5 +1,8 @@
 import React from 'react'
 import Category from './Category.jsx'
+import { connect } from 'react-redux'
+import { setActiveCategory } from '../actions'
+import { getCategories, getSelectedCategory } from '../selectors'
 
 const CategoryList = React.createClass({
     propTypes: {
@@ -21,7 +24,7 @@ const CategoryList = React.createClass({
                             key={category.get('id')}
                             name={category.get('name')}
                             active = {selectedCategory === category.get('id')}
-                            onClick={() => onCategoryClick(category.get('id'))}
+                            onClick={() => onCategoryClick(category)}
                         />
                     )}
                 </div>
@@ -30,4 +33,22 @@ const CategoryList = React.createClass({
     }
 })
 
-export default CategoryList
+const mapStateToProps = (state) => {
+    return {
+        categories: getCategories(state),
+        selectedCategory: getSelectedCategory(state)
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onCategoryClick: (category) => {
+            dispatch(setActiveCategory(category))
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CategoryList)
