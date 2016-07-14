@@ -8,6 +8,11 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 
 const Wrapper = React.createClass({
     propTypes: {
+        // TODO: Where does this children come from?
+        children: React.PropTypes.oneOfType([
+            React.PropTypes.arrayOf(React.PropTypes.node),
+            React.PropTypes.node
+        ])
     },
 
     componentDidMount: function () {
@@ -29,6 +34,7 @@ const Wrapper = React.createClass({
                     <Link to='/'>Kiosk</Link>
                     <Link to='/kitchen'>Kitchen</Link>
                 </Navbar>
+                {this.props.children}
                 <IngredientModal />
                 <SettingsModal />
             </div>
