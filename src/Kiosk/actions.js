@@ -29,7 +29,7 @@ export const OPEN_INGREDIENT_MODAL_FOR_ITEM = 'OPEN_INGREDIENT_MODAL_FOR_ITEM'
 export const TOGGLE_INGREDIENT = 'TOGGLE_INGREDIENT'
 
 // Action creators
-export const addCurrentItemToCart = () => action(ADD_CURRENT_ITEM_TO_CART, {})
+export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
 export const addItemToCart = (item) => action(ADD_ITEM_TO_CART, { item })
 
@@ -46,7 +46,7 @@ export const setCategories = (categories) => action(SET_CATEGORIES, { categories
 
 export const emptyCart = () => action(EMPTY_CART, {})
 
-export const removeItemFromCart = (item) => action(REMOVE_ITEM_FROM_CART, { item })
+export const removeItemFromCart = (cartItem) => action(REMOVE_ITEM_FROM_CART, { cartItem })
 
 export const setActiveCategory = (category) => action(SET_ACTIVE_CATEGORY, { category })
 
