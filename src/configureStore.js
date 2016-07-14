@@ -71,7 +71,7 @@ export default function configureStore (history) {
 
     const store = createStore(
         rootReducer,
-        [],
+        {},
         compose(
             applyMiddleware(...middleware),
             window.devToolsExtension ? window.devToolsExtension() : f => f // Redux devtools
