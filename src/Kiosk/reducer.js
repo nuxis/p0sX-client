@@ -1,13 +1,15 @@
 import { List, Map } from 'immutable'
+import * as actions from './actions'
 
 // CATEGORIES
 
 const categoriesInit = new List()
 
 export function categories (state = categoriesInit, action) {
+    console.log('categories state: ', state, action)
     switch (action.type) {
-    case 'ADD_CATEGORIES':
-        return state.concat(action.categories)
+    case actions.SET_CATEGORIES:
+        return action.categories
     default:
         return state
     }
@@ -20,9 +22,10 @@ export function categories (state = categoriesInit, action) {
 const selectedCategoryInit = 0
 
 export function selectedCategory (state = selectedCategoryInit, action) {
+    console.log('selectedCategory state: ', state, action)
     switch (action.type) {
-    case 'SET_ACTIVE_CATEGORY':
-        return action.id
+    case actions.SET_ACTIVE_CATEGORY:
+        return action.category.id
     default:
         return state
     }
@@ -37,26 +40,24 @@ const currentItemInit = new Map({
 })
 
 export function currentItem (state = currentItemInit, action) {
+    console.log('currentItem state: ', state, action)
     switch (action.type) {
-    case 'SET_ACTIVE_ITEM':
-        const item = items.find(item => item.id === action.item)
-        return {
-            id: item.id,
-            ingredients: item.ingredients ? List.of(item.ingredients) : new List()
-        }
-    case 'TOGGLE_INGREDIENT':
-        console.log(action)
-        if (state.ingredients.includes(action.ingredient)) {
+    case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
+        return new Map({
+            item: action.item,
+            ingredients: List()
+        })
+    case actions.TOGGLE_INGREDIENT:
+        if (state.get('ingredients').includes(action.ingredient)) {
             return state.get('ingredients').remove(action.ingredient)
         } else {
             return state.get('ingredients').push(action.ingredient)
         }
 
-    case 'ADD_CURRENT_TO_CART':
-        return {
-            id: 0,
+    case actions.ADD_CURRENT_ITEM_TO_CART:
+        return Map({
             ingredients: new List()
-        }
+        })
     default:
         return state
     }
@@ -69,24 +70,25 @@ export function currentItem (state = currentItemInit, action) {
 const cartInit = new List()
 
 export function cart (state = cartInit, action) {
+    console.log('cart state: ', state, action)
     switch (action.type) {
-    case 'ADD_TO_CART':
+    case actions.ADD_ITEM_TO_CART:
         return state.push(
             {
-                item: action.id,
-                ingredients: List.of(action.ingredients)
+                item: action.item,
+                ingredients: List()
             }
       )
-    case 'ADD_CURRENT_TO_CART':
+    case actions.ADD_CURRENT_ITEM_TO_CART:
         return state.push(
             {
-                item: currentItem.id,
-                ingredients: currentItem.ingredients ? List.of(currentItem.ingredients) : new List()
+                item: action.currentItem.item,
+                ingredients: action.currentItem.ingredients
             }
       )
-    case 'REMOVE_ITEM':
-        return state.remove(action.id)
-    case 'EMPTY_CART':
+    case actions.REMOVE_ITEM_FROM_CART:
+        return state.remove(action.cartItem)
+    case actions.EMPTY_CART:
         return new List()
     default:
         return state
@@ -100,8 +102,9 @@ export function cart (state = cartInit, action) {
 const ingredientsInit = new List()
 
 export function ingredients (state = ingredientsInit, action) {
+    console.log('ingredients state:', state, action)
     switch (action.type) {
-    case 'SET_INGREDIENTS':
+    case actions.SET_INGREDIENTS:
         return action.ingredients
     default:
         return state
@@ -115,8 +118,9 @@ export function ingredients (state = ingredientsInit, action) {
 const itemsInit = new List()
 
 export function items (state = itemsInit, action) {
+    console.log('items state:', state, action)
     switch (action.type) {
-    case 'SET_ITEMS':
+    case actions.SET_ITEMS:
         return action.items
     default:
         return state
