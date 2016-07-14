@@ -18,7 +18,7 @@ const IngredientModal = React.createClass({
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4>Select ingredients for {currentItem.get('name')}</h4>
+                    <h4>Select ingredients for {currentItem.get('item').get('name')}</h4>
                     <ul className='collection'>
                     {ingredients.map((ingredient) =>
                         <li className='collection-item' key={ingredient.get('id')} onClick={(e) => onIngredientClick(e, ingredient)}>
@@ -61,7 +61,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IngredientModal)
+export default connect(mapStateToProps, mapDispatchToProps)(IngredientModal)
