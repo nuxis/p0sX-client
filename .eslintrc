@@ -10,7 +10,8 @@
     },
     "extends": [
         "standard",
-        "plugin:react/recommended"
+        "standard-jsx",
+        "standard-react"
     ],
     "rules": {
         "indent": ["error", 4],
