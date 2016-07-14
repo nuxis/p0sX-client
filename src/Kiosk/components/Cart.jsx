@@ -6,10 +6,11 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart } from '../actions'
 import { getCart, getTotalPriceOfCart } from '../selectors'
+import { List } from 'immutable'
 
 const Cart = React.createClass({
     propTypes: {
-        items: React.PropTypes.array.isRequired,
+        items: React.PropTypes.instanceOf(List).isRequired,
         onEmptyCart: React.PropTypes.func.isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         onPurchase: React.PropTypes.func.isRequired,

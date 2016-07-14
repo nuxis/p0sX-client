@@ -3,22 +3,12 @@ import Item from './Item.jsx'
 import { connect } from 'react-redux'
 import { addItemToCart, openIngredientModalForItem } from '../actions'
 import { getSelectedCategory, getItems } from '../selectors'
+import { List } from 'immutable'
 
 const ItemList = React.createClass({
     propTypes: {
-        items: React.PropTypes.arrayOf(React.PropTypes.shape({
-            id: React.PropTypes.number.isRequired,
-            name: React.PropTypes.string.isRequired,
-            barcode: React.PropTypes.string.isRequired,
-            stock: React.PropTypes.number.isRequired,
-            category: React.PropTypes.number.isRequired,
-            // eslint-disable-next-line camelcase
-            can_have_ingredients: React.PropTypes.bool.isRequired,
-            price: React.PropTypes.number.isRequired,
-            image: React.PropTypes.string
-        }).isRequired).isRequired,
-        onItemClick: React.PropTypes.func.isRequired,
-        getInitialData: React.PropTypes.func.isRequired
+        items: React.PropTypes.instanceOf(List).isRequired,
+        onItemClick: React.PropTypes.func.isRequired
     },
     render: function () {
         const { items, onItemClick } = this.props

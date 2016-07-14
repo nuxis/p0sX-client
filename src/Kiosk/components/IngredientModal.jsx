@@ -1,16 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-// import {getItemById} from '../store'
+import { List } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
 import { getIngredients, getCurrentItem } from '../selectors'
 
 const IngredientModal = React.createClass({
     propTypes: {
         onClose: React.PropTypes.func.isRequired,
-        item: React.PropTypes.object.isRequired,
-        ingredients: React.PropTypes.array.isRequired,
+        ingredients: React.PropTypes.instanceOf(List).isRequired,
         onIngredientClick: React.PropTypes.func.isRequired,
-        currentItem: React.PropTypes.object.isRequired
+        currentItem: React.PropTypes.instanceOf(Map).isRequired
     },
     render: function () {
         const { onClose, ingredients, onIngredientClick, currentItem } = this.props
@@ -20,17 +19,17 @@ const IngredientModal = React.createClass({
                 <div className='modal-content'>
                     <h4>Select ingredients for {currentItem.get('item').get('name')}</h4>
                     <ul className='collection'>
-                    {ingredients.map((ingredient) =>
-                        <li className='collection-item' key={ingredient.get('id')} onClick={(e) => onIngredientClick(e, ingredient)}>
-                            <input
-                                onClick={(e) => e.stopPropagation()}
-                                id={'ingredient-' + ingredient.get('id')}
-                                checked={currentItem.get('ingredients').includes(ingredient)}
-                                type='checkbox'
-                            />
-                            <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
-                        </li>
-                    )}
+                        {ingredients.map((ingredient) =>
+                            <li className='collection-item' key={ingredient.get('id')} onClick={(e) => onIngredientClick(e, ingredient)}>
+                                <input
+                                    onClick={(e) => e.stopPropagation()}
+                                    id={'ingredient-' + ingredient.get('id')}
+                                    checked={currentItem.get('ingredients').includes(ingredient)}
+                                    type='checkbox'
+                                />
+                                <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
+                            </li>
+                         )}
                     </ul>
                 </div>
                 <div className='modal-footer'>

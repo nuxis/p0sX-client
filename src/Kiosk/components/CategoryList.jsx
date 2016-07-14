@@ -3,13 +3,11 @@ import Category from './Category.jsx'
 import { connect } from 'react-redux'
 import { setActiveCategory } from '../actions'
 import { getCategories, getSelectedCategory } from '../selectors'
+import { List } from 'immutable'
 
 const CategoryList = React.createClass({
     propTypes: {
-        categories: React.PropTypes.arrayOf(React.PropTypes.shape({
-            id: React.PropTypes.number.isRequired,
-            name: React.PropTypes.string.isRequired
-        }).isRequired).isRequired,
+        categories: React.PropTypes.instanceOf(List).isRequired,
         selectedCategory: React.PropTypes.number.isRequired,
         onCategoryClick: React.PropTypes.func.isRequired
     },
@@ -23,7 +21,7 @@ const CategoryList = React.createClass({
                         <Category
                             key={category.get('id')}
                             name={category.get('name')}
-                            active = {selectedCategory === category.get('id')}
+                            active={selectedCategory === category.get('id')}
                             onClick={() => onCategoryClick(category)}
                         />
                     )}
