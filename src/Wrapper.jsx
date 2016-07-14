@@ -8,12 +8,8 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 
 const Wrapper = React.createClass({
     propTypes: {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.arrayOf(React.PropTypes.node),
-            React.PropTypes.node
-        ]),
-        getInitialKioskData: React.PropTypes.func.isRequired
     },
+
     componentDidMount: function () {
         var allSettings = settings.get()
         if (Object.getOwnPropertyNames(allSettings).length === 0) {
@@ -24,6 +20,7 @@ const Wrapper = React.createClass({
             console.error('Initial data isn ot implemented')
         }
     },
+
     render: function () {
         return (
             <div>
@@ -32,7 +29,6 @@ const Wrapper = React.createClass({
                     <Link to='/'>Kiosk</Link>
                     <Link to='/kitchen'>Kitchen</Link>
                 </Navbar>
-                {this.props.children}
                 <IngredientModal />
                 <SettingsModal />
             </div>
@@ -40,7 +36,7 @@ const Wrapper = React.createClass({
     }
 })
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
     return {}
 }
 
