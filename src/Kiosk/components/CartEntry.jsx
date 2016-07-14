@@ -5,11 +5,11 @@ const CartEntry = React.createClass({
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
         ingredients: React.PropTypes.array.isRequired,
-        removeItem: React.PropTypes.func.isRequired,
+        onRemoveItem: React.PropTypes.func.isRequired,
         image: React.PropTypes.string
     },
     render: function () {
-        const { name, price, ingredients, removeItem, image } = this.props
+        const { name, price, ingredients, onRemoveItem, image } = this.props
         return (
             <li className='collection-item avatar'>
                 <img src={image} alt='' className='circle' />
@@ -20,7 +20,7 @@ const CartEntry = React.createClass({
                     )}
                     {price} Kr.
                 </p>
-                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={removeItem} title='Remove item'>
+                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={onRemoveItem} title='Remove item'>
                     <i className='material-icons small red-text'>delete</i>
                 </a>
             </li>
