@@ -27,7 +27,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "axios": "^0.12.0",
+    "axios": "^0.13.0",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -46,11 +46,14 @@
     "electron-squirrel-startup": "^1.0.0",
     "eslint": "^3.0.1",
     "eslint-config-standard": "^5.3.5",
+    "eslint-config-standard-jsx": "^2.0.0",
+    "eslint-config-standard-react": "^3.0.0",
     "eslint-plugin-immutable": "^1.0.0",
     "eslint-plugin-promise": "^2.0.0",
     "eslint-plugin-react": "^5.2.2",
     "eslint-plugin-standard": "^2.0.0",
     "file-loader": "^0.9.0",
+    "history": "^3.0.0",
     "immutable": "^3.8.1",
     "json-loader": "^0.5.4",
     "material-design-icons-iconfont": "^2.0.5",
@@ -63,12 +66,10 @@
     "react-router-redux": "^4.0.4",
     "redux": "^3.5.2",
     "redux-saga": "^0.11.0",
-    "redux-thunk": "^2.1.0",
     "reselect": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.1"
   },
   "build": {
     "app-bundle-id": "org.nuxis.p0sX",
