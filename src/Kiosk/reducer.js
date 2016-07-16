@@ -59,9 +59,9 @@ export function currentItem (state = currentItemInit, action) {
         })
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
-            return state.get('ingredients').remove(action.ingredient)
+            return state.set('ingredients', state.get('ingredients').remove(action.ingredient))
         } else {
-            return state.get('ingredients').push(action.ingredient)
+            return state.set('ingredients', state.get('ingredients').push(action.ingredient))
         }
 
     case actions.ADD_CURRENT_ITEM_TO_CART:
@@ -84,20 +84,20 @@ export function cart (state = cartInit, action) {
     switch (action.type) {
     case actions.ADD_ITEM_TO_CART:
         return state.push(
-            {
+            Map({
                 item: action.item,
                 ingredients: List()
-            }
+            })
       )
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return state.push(
-            {
-                item: action.currentItem.item,
-                ingredients: action.currentItem.ingredients
-            }
+            Map({
+                item: action.currentItem.get('item'),
+                ingredients: action.currentItem.get('ingredients')
+            })
       )
     case actions.REMOVE_ITEM_FROM_CART:
-        return state.remove(action.cartItem)
+        return state.remove(action.itemIndexInCart)
     case actions.EMPTY_CART:
         return new List()
     default:
