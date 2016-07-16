@@ -41,8 +41,8 @@ const Cart = React.createClass({
                         )}
                     </ul>
                 </div>
-                <CheckoutButton onClick={onPurchase} total={total} active={items.isEmpty()} />
-                <EmptyCartButton onClick={onEmptyCart} active={items.isEmpty()} />
+                <CheckoutButton onClick={onPurchase} total={total} active={!items.isEmpty()} />
+                <EmptyCartButton onClick={onEmptyCart} active={!items.isEmpty()} />
             </div>
         )
     }
