@@ -46,7 +46,7 @@ export const setCategories = (categories) => action(SET_CATEGORIES, { categories
 
 export const emptyCart = () => action(EMPTY_CART, {})
 
-export const removeItemFromCart = (cartItem) => action(REMOVE_ITEM_FROM_CART, { cartItem })
+export const removeItemFromCart = (itemIndexInCart) => action(REMOVE_ITEM_FROM_CART, { itemIndexInCart })
 
 export const setActiveCategory = (category) => action(SET_ACTIVE_CATEGORY, { category })
 
