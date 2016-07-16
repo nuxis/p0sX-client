@@ -5,7 +5,7 @@ import EmptyCartButton from './EmptyCartButton.jsx'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart } from '../actions'
-import { getCart, getTotalPriceOfCart } from '../selectors'
+import { getRenderedCart, getTotalPriceOfCart } from '../selectors'
 import { List } from 'immutable'
 
 const Cart = React.createClass({
@@ -23,6 +23,7 @@ const Cart = React.createClass({
         })
 
         console.log('cart component items: ', items)
+        console.log('cart func: ', onRemoveItem)
 
         return (
             <div style={{height: '100%'}} className='col s12 m3 l3'>
@@ -31,60 +32,36 @@ const Cart = React.createClass({
                         {items.map((entry, index) =>
                             <CartEntry
                                 key={index}
-                                price={entry.item.get('price')}
-                                name={entry.item.get('name')}
-                                image={entry.item.get('image') || require('../../images/planet.png')}
-                                ingredients={entry.ingredients}
-                                removeItem={() => onRemoveItem(entry)}
+                                price={entry.get('item').get('price')}
+                                name={entry.get('item').get('name')}
+                                image={entry.get('item').get('image') || require('../../images/planet.png')}
+                                ingredients={entry.get('ingredients')}
+                                onRemoveItem={() => { onRemoveItem(index) }}
                             />
                         )}
                     </ul>
                 </div>
-                <CheckoutButton onClick={onPurchase} total={total} active={items.size !== 0} />
-                <EmptyCartButton onClick={onEmptyCart} active={items.size !== 0} />
+                <CheckoutButton onClick={onPurchase} total={total} active={items.isEmpty()} />
+                <EmptyCartButton onClick={onEmptyCart} active={items.isEmpty()} />
             </div>
         )
     }
 })
 
-/* const getVisibleItems = (state, cart) => {
-   return cart.map((entry) => {
-   var item = Object.assign({}, getItemById(entry.item))
-   return Object.assign(item, entry, {
-   price: entry.ingredients.reduce((total, ingredient) => {
-   return total + parseInt(getIngredientById(ingredient).price)
-   }, item.price),
-   ingredients: entry.ingredients.map((ingredient) => {
-   return getIngredientById(ingredient)
-   })
-   })
-   })
-   }
-
-   const getTotalPrice = (state, cart) => {
-   return cart.reduce((total, entry) => {
-   total += entry.item.price
-   total += entry.ingredients.reduce((sum, ingredient) => {
-   return sum + parseInt(ingredient.price)
-   }, 0)
-   return total
-   }, 0)
-   } */
-
 const mapStateToProps = (state) => {
     return {
-        items: getCart(state),
+        items: getRenderedCart(state),
         total: getTotalPriceOfCart(state)
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onEmptyCart: () => {
             dispatch(emptyCart())
         },
-        onRemoveItem: (item) => {
-            dispatch(removeItemFromCart(item))
+        onRemoveItem: (itemIndex) => {
+            dispatch(removeItemFromCart(itemIndex))
         },
         onPurchase: () => {
             console.error('Purchase is not implemented :(')
