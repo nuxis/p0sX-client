@@ -6,13 +6,13 @@ import { getIngredients, getCurrentItem } from '../selectors'
 
 const IngredientModal = React.createClass({
     propTypes: {
-        onClose: React.PropTypes.func.isRequired,
         ingredients: React.PropTypes.instanceOf(List).isRequired,
-        onIngredientClick: React.PropTypes.func.isRequired,
-        currentItem: React.PropTypes.instanceOf(Map).isRequired
+        currentItem: React.PropTypes.instanceOf(Map).isRequired,
+        onClose: React.PropTypes.func.isRequired,
+        onIngredientClick: React.PropTypes.func.isRequired
     },
     render: function () {
-        const { onClose, ingredients, onIngredientClick, currentItem } = this.props
+        const { ingredients, currentItem, onClose, onIngredientClick } = this.props
         console.log('IngredientModal: ', currentItem, ingredients)
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
@@ -33,7 +33,7 @@ const IngredientModal = React.createClass({
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={onClose} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
+                    <a href='#!' onClick={() => onClose(currentItem)} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
@@ -42,6 +42,8 @@ const IngredientModal = React.createClass({
 })
 
 const mapStateToProps = (state) => {
+    console.log('IngredientModal state: ', state)
+    console.log('IngredientModal getCurrentItem: ', getCurrentItem(state))
     return {
         ingredients: getIngredients(state),
         currentItem: getCurrentItem(state)
@@ -50,8 +52,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClose: () => {
-            dispatch(addCurrentItemToCart())
+        onClose: (currentItem) => {
+            dispatch(addCurrentItemToCart(currentItem))
         },
         onIngredientClick: (e, ingredient) => {
             e.stopPropagation()
