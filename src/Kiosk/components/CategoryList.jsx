@@ -46,7 +46,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CategoryList)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)
