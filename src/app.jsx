@@ -47,7 +47,7 @@ const routes = (
     <Provider store={store}>
         <Router history={history}>
             <Route path='/' component={Wrapper}>
-                <IndexRoute component={Kiosk}/>
+                <IndexRoute component={Kiosk} />
             </Route>
         </Router>
     </Provider>

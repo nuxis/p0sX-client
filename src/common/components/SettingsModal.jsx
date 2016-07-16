@@ -36,7 +36,7 @@ const SettingsModal = React.createClass({
                                     </div>
                                 </div>
                             </div>
-                         </li>
+                        </li>
                     </ul>
                 </div>
                 <div className='modal-footer'>
