@@ -2,7 +2,7 @@ import React from 'react'
 import Item from './Item.jsx'
 import { connect } from 'react-redux'
 import { addItemToCart, openIngredientModalForItem } from '../actions'
-import { getSelectedCategory, getItems } from '../selectors'
+import { getItemsByCategory } from '../selectors'
 import { List } from 'immutable'
 
 const ItemList = React.createClass({
@@ -23,7 +23,7 @@ const ItemList = React.createClass({
                             price={item.get('price')}
                             image={item.get('image') || require('../../images/planet.png')}
                             // eslint-disable-next-line camelcase
-                            onClick={() => onItemClick(item.get('id'), item.get('can_have_ingredients'))}
+                            onClick={() => onItemClick(item, item.get('can_have_ingredients'))}
                         />
                     )}
                 </div>
@@ -32,17 +32,9 @@ const ItemList = React.createClass({
     }
 })
 
-const getVisibleItems = (items, category) => {
-    if (category === 0) {
-        return items
-    } else {
-        return items.filter((i) => i.category === category)
-    }
-}
-
 const mapStateToProps = (state) => {
     return {
-        items: getVisibleItems(getItems(state), getSelectedCategory(state))
+        items: getItemsByCategory(state)
     }
 }
 
