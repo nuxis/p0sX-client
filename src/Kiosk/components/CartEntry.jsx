@@ -1,10 +1,11 @@
 import React from 'react'
+import { List } from 'immutable'
 
 const CartEntry = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
-        ingredients: React.PropTypes.array.isRequired,
+        ingredients: React.PropTypes.instanceOf(List).isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         image: React.PropTypes.string
     },
