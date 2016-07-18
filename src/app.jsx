@@ -13,6 +13,7 @@ import './css/style.css'
 
 import { Provider } from 'react-redux'
 import Kiosk from './Kiosk/Kiosk'
+import KitchenCustomer from './Kitchen/KitchenCustomer'
 import { useRouterHistory, Router, Route, IndexRoute } from 'react-router'
 import { createHashHistory } from 'history'
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -49,6 +50,7 @@ const routes = (
             <Route path='/(!)' component={Wrapper}>
                 <IndexRoute component={Kiosk} />
             </Route>
+            <Route path='orders' component={KitchenCustomer} />
         </Router>
     </Provider>
 )
