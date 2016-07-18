@@ -36,8 +36,12 @@ class SettingsModal extends React.Component {
                                         <label className='active' htmlFor='server'>Server</label>
                                     </div>
                                     <div className='input-field col s12'>
-                                        <input id='token' type='text' className='validate' />
-                                        <label className='active' htmlFor='token'>Token</label>
+                                      <input id='token' type='text' className='validate' />
+                                      <label className='active' htmlFor='token'>Token</label>
+                                    </div>
+                                    <div className='input-field col s12'>
+                                      <input id='customer_order_delay' type='number' className='validate' />
+                                      <label className='active' htmlFor='token'>Update rate for Customer orders</label>
                                     </div>
                                 </div>
                             </div>
@@ -63,13 +67,13 @@ const mapStateToProps = () => {
 const mapDispatchToProps = () => {
     return {
         onSave: (initial) => {
-            var server = $('#server').val()
-            var token = $('#token').val()
+            const server = $('#server').val()
+            const token = $('#token').val()
+            const customerOrderDelay = $('#customer_order_delay').val()
 
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
-
-            console.log(initial, 'Should we get data?')
+            settings.set('customer_order_delay', customerOrderDelay)
         }
     }
 }
