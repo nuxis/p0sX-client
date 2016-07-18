@@ -3,6 +3,8 @@ import 'electron-squirrel-startup'
 import { ChildProcess } from 'child_process'
 import path from 'path'
 
+const DEV = true
+
 // this should be placed at top of main.js to handle setup events quickly
 if (handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -33,35 +35,35 @@ function handleSquirrelEvent () {
 
     const squirrelEvent = process.argv[1]
     switch (squirrelEvent) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-        // Optionally do things such as:
-        // - Add your .exe to the PATH
-        // - Write to the registry for things like file associations and
-        //   explorer context menus
+        case '--squirrel-install':
+            case '--squirrel-updated':
+            // Optionally do things such as:
+            // - Add your .exe to the PATH
+            // - Write to the registry for things like file associations and
+            //   explorer context menus
 
-        // Install desktop and start menu shortcuts
-        spawnUpdate(['--createShortcut', exeName])
-
-        setTimeout(app.quit, 1000)
-        return true
-
-    case '--squirrel-uninstall':
-        // Undo anything you did in the --squirrel-install and
-        // --squirrel-updated handlers
-
-        // Remove desktop and start menu shortcuts
-        spawnUpdate(['--removeShortcut', exeName])
+            // Install desktop and start menu shortcuts
+            spawnUpdate(['--createShortcut', exeName])
 
         setTimeout(app.quit, 1000)
         return true
 
-    case '--squirrel-obsolete':
-        // This is called on the outgoing version of your app before
-        // we update to the new version - it's the opposite of
-        // --squirrel-updated
+        case '--squirrel-uninstall':
+            // Undo anything you did in the --squirrel-install and
+            // --squirrel-updated handlers
 
-        app.quit()
+            // Remove desktop and start menu shortcuts
+            spawnUpdate(['--removeShortcut', exeName])
+
+        setTimeout(app.quit, 1000)
+        return true
+
+        case '--squirrel-obsolete':
+            // This is called on the outgoing version of your app before
+            // we update to the new version - it's the opposite of
+            // --squirrel-updated
+
+            app.quit()
         return true
     }
 }
@@ -74,17 +76,26 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
     // Initialize the window to our specified dimensions
-    const mainWindow = new BrowserWindow({
-        width: 1024,
-        height: 768,
-        frame: true
-    })
-    mainWindow.openDevTools()
+    if (DEV) {
+        const mainWindow = new BrowserWindow({
+            width: 1374, // 1024 + 350 for devtools
+            height: 768,
+            frame: true
+        })
+        mainWindow.openDevTools()
+
+    } else {
+        const mainWindow = new BrowserWindow({
+            width: 1024,
+            height: 768,
+            frame: true
+        })
+    }
 
     // Tell Electron where to load the entry point from
     mainWindow.loadURL(`file://${__dirname}/app.html`)
 
-    // Clear out the main window when the app is closed
-    mainWindow.on('closed', () => {
+        // Clear out the main window when the app is closed
+        mainWindow.on('closed', () => {
     })
 })
