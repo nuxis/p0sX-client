@@ -76,20 +76,13 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
     // Initialize the window to our specified dimensions
+    const mainWindow = new BrowserWindow({
+        width: DEV ? 1374 : 1024,
+        height: 768,
+        frame: true
+    })
     if (DEV) {
-        const mainWindow = new BrowserWindow({
-            width: 1374, // 1024 + 350 for devtools
-            height: 768,
-            frame: true
-        })
         mainWindow.openDevTools()
-
-    } else {
-        const mainWindow = new BrowserWindow({
-            width: 1024,
-            height: 768,
-            frame: true
-        })
     }
 
     // Tell Electron where to load the entry point from
