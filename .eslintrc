@@ -11,10 +11,11 @@
             "jsx": true
         }
     },
+
     "extends": [
         "standard",
-        "standard-jsx",
-        "standard-react"
+    "standard-jsx",
+    "standard-react"
     ],
     "rules": {
         "indent": ["error", 4],
