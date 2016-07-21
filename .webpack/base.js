@@ -13,12 +13,20 @@ export default {
                 loader: 'json-loader'
             },
             {
-                test: /\.css$/,
+                test: /\.(css)$/,
                 loader: "style-loader!css-loader"
             },
             {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=255000'
+                test: /\.(woff2)(\?.*$|$)$/,
+                loader: 'url-loader?limit=255000?mimetype=font/woff2'
+            },
+            {
+                test: /\.(png)$/,
+                loader: 'url-loader?limit=255000?mimetype=image/png'
+            },
+            {
+                test: /\.(ttf|woff|eot|svg)(\?.*$|$)$/,
+                loader: 'empty-string-loader'
             }
         ]
     },

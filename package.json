@@ -70,7 +70,9 @@
     "reselect": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "font-awesome": "^4.6.3",
+    "empty-string-loader": "^0.1.1"
   },
   "build": {
     "app-bundle-id": "org.nuxis.p0sX",
