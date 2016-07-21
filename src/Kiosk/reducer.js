@@ -150,3 +150,21 @@ export function items (state = itemsInit, action) {
 }
 
 // END ITEMS
+
+// PAYMENT
+
+const paymentInit = new Map({
+    state: 'select'
+})
+
+export function payment (state = paymentInit, action) {
+    console.log('payment state:', state, action)
+    switch (action.type) {
+    case actions.SET_PAYMENT_STATE:
+        return state.set('state', action.state)
+    default:
+        return state
+    }
+}
+
+// END PAYMENT

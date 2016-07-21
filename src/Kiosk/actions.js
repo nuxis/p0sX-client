@@ -30,6 +30,9 @@ export const TOGGLE_INGREDIENT = 'TOGGLE_INGREDIENT'
 
 export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
+export const SET_PAYMENT_STATE = 'SET_PAYMENT_STATE'
+
+
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
@@ -57,3 +60,6 @@ export const openIngredientModalForItem = (item) => action(OPEN_INGREDIENT_MODAL
 export const toggleIngredient = (ingredient) => action(TOGGLE_INGREDIENT, { ingredient })
 
 export const setSearchString = (value) => action(SET_SEARCH_VALUE, { value })
+
+export const setPaymentState = (state) => action(SET_PAYMENT_STATE, { state })
+

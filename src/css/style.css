@@ -18,6 +18,18 @@ ul.search-list {
     width: 120px;
     border-radius: 3px;
     border: 1px solid lightgray;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.payment-glyph {
+    width: 100%;
+    text-align: center;
+    font-size: 80px;
+}
+
+.item-card h5 {
+    text-align: center;
 }
 
 .item-card img {

@@ -1,7 +1,7 @@
 // DIS FILE IS GOING AWAY, INIT SHOULD BE SAGA
 
 import axios from 'axios'
-import { getCategories, getIngredients, getItems } from '../common/api'
+import { getCategories, getIngredients, getItems } from './common/api'
 
 const setInitialData = () => {
     return (dispatch) => {
