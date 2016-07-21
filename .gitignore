@@ -2,9 +2,12 @@
 
 app/main.js
 app/app.js
+app/main.js.map
+app/app.js.map
 app/settings.json
 dist/
 secrets.yml
+.tern-port
 
 
 # Created by https://www.gitignore.io/api/osx,windows,vim,intellij,visualstudio,node

@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
-import { setInitialData } from '../actions'
 
 const SettingsModal = React.createClass({
     propTypes: {
@@ -37,7 +36,7 @@ const SettingsModal = React.createClass({
                                     </div>
                                 </div>
                             </div>
-                         </li>
+                        </li>
                     </ul>
                 </div>
                 <div className='modal-footer'>
@@ -64,11 +63,6 @@ const mapDispatchToProps = (dispatch) => {
 
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
-
-            if (initial) {
-                console.log('get data')
-                dispatch(setInitialData())
-            }
         }
     }
 }

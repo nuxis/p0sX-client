@@ -37,5 +37,6 @@ export default {
     externals: [
         // put your node 3rd party libraries which can't be built with webpack here
         // (mysql, mongodb, and so on..)
-    ]
+    ],
+    devtool: 'source-map'
 };

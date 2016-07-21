@@ -1,8 +1,11 @@
+// DIS FILE IS GOING AWAY, INIT SHOULD BE SAGA
+
 import axios from 'axios'
-import { getCategories, getIngredients, getItems } from './../backend'
+import { getCategories, getIngredients, getItems } from '../common/api'
 
 const setInitialData = () => {
     return (dispatch) => {
+        console.log('Calls for apiz')
         axios.all([
             getCategories(),
             getIngredients(),
