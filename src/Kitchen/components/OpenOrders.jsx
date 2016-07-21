@@ -6,12 +6,16 @@ import { List } from 'immutable'
 
 class OpenOrders extends Component {
 
+    static propTypes = {
+        orders: PropTypes.instanceOf(List).isRequired
+    }
+
     render () {
         const { orders } = this.props
         return (
             <div className='new-orders'>
                 {orders.map((order) =>
-                    <Order orderNumber={order.id} />
+                    <Order orderNumber={order.get('id')} derp='merp' />
                  )}
             </div>
         )
@@ -27,10 +31,6 @@ function mapStateToProps (state) {
 const mapDispatchToProps = (dispatch) => {
     return {
     }
-}
-
-OpenOrders.propTypes = {
-    orders: PropTypes.instanceOf(List).isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OpenOrders)
