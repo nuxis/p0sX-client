@@ -5,6 +5,10 @@ class CustomerOrder extends Component {
         orderNumber: PropTypes.number.isRequired
     }
 
+    static propTypes = {
+        orderNumber: PropTypes.number.isRequired
+    }
+
     render () {
         const { orderNumber } = this.props
 
@@ -17,4 +21,3 @@ class CustomerOrder extends Component {
 }
 
 export default CustomerOrder
-
