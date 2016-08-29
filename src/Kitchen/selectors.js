@@ -12,20 +12,20 @@ export const getOpenOrders = createSelector(
     }
 )
 
-export const getInProgressOrders = createSelector(
+export const getDoneOrders = createSelector(
     [getOrders],
     (orders) => {
         return orders.filter((order) => {
-            return order.get('state') === ORDER_STATE.IN_PROGRESS
+            return order.get('state') === ORDER_STATE.DONE
         })
     }
 )
 
-export const getDeliveredOrders = createSelector(
+export const getArchivedOrders = createSelector(
     [getOrders],
     (orders) => {
         return orders.filter((order) => {
-            return order.get('state') === ORDER_STATE.DELIVERED
+            return order.get('state') === ORDER_STATE.ARCHIVED
         })
     }
 )

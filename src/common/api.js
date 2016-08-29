@@ -2,8 +2,8 @@ import axios from 'axios'
 
 export const ORDER_STATE = {
     OPEN: 0,
-    IN_PROGRESS: 1,
-    DELIVERED: 2
+    DONE: 1,
+    ARCHIVED: 2
 }
 
 export const PAYMENT_METHOD = {
