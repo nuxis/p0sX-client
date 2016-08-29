@@ -49,8 +49,10 @@ const routes = (
         <Router history={history}>
             <Route path='/(!)' component={Wrapper}>
                 <IndexRoute component={Kiosk} />
+                <Route path='kiosk' component={Kiosk} />
+                <Route path='kitchen' component={KitchenCustomer} />
+                <Route path='orders' component={KitchenCustomer} />
             </Route>
-            <Route path='orders' component={KitchenCustomer} />
         </Router>
     </Provider>
 )
