@@ -24,7 +24,7 @@ class IngredientCheckbox extends React.Component {
     render () {
         const { ingredient, currentItem } = this.props
         return (
-            <li className='collection-item' key={ingredient.get('id')} onClick={::this.click}>
+            <li className='collection-item' onClick={::this.click}>
                 <input
                     onClick={IngredientCheckbox.noop}
                     id={'ingredient-' + ingredient.get('id')}
@@ -62,6 +62,7 @@ class IngredientModal extends React.Component {
                                 onClick={onIngredientClick}
                                 ingredient={ingredient}
                                 currentItem={currentItem}
+                                key={ingredient.get('id')}
                             />
                         )}
                     </ul>

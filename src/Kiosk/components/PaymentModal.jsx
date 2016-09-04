@@ -1,21 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { emptyCart, setPaymentState } from '../actions'
+import { getTotalPriceOfCart } from '../selectors'
 
 class PaymentModal extends React.Component {
     static propTypes = {
         onPurchase: React.PropTypes.func.isRequired,
         paymentState: React.PropTypes.string.isRequired,
-        selectCrew: React.PropTypes.func.isRequired
+        selectCrew: React.PropTypes.func.isRequired,
+        selectCash: React.PropTypes.func.isRequired,
+        onBack: React.PropTypes.func.isRequired,
+        total: React.PropTypes.number.isRequired
     }
 
     renderPaymentSelect () {
-        const { selectCrew } = this.props
+        const { selectCrew, selectCash } = this.props
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Choose payment option</h4>
-                    <div className='item-card z-depth-1 hoverable waves-effect'>
+                    <div onClick={selectCash} className='item-card z-depth-1 hoverable waves-effect'>
                         <h5>Cash</h5>
                         <i className='fa fa-money payment-glyph' aria-hidden='true' />
                     </div>
@@ -35,10 +39,10 @@ class PaymentModal extends React.Component {
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4>Scan badge</h4>
+                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge</h4>
                     <div className='row'>
                         <div className='input-field col s12'>
-                            <input ref='rfid' id='rfid' type='number' className='validate' />
+                            <input ref='rfid' id='rfid' type='number' required className='validate' />
                             <label className='active' htmlFor='rfid'>Badge number</label>
                         </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
@@ -53,11 +57,51 @@ class PaymentModal extends React.Component {
         )
     }
 
+    renderCash () {
+        const { total } = this.props
+        return (
+            <div id='payment-modal' className='modal modal-fixed-footer'>
+                <div className='modal-content'>
+                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Enter amount</h4>
+                    <div className='row'>
+                        <div className='input-field col s12'>
+                            <input ref='amount' id='amount' type='number' required min={total} className='validate' />
+                            <label className='active' htmlFor='amount'>Amount received</label>
+                        </div>
+                        <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
+                            Purchase
+                        </button>
+                    </div>
+                </div>
+                <div className='modal-footer'>
+                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                </div>
+            </div>
+        )
+    }
+
+    back () {
+        const { onBack } = this.props
+
+        onBack()
+    }
+
     purchaseCrew () {
         const { onPurchase } = this.props
-        const badge = this.refs.rfid.value
+        const { value, validity } = this.refs.rfid
 
-        onPurchase({badge: badge})
+        if (validity.valid) {
+            onPurchase({type: 'crew', badge: value})
+        }
+    }
+
+    purchaseCash () {
+        const { onPurchase } = this.props
+        const { value, validity } = this.refs.amount
+
+        if (validity.valid) {
+            onPurchase({type: 'cash', amount: value})
+        }
     }
 
     componentDidUpdate () {
@@ -73,6 +117,8 @@ class PaymentModal extends React.Component {
             return this.renderPaymentSelect()
         case 'crew':
             return this.renderCrew()
+        case 'cash':
+            return this.renderCash()
         default:
             return this.renderPaymentSelect()
         }
@@ -81,7 +127,8 @@ class PaymentModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        paymentState: state.payment.get('state')
+        paymentState: state.payment.get('state'),
+        total: getTotalPriceOfCart(state)
     }
 }
 
@@ -98,6 +145,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         selectCrew: () => {
             dispatch(setPaymentState('crew'))
+        },
+        selectCash: () => {
+            dispatch(setPaymentState('cash'))
+        },
+        onBack: () => {
+            dispatch(setPaymentState('select'))
         }
     }
 }

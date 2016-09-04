@@ -11,6 +11,10 @@ ul.search-list {
     margin-left: 100px;
 }
 
+.link {
+    cursor: pointer;
+}
+
 .item-card {
     margin-bottom: 20px;
     margin-right: 10px;
