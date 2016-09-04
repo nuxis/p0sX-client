@@ -38,7 +38,7 @@ class PaymentModal extends React.Component {
                     <h4>Scan badge</h4>
                     <div className='row'>
                         <div className='input-field col s12'>
-                            <input ref="rfid" id='rfid' type='number' className='validate' />
+                            <input ref='rfid' id='rfid' type='number' className='validate' />
                             <label className='active' htmlFor='rfid'>Badge number</label>
                         </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
@@ -54,29 +54,27 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCrew () {
-        const { onPurchase } = this.props;
-        const badge = this.refs.rfid.value;
+        const { onPurchase } = this.props
+        const badge = this.refs.rfid.value
 
         onPurchase({badge: badge})
     }
 
     componentDidUpdate () {
-        if(this.refs.rfid !== undefined)
-        {
-            this.refs.rfid.focus();
+        if (this.refs.rfid !== undefined) {
+            this.refs.rfid.focus()
         }
     }
 
     render () {
         const { paymentState } = this.props
-        switch(paymentState)
-        {
-            case 'select':
-                return this.renderPaymentSelect()
-            case 'crew':
-                return this.renderCrew()
-            default:
-                return this.renderPaymentSelect()
+        switch (paymentState) {
+        case 'select':
+            return this.renderPaymentSelect()
+        case 'crew':
+            return this.renderCrew()
+        default:
+            return this.renderPaymentSelect()
         }
     }
 }
