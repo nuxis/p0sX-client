@@ -42,7 +42,7 @@ class PaymentModal extends React.Component {
                     <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge</h4>
                     <div className='row'>
                         <div className='input-field col s12'>
-                            <input ref='rfid' id='rfid' type='number' required className='validate' />
+                            <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='number' required className='validate' />
                             <label className='active' htmlFor='rfid'>Badge number</label>
                         </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
@@ -65,7 +65,7 @@ class PaymentModal extends React.Component {
                     <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Enter amount</h4>
                     <div className='row'>
                         <div className='input-field col s12'>
-                            <input ref='amount' id='amount' type='number' required min={total} className='validate' />
+                            <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
                             <label className='active' htmlFor='amount'>Amount received</label>
                         </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
@@ -86,6 +86,22 @@ class PaymentModal extends React.Component {
         onBack()
     }
 
+    onEnter (e) {
+        if (e.keyCode === 13) {
+            const { paymentState } = this.props
+            switch (paymentState) {
+            case 'crew':
+                this.purchaseCrew()
+                break
+            case 'cash':
+                this.purchaseCash()
+                break
+            default:
+                break
+            }
+        }
+    }
+
     purchaseCrew () {
         const { onPurchase } = this.props
         const { value, validity } = this.refs.rfid
@@ -100,13 +116,16 @@ class PaymentModal extends React.Component {
         const { value, validity } = this.refs.amount
 
         if (validity.valid) {
-            onPurchase({type: 'cash', amount: value})
+            onPurchase({type: 'cash', amount: parseInt(value)})
         }
     }
 
     componentDidUpdate () {
         if (this.refs.rfid !== undefined) {
             this.refs.rfid.focus()
+        }
+        if (this.refs.amount !== undefined) {
+            this.refs.amount.focus()
         }
     }
 
