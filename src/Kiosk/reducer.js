@@ -78,10 +78,10 @@ export function currentItem (state = currentItemInit, action) {
 
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return Map({
-            ingredients: new List(),
-            item: new Map({
+            item: Map({
                 name: 'NOTHING'
-            })
+            }),
+            ingredients: new List()
         })
     default:
         return state

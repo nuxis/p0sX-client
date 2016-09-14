@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { emptyCart, setPaymentState } from '../actions'
-import { getTotalPriceOfCart } from '../selectors'
+import { getTotalPriceOfCart, getRenderedCart } from '../selectors'
+import { PAYMENT_METHOD } from '../../common/api'
 
 class PaymentModal extends React.Component {
     static propTypes = {
@@ -10,7 +11,8 @@ class PaymentModal extends React.Component {
         selectCrew: React.PropTypes.func.isRequired,
         selectCash: React.PropTypes.func.isRequired,
         onBack: React.PropTypes.func.isRequired,
-        total: React.PropTypes.number.isRequired
+        total: React.PropTypes.number.isRequired,
+        cart: React.PropTypes.object.isRequired
     }
 
     renderPaymentSelect () {
@@ -103,20 +105,41 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCrew () {
-        const { onPurchase } = this.props
+        const { onPurchase, cart } = this.props
         const { value, validity } = this.refs.rfid
 
         if (validity.valid) {
-            onPurchase({type: 'crew', badge: value})
+            const purchase = {
+                payment_method: PAYMENT_METHOD.CREW,
+                customer: value,
+                items: cart.map(entry => {
+                    return {
+                        id: entry.get('item').get('id'),
+                        ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
+                    }
+                })
+            }
+            console.log('Purchase: ', JSON.stringify(purchase))
+            onPurchase(purchase)
+
         }
     }
 
     purchaseCash () {
-        const { onPurchase } = this.props
-        const { value, validity } = this.refs.amount
+        const { onPurchase, cart } = this.props
+        const { validity } = this.refs.amount
 
         if (validity.valid) {
-            onPurchase({type: 'cash', amount: parseInt(value)})
+            const purchase = {
+                payment_method: PAYMENT_METHOD.CASH,
+                items: cart.map(entry => {
+                    return {
+                        id: entry.get('item').get('id'),
+                        ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
+                    }
+                })
+            }
+            onPurchase(purchase)
         }
     }
 
@@ -147,7 +170,8 @@ class PaymentModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         paymentState: state.payment.get('state'),
-        total: getTotalPriceOfCart(state)
+        total: getTotalPriceOfCart(state),
+        cart: getRenderedCart(state)
     }
 }
 
