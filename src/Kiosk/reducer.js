@@ -1,6 +1,21 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
+// SEARCH
+
+const searchInit = ""
+
+export function search (state = searchInit, action) {
+    switch (action.type) {
+    case actions.SET_SEARCH_VALUE:
+        return action.value
+    default:
+        return state
+    }
+}
+
+// END SEARCH
+
 // CATEGORIES
 
 const mainCategory = new Map({
@@ -10,7 +25,6 @@ const mainCategory = new Map({
 const categoriesInit = List().push(mainCategory)
 
 export function categories (state = categoriesInit, action) {
-    console.log('categories state: ', state, action)
     switch (action.type) {
     case actions.SET_CATEGORIES:
         return categoriesInit.concat(action.categories)
