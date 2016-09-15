@@ -46,10 +46,10 @@ const history = syncHistoryWithStore(hashHistory, store)
 const routes = (
     <Provider store={store}>
         <Router history={history}>
-            <Route path='/' component={Wrapper}>
+            <Route path='/(!)' component={Wrapper}>
                 <IndexRoute component={Kiosk} />
             </Route>
         </Router>
     </Provider>
-    )
+)
 render(routes, document.getElementById('app'))
