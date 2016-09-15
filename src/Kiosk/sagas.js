@@ -1,6 +1,7 @@
 import { call, put, take } from 'redux-saga/effects'
 import * as api from '../common/api'
 import * as actions from './actions'
+import { close as closePaymentModal} from './components/PaymentModal.jsx'
 
 export function * watchKioskData () {
     while (true) {
@@ -56,6 +57,20 @@ function * getCategories () {
     try {
         const categories = yield call(api.getCategories)
         yield put(actions.setCategories(categories))
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * purchase (options) {
+    try {
+        const result = yield call(api.postPurchase, options)
+        console.log(result)
+        if (result.status === 'success') {
+            put(actions.emptyCart())
+            put(actions.setPaymentState('select'))
+            closePaymentModal()
+        }
     } catch (error) {
         console.error(error)
     }

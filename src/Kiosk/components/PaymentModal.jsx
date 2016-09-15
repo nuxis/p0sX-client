@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { emptyCart, setPaymentState } from '../actions'
+import { setPaymentState } from '../actions'
 import { getTotalPriceOfCart, getRenderedCart } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
+import { purchase as postPurchase } from '../sagas'
 
 class PaymentModal extends React.Component {
     static propTypes = {
@@ -119,7 +120,6 @@ class PaymentModal extends React.Component {
                     }
                 })
             }
-            console.log('Purchase: ', JSON.stringify(purchase))
             onPurchase(purchase)
 
         }
@@ -178,13 +178,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onPurchase: (options) => {
-            console.log('Purchasing with:', options)
-
-            // Do this on callback from purchase call to server
-            // or show some error message in the modal
-            close()
-            dispatch(emptyCart())
-            dispatch(setPaymentState('select'))
+            console.log('Purchase ', options)
+            const gen = postPurchase(options)
+            const res = gen.next()
         },
         selectCrew: () => {
             dispatch(setPaymentState('crew'))
@@ -212,5 +208,6 @@ export default connect(
 )(PaymentModal)
 
 export {
-    open
+    open,
+    close
 }
