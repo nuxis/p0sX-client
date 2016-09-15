@@ -3,7 +3,7 @@ import * as actions from './actions'
 
 // SEARCH
 
-const searchInit = ""
+const searchInit = ''
 
 export function search (state = searchInit, action) {
     switch (action.type) {
@@ -40,7 +40,6 @@ export function categories (state = categoriesInit, action) {
 const selectedCategoryInit = 0
 
 export function selectedCategory (state = selectedCategoryInit, action) {
-    console.log('selectedCategory state: ', state, action)
     switch (action.type) {
     case actions.SET_ACTIVE_CATEGORY:
         return action.category.get('id')
@@ -64,7 +63,6 @@ const currentItemInit = new Map({
 })
 
 export function currentItem (state = currentItemInit, action) {
-    console.log('currentItem state: ', state, action)
     switch (action.type) {
     case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
         return new Map({
@@ -94,7 +92,6 @@ export function currentItem (state = currentItemInit, action) {
 const cartInit = new List()
 
 export function cart (state = cartInit, action) {
-    console.log('cart state: ', state, action)
     switch (action.type) {
     case actions.ADD_ITEM_TO_CART:
         return state.push(
@@ -126,7 +123,6 @@ export function cart (state = cartInit, action) {
 const ingredientsInit = new List()
 
 export function ingredients (state = ingredientsInit, action) {
-    console.log('ingredients state:', state, action)
     switch (action.type) {
     case actions.SET_INGREDIENTS:
         return action.ingredients
@@ -142,7 +138,6 @@ export function ingredients (state = ingredientsInit, action) {
 const itemsInit = new List()
 
 export function items (state = itemsInit, action) {
-    console.log('items state:', state, action)
     switch (action.type) {
     case actions.SET_ITEMS:
         return action.items

@@ -19,9 +19,6 @@ const Wrapper = React.createClass({
         if (Object.getOwnPropertyNames(allSettings).length === 0) {
             console.log('Need sum config')
             openSettings()
-        } else {
-          // TODO: Write new initialdata
-            console.error('Initial data isn ot implemented')
         }
     },
     render: function () {

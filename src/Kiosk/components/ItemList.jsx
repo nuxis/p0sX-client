@@ -23,7 +23,7 @@ const ItemList = React.createClass({
                             price={item.get('price')}
                             image={item.get('image') || require('../../images/planet.png')}
                             // eslint-disable-next-line camelcase
-                            onClick={() => onItemClick(item, item.get('can_have_ingredients'))}
+                            onClick={() => onItemClick(item)}
                         />
                     )}
                 </div>
@@ -41,9 +41,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         // eslint-disable-next-line camelcase
-        onItemClick: (item, can_have_ingredients) => {
+        onItemClick: (item) => {
             // eslint-disable-next-line camelcase
-            if (can_have_ingredients) {
+            if (item.get('can_have_ingredients')) {
                 $('#ingredient-modal').openModal()
                 dispatch(openIngredientModalForItem(item))
             } else {

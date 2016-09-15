@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSearchString, addItemToCart } from '../actions'
+import { setSearchString, addItemToCart, openIngredientModalForItem } from '../actions'
 import { getItemsByCategory } from '../selectors'
 
 class SearchBox extends React.Component {
@@ -14,7 +14,7 @@ class SearchBox extends React.Component {
         return (
             <div className='input-field'>
                 <input onKeyUp={::this.keyPress} id='search' type='search' />
-                <label for="search"><i className='material-icons'>search</i></label>
+                <label htmlFor="search"><i className='material-icons'>search</i></label>
             </div>
         )
     }
@@ -45,7 +45,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setSearchString(value))
         },
         addItemToCart: (item) => {
-            dispatch(addItemToCart(item))
+            if (item.get('can_have_ingredients')) {
+                $('#ingredient-modal').openModal()
+                dispatch(openIngredientModalForItem(item))
+            } else {
+                dispatch(addItemToCart(item))
+            }
         }
     }
 }
