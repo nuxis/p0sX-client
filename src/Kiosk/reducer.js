@@ -59,14 +59,17 @@ export function currentItem (state = currentItemInit, action) {
         })
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
-            return state.set('ingredients', state.get('ingredients').remove(action.ingredient))
+            return state.set('ingredients', state.get('ingredients').filter(i => i.get('id') !== action.ingredient.get('id')))
         } else {
             return state.set('ingredients', state.get('ingredients').push(action.ingredient))
         }
 
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return Map({
-            ingredients: new List()
+            ingredients: new List(),
+            item: new Map({
+                name: 'NOTHING'
+            })
         })
     default:
         return state
