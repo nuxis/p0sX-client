@@ -45,15 +45,14 @@ export const getItems = (state) => state.items
 export const getItemsByCategory = createSelector(
     [getItems, getSelectedCategory, getSearch],
     (items, categoryId, search) => {
-        var shownItems;
+        var shownItems
         if (categoryId === 0) {
             shownItems = items
         } else {
             shownItems = items.filter((item) => item.get('category') === categoryId)
         }
-        if(search.length > 0)
-        {
-            shownItems = shownItems.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) != -1 || item.get('barcode') === search)
+        if (search.length > 0) {
+            shownItems = shownItems.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
         }
 
         return shownItems

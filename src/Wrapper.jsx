@@ -33,7 +33,7 @@ const Wrapper = React.createClass({
                         <ul className='right hide-on-med-and-down'>
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                             <NavItem key='kiosk' href='#/'>Kiosk</NavItem>
-                            <NavItem key='kitchen' href="#/kitchen">Kitchen</NavItem>
+                            <NavItem key='kitchen' href='#/kitchen'>Kitchen</NavItem>
                         </ul>
                     </div>
                 </nav>
