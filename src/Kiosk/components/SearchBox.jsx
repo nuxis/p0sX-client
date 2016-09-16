@@ -14,7 +14,7 @@ class SearchBox extends React.Component {
         return (
             <div className='input-field'>
                 <input onKeyUp={::this.keyPress} id='search' type='search' />
-                <label htmlFor="search"><i className='material-icons'>search</i></label>
+                <label htmlFor='search'><i className='material-icons'>search</i></label>
             </div>
         )
     }
@@ -26,8 +26,8 @@ class SearchBox extends React.Component {
             const items = shownItems
             if (items.size === 1) {
                 addItemToCart(items.get(0))
-                setSearchValue("")
-                e.target.value = ""
+                setSearchValue('')
+                e.target.value = ''
             }
         }
     }
