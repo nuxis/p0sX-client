@@ -1,7 +1,8 @@
 import { call, put, take } from 'redux-saga/effects'
+import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
-import { close as closePaymentModal} from './components/PaymentModal.jsx'
+import { close as closePaymentModal } from './components/PaymentModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -62,16 +63,22 @@ function * getCategories () {
     }
 }
 
-export function * purchase (options) {
+function * postPurchase (action) {
     try {
-        const result = yield call(api.postPurchase, options)
+        const result = yield call(api.postPurchase, action.options)
         console.log(result)
-        if (result.status === 'success') {
-            put(actions.emptyCart())
-            put(actions.setPaymentState('select'))
+        if (result.status === 200) {
+            yield put(actions.emptyCart())
+            yield put(actions.setPaymentState('select'))
             closePaymentModal()
+        } else {
+            // TODO: Show error message of some sort.
         }
     } catch (error) {
         console.error(error)
     }
+}
+
+export function * watchPostPurchase () {
+    yield * takeEvery(actions.POST_PURCHASE, postPurchase)
 }

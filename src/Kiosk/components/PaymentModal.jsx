@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setPaymentState } from '../actions'
+import { setPaymentState, postPurchase } from '../actions'
 import { getTotalPriceOfCart, getRenderedCart } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
-import { purchase as postPurchase } from '../sagas'
 
 class PaymentModal extends React.Component {
     static propTypes = {
@@ -112,16 +111,15 @@ class PaymentModal extends React.Component {
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
-                customer: value,
-                items: cart.map(entry => {
+                card: value,
+                lines: cart.map(entry => {
                     return {
-                        id: entry.get('item').get('id'),
+                        item: entry.get('item').get('id'),
                         ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
                     }
                 })
             }
             onPurchase(purchase)
-
         }
     }
 
@@ -132,9 +130,9 @@ class PaymentModal extends React.Component {
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
-                items: cart.map(entry => {
+                lines: cart.map(entry => {
                     return {
-                        id: entry.get('item').get('id'),
+                        item: entry.get('item').get('id'),
                         ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
                     }
                 })
@@ -179,8 +177,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onPurchase: (options) => {
             console.log('Purchase ', options)
-            const gen = postPurchase(options)
-            const res = gen.next()
+            dispatch(postPurchase(options))
         },
         selectCrew: () => {
             dispatch(setPaymentState('crew'))

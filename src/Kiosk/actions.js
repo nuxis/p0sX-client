@@ -32,6 +32,7 @@ export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 
 export const SET_PAYMENT_STATE = 'SET_PAYMENT_STATE'
 
+export const POST_PURCHASE = 'POST_PURCHASE'
 
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
@@ -63,3 +64,4 @@ export const setSearchString = (value) => action(SET_SEARCH_VALUE, { value })
 
 export const setPaymentState = (state) => action(SET_PAYMENT_STATE, { state })
 
+export const postPurchase = (options) => action(POST_PURCHASE, {options})
