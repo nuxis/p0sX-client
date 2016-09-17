@@ -47,6 +47,10 @@ class PaymentModal extends React.Component {
                             <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='number' required className='validate' />
                             <label className='active' htmlFor='rfid'>Badge number</label>
                         </div>
+                        <div className='input-field col s12'>
+                            <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                            <label htmlFor='message'>Message for the kitchen</label>
+                        </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
                             Purchase
                         </button>
@@ -69,6 +73,10 @@ class PaymentModal extends React.Component {
                         <div className='input-field col s12'>
                             <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
                             <label className='active' htmlFor='amount'>Amount received</label>
+                        </div>
+                        <div className='input-field col s12'>
+                            <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                            <label htmlFor='message'>Message for the kitchen</label>
                         </div>
                         <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
                             Purchase
@@ -107,11 +115,13 @@ class PaymentModal extends React.Component {
     purchaseCrew () {
         const { onPurchase, cart } = this.props
         const { value, validity } = this.refs.rfid
+        const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
                 card: value,
+                message: message,
                 lines: cart.map(entry => {
                     return {
                         item: entry.get('item').get('id'),
@@ -126,10 +136,12 @@ class PaymentModal extends React.Component {
     purchaseCash () {
         const { onPurchase, cart } = this.props
         const { validity } = this.refs.amount
+        const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
+                message: message,
                 lines: cart.map(entry => {
                     return {
                         item: entry.get('item').get('id'),
