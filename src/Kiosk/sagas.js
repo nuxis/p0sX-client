@@ -68,9 +68,9 @@ function * postPurchase (action) {
         const result = yield call(api.postPurchase, action.options)
         console.log(result)
         if (result.status === 200) {
+            closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState('select'))
-            closePaymentModal()
         } else {
             // TODO: Show error message of some sort.
         }

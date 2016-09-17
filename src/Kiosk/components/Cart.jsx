@@ -21,7 +21,7 @@ class Cart extends React.Component {
     render () {
         const { items, onEmptyCart, onRemoveItem, onPurchase, total } = this.props
         var listClass = classNames('collection', {
-            'hide': items.length === 0
+            'hide': items.isEmpty()
         })
 
         return (
