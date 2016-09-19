@@ -22,6 +22,7 @@ const Wrapper = React.createClass({
             openSettings()
         }
     },
+
     render: function () {
         return (
             <div>
