@@ -6,26 +6,20 @@ export const getOrders = (state) => state.orders
 export const getOpenOrders = createSelector(
     [getOrders],
     (orders) => {
-        return orders.filter((order) => {
-            return order.get('state') === ORDER_STATE.OPEN
-        })
+        return orders.get('open')
     }
 )
 
 export const getDoneOrders = createSelector(
     [getOrders],
     (orders) => {
-        return orders.filter((order) => {
-            return order.get('state') === ORDER_STATE.DONE
-        })
+        return orders.get('done')
     }
 )
 
 export const getArchivedOrders = createSelector(
     [getOrders],
     (orders) => {
-        return orders.filter((order) => {
-            return order.get('state') === ORDER_STATE.ARCHIVED
-        })
+        return orders.get('archived')
     }
 )
