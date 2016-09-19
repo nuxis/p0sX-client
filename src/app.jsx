@@ -37,7 +37,6 @@ const hashHistory = useRouterHistory(createHashHistory)()
 
 const store = configureStore(hashHistory)
 
-console.log(store.getState())
 store.dispatch(getAllKioskData())
 
 // Create an enhanced history that syncs navigation events with the store

@@ -8,6 +8,8 @@ export const getCurrentItem = (state) => state.currentItem
 
 export const getCart = (state) => state.cart
 
+export const getSearch = (state) => state.search
+
 // This method should possibly be renamed and used when
 // when retrieveing the cart for checkout?
 export const getRenderedCart = createSelector(
@@ -27,7 +29,6 @@ export const getTotalPriceOfCart = createSelector(
     [getCart],
     (cart) => {
         return cart.reduce((accumulator, entry) => {
-            console.log('getpriceselector: ', entry)
             accumulator += entry.get('item').get('price')
             accumulator += entry.get('ingredients').reduce((accumulator, ingredient) => {
                 return accumulator + parseInt(ingredient.get('price'))
@@ -42,13 +43,18 @@ export const getIngredients = (state) => state.ingredients
 export const getItems = (state) => state.items
 
 export const getItemsByCategory = createSelector(
-    [getItems, getSelectedCategory],
-    (items, categoryId) => {
-        console.log('getItemsByCategory: ', items, categoryId)
+    [getItems, getSelectedCategory, getSearch],
+    (items, categoryId, search) => {
+        var shownItems
         if (categoryId === 0) {
-            return items
+            shownItems = items
         } else {
-            return items.filter((item) => item.get('category') === categoryId)
+            shownItems = items.filter((item) => item.get('category') === categoryId)
         }
+        if (search.length > 0) {
+            shownItems = shownItems.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
+        }
+
+        return shownItems
     }
 )

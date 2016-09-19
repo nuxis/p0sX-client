@@ -22,9 +22,6 @@ const Cart = React.createClass({
             'hide': items.length === 0
         })
 
-        console.log('cart component items: ', items)
-        console.log('cart func: ', onRemoveItem)
-
         return (
             <div style={{height: '100%'}} className='col s12 m3 l3'>
                 <div className='cart-list' style={{overflowY: 'auto', height: 'calc(100% - 60px)', margin: '7.25px 0 5px 0'}}>

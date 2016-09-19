@@ -13,7 +13,6 @@ const CategoryList = React.createClass({
     },
     render: function () {
         const {categories, onCategoryClick, selectedCategory} = this.props
-        console.log('CATEHORYLIST: ', categories)
         return (
             <div className='col s12 m3 l2'>
                 <div className='collection'>

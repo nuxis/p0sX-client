@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { List } from 'immutable'
+import { List, Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
 import { getIngredients, getCurrentItem } from '../selectors'
 
@@ -13,7 +13,6 @@ const IngredientModal = React.createClass({
     },
     render: function () {
         const { ingredients, currentItem, onClose, onIngredientClick } = this.props
-        console.log('IngredientModal: ', currentItem, ingredients)
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -42,8 +41,6 @@ const IngredientModal = React.createClass({
 })
 
 const mapStateToProps = (state) => {
-    console.log('IngredientModal state: ', state)
-    console.log('IngredientModal getCurrentItem: ', getCurrentItem(state))
     return {
         ingredients: getIngredients(state),
         currentItem: getCurrentItem(state)

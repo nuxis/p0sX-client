@@ -28,6 +28,8 @@ export const OPEN_INGREDIENT_MODAL_FOR_ITEM = 'OPEN_INGREDIENT_MODAL_FOR_ITEM'
 
 export const TOGGLE_INGREDIENT = 'TOGGLE_INGREDIENT'
 
+export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
+
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
@@ -53,3 +55,5 @@ export const setActiveCategory = (category) => action(SET_ACTIVE_CATEGORY, { cat
 export const openIngredientModalForItem = (item) => action(OPEN_INGREDIENT_MODAL_FOR_ITEM, { item })
 
 export const toggleIngredient = (ingredient) => action(TOGGLE_INGREDIENT, { ingredient })
+
+export const setSearchString = (value) => action(SET_SEARCH_VALUE, { value })

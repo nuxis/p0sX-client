@@ -2,6 +2,15 @@ body {
     background-color: white;
 }
 
+input[type="search"] {
+    height: 64px !important; /* or height of nav */
+    width: 400px !important;
+}
+
+ul.search-list {
+    margin-left: 100px;
+}
+
 .item-card {
     margin-bottom: 20px;
     margin-right: 10px;
