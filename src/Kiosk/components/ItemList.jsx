@@ -24,7 +24,7 @@ class ItemList extends React.Component {
                             price={item.get('price')}
                             image={item.get('image') || require('../../images/planet.png')}
                             item={item}
-                            canHaveIngredients={item.get('can_have_ingredients')}
+                            canHaveIngredients={!item.get('ingredients').isEmpty()}
                             onClick={onItemClick}
                         />
                     )}

@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { List, Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
-import { getIngredients, getCurrentItem } from '../selectors'
+import { getIngredients, getCurrentItem, getIngredientsForCurrentItem } from '../selectors'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
-        ingredient: React.PropTypes.object.isRequired,
-        currentItem: React.PropTypes.object.isRequired,
+        ingredient: React.PropTypes.object,
+        currentItem: React.PropTypes.object,
         onClick: React.PropTypes.func.isRequired
     }
 
@@ -28,7 +28,7 @@ class IngredientCheckbox extends React.Component {
                 <input
                     onClick={IngredientCheckbox.noop}
                     id={'ingredient-' + ingredient.get('id')}
-                    checked={currentItem.get('ingredients').includes(ingredient)}
+                    defaultChecked={currentItem.get('ingredients').includes(ingredient)}
                     type='checkbox'
                 />
                 <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
@@ -78,7 +78,7 @@ class IngredientModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: getIngredients(state),
+        ingredients: getIngredientsForCurrentItem(state),
         currentItem: getCurrentItem(state)
     }
 }

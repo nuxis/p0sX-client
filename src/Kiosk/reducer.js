@@ -67,7 +67,7 @@ export function currentItem (state = currentItemInit, action) {
     case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
         return new Map({
             item: action.item,
-            ingredients: List()
+            ingredients: action.item.get('ingredients').filter(i => i.get('default'))
         })
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
