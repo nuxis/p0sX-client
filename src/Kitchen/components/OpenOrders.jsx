@@ -13,9 +13,9 @@ class OpenOrders extends Component {
     render () {
         const { orders } = this.props
         return (
-            <div className='new-orders'>
+            <div className="new-orders">
                 {orders.map((order) =>
-                    <Order orderNumber={order.get('id')} derp='merp' />
+                    <Order order={order} />
                  )}
             </div>
         )
