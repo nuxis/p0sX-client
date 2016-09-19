@@ -44,14 +44,16 @@ store.dispatch(getAllKioskData())
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store)
 
+// Unused atm.
+//                <Route path='kitchen' component={KitchenCustomer} />
+//                <Route path='orders' component={KitchenCustomer} />
+
 const routes = (
     <Provider store={store}>
         <Router history={history}>
             <Route path='/(!)' component={Wrapper}>
                 <IndexRoute component={Kiosk} />
                 <Route path='kiosk' component={Kiosk} />
-                <Route path='kitchen' component={KitchenCustomer} />
-                <Route path='orders' component={KitchenCustomer} />
             </Route>
         </Router>
     </Provider>
