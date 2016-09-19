@@ -28,8 +28,9 @@ class IngredientCheckbox extends React.Component {
                 <input
                     onClick={IngredientCheckbox.noop}
                     id={'ingredient-' + ingredient.get('id')}
-                    defaultChecked={currentItem.get('ingredients').includes(ingredient)}
+                    checked={currentItem.get('ingredients').includes(ingredient)}
                     type='checkbox'
+                    readOnly
                 />
                 <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
             </li>
@@ -55,7 +56,7 @@ class IngredientModal extends React.Component {
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4>Select ingredients for {currentItem.get('item').get('name')}</h4>
+                    <h4 style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>Select ingredients for {currentItem.get('item').get('name')}</h4>
                     <ul className='collection'>
                         {ingredients.map((ingredient) =>
                             <IngredientCheckbox

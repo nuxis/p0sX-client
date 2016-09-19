@@ -139,6 +139,7 @@ const itemsInit = new List()
 export function items (state = itemsInit, action) {
     switch (action.type) {
     case actions.SET_ITEMS:
+        console.log(action.items)
         return action.items
     default:
         return state

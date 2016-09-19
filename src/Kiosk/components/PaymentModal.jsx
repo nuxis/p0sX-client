@@ -68,7 +68,7 @@ class PaymentModal extends React.Component {
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Enter amount</h4>
+                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
                     <div className='row'>
                         <div className='input-field col s12'>
                             <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
@@ -92,7 +92,6 @@ class PaymentModal extends React.Component {
 
     back () {
         const { onBack } = this.props
-
         onBack()
     }
 

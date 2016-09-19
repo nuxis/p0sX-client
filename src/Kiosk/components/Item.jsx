@@ -6,13 +6,12 @@ class Item extends React.Component {
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
         image: React.PropTypes.string,
-        canHaveIngredients: React.PropTypes.bool.isRequired,
         item: React.PropTypes.object.isRequired
     }
 
     click () {
-        const { onClick, item, canHaveIngredients } = this.props
-        onClick(item, canHaveIngredients)
+        const { onClick, item } = this.props
+        onClick(item)
     }
 
     render () {
