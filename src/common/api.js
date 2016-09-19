@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 export const ORDER_STATE = {
-    OPEN: 0,
-    DONE: 1,
-    ARCHIVED: 2
+    OPEN: '0',
+    DONE: '1',
+    ARCHIVED: '2'
 }
 
 export const PAYMENT_METHOD = {
@@ -40,6 +40,6 @@ export const postPurchase = (purchase) => {
     return axios.post('/purchases/?format=json', purchase)
 }
 
-export const getOrders = () => {
-    return axios.get('/orders/?format=json').then(res => res.data)
+export const getOrders = (state = "") => {
+    return axios.get(`/orders/?format=json&state=${state}`).then(res => res.data)
 }
