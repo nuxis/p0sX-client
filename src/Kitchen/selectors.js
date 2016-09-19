@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { ORDER_STATE } from '../common/api'
 
 export const getOrders = (state) => state.orders
 

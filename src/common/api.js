@@ -40,6 +40,6 @@ export const postPurchase = (purchase) => {
     return axios.post('/purchases/?format=json', purchase)
 }
 
-export const getOrders = (state = "") => {
+export const getOrders = (state = '') => {
     return axios.get(`/orders/?format=json&state=${state}`).then(res => res.data)
 }
