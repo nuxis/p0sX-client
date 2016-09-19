@@ -40,7 +40,7 @@ export const getTotalPriceOfCart = createSelector(
 
 export const getIngredients = (state) => state.ingredients
 
-export const getIngredientsForCurrentItem = (state) => state.currentItem.get('item').get('ingredients') || []
+export const getIngredientsForCurrentItem = (state) => state.currentItem.get('item').get('ingredients')
 
 export const getItems = (state) => state.items
 

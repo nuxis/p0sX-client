@@ -57,7 +57,8 @@ const currentItemInit = new Map({
     // The Item is initiatet here because its needed since we render
     // IngredientModal at init, this behaviour should be changed.
     item: Map({
-        name: 'NOTHING'
+        name: 'NOTHING',
+        ingredients: List()
     }),
     ingredients: List()
 })
@@ -77,12 +78,7 @@ export function currentItem (state = currentItemInit, action) {
         }
 
     case actions.ADD_CURRENT_ITEM_TO_CART:
-        return Map({
-            item: Map({
-                name: 'NOTHING'
-            }),
-            ingredients: new List()
-        })
+        return currentItemInit
     default:
         return state
     }
