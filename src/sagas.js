@@ -10,6 +10,7 @@ export default function * root () {
         watchPostPurchase(),
         fork(watchIngredients),
         fork(watchCategories),
-        fork(loopGetOrders)
+        // This will fetch orders regularly, currently disabled as functionality is not done
+        // fork(loopGetOrders)
     ]
 }
