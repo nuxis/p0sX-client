@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { List, Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
-import { getIngredients, getCurrentItem, getIngredientsForCurrentItem } from '../selectors'
+import { getCurrentItem, getIngredientsForCurrentItem } from '../selectors'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
