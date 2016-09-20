@@ -8,6 +8,7 @@ import { fromJS } from 'immutable'
 // CSS
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'materialize-css/bin/materialize.css'
+import 'font-awesome/css/font-awesome.min.css'
 import './css/style.css'
 
 import { Provider } from 'react-redux'

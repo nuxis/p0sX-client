@@ -57,7 +57,8 @@ const currentItemInit = new Map({
     // The Item is initiatet here because its needed since we render
     // IngredientModal at init, this behaviour should be changed.
     item: Map({
-        name: 'NOTHING'
+        name: 'NOTHING',
+        ingredients: List()
     }),
     ingredients: List()
 })
@@ -67,7 +68,7 @@ export function currentItem (state = currentItemInit, action) {
     case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
         return new Map({
             item: action.item,
-            ingredients: List()
+            ingredients: action.item.get('ingredients').filter(i => i.get('default'))
         })
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
@@ -77,12 +78,7 @@ export function currentItem (state = currentItemInit, action) {
         }
 
     case actions.ADD_CURRENT_ITEM_TO_CART:
-        return Map({
-            ingredients: new List(),
-            item: new Map({
-                name: 'NOTHING'
-            })
-        })
+        return currentItemInit
     default:
         return state
     }
@@ -121,21 +117,6 @@ export function cart (state = cartInit, action) {
 
 // END CART
 
-// INGREDIENTS
-
-const ingredientsInit = new List()
-
-export function ingredients (state = ingredientsInit, action) {
-    switch (action.type) {
-    case actions.SET_INGREDIENTS:
-        return action.ingredients
-    default:
-        return state
-    }
-}
-
-// END IGREDIENTS
-
 // ITEMS
 
 const itemsInit = new List()
@@ -143,6 +124,7 @@ const itemsInit = new List()
 export function items (state = itemsInit, action) {
     switch (action.type) {
     case actions.SET_ITEMS:
+        console.log(action.items)
         return action.items
     default:
         return state
@@ -150,3 +132,21 @@ export function items (state = itemsInit, action) {
 }
 
 // END ITEMS
+
+// PAYMENT
+
+const paymentInit = new Map({
+    state: 'select'
+})
+
+export function payment (state = paymentInit, action) {
+    console.log('payment state:', state, action)
+    switch (action.type) {
+    case actions.SET_PAYMENT_STATE:
+        return state.set('state', action.state)
+    default:
+        return state
+    }
+}
+
+// END PAYMENT

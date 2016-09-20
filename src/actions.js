@@ -1,7 +1,7 @@
 // DIS FILE IS GOING AWAY, INIT SHOULD BE SAGA
 
 import axios from 'axios'
-import { getCategories, getIngredients, getItems } from '../common/api'
+import { getCategories, getIngredients, getItems } from './common/api'
 
 const setInitialData = () => {
     return (dispatch) => {
@@ -10,8 +10,7 @@ const setInitialData = () => {
             getCategories(),
             getIngredients(),
             getItems()
-        ])
-        .then(axios.spread((categories, ingredients, items) => {
+        ]).then(axios.spread((categories, ingredients, items) => {
             dispatch(addCategories(categories.data))
             dispatch(setIngredients(ingredients.data))
             dispatch(setItems(items.data))

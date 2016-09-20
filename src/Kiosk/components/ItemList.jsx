@@ -24,7 +24,6 @@ class ItemList extends React.Component {
                             price={item.get('price')}
                             image={item.get('image') || require('../../images/planet.png')}
                             item={item}
-                            canHaveIngredients={item.get('can_have_ingredients')}
                             onClick={onItemClick}
                         />
                     )}
@@ -44,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
-            if (item.get('can_have_ingredients')) {
+            if (!item.get('ingredients').isEmpty()) {
                 $('#ingredient-modal').openModal()
                 dispatch(openIngredientModalForItem(item))
             } else {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import settings from './common/settings'
 import SettingsModal, { open as openSettings } from './common/components/SettingsModal.jsx'
 import { NavItem, Icon } from 'react-materialize'
+import PaymentModal from './Kiosk/components/PaymentModal.jsx'
 import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
 
@@ -40,6 +41,7 @@ const Wrapper = React.createClass({
                 {this.props.children}
                 <IngredientModal />
                 <SettingsModal />
+                <PaymentModal />
             </div>
         )
     }

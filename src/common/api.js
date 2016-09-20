@@ -37,7 +37,7 @@ const getUser = (userId) => {
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/', purchase).then(res => res.data)
+    return axios.post('/purchases/?format=json', purchase)
 }
 
 const getOrders = () => {

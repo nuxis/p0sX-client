@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { List, Map } from 'immutable'
+import { Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
-import { getIngredients, getCurrentItem } from '../selectors'
+import { getCurrentItem } from '../selectors'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
-        ingredient: React.PropTypes.object.isRequired,
-        currentItem: React.PropTypes.object.isRequired,
+        ingredient: React.PropTypes.object,
+        checked: React.PropTypes.bool.isRequired,
         onClick: React.PropTypes.func.isRequired
     }
 
@@ -22,14 +22,15 @@ class IngredientCheckbox extends React.Component {
     }
 
     render () {
-        const { ingredient, currentItem } = this.props
+        const { ingredient, checked } = this.props
         return (
-            <li className='collection-item' key={ingredient.get('id')} onClick={::this.click}>
+            <li className='collection-item' onClick={::this.click}>
                 <input
                     onClick={IngredientCheckbox.noop}
                     id={'ingredient-' + ingredient.get('id')}
-                    checked={currentItem.get('ingredients').includes(ingredient)}
+                    checked={checked}
                     type='checkbox'
+                    readOnly
                 />
                 <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
             </li>
@@ -39,7 +40,6 @@ class IngredientCheckbox extends React.Component {
 
 class IngredientModal extends React.Component {
     static propTypes = {
-        ingredients: React.PropTypes.instanceOf(List).isRequired,
         currentItem: React.PropTypes.instanceOf(Map).isRequired,
         onClose: React.PropTypes.func.isRequired,
         onIngredientClick: React.PropTypes.func.isRequired
@@ -51,17 +51,20 @@ class IngredientModal extends React.Component {
     }
 
     render () {
-        const { ingredients, currentItem, onIngredientClick } = this.props
+        const { currentItem, onIngredientClick } = this.props
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
-                    <h4>Select ingredients for {currentItem.get('item').get('name')}</h4>
+                    <h4 style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                        Select ingredients for {currentItem.get('item').get('name')}
+                    </h4>
                     <ul className='collection'>
-                        {ingredients.map((ingredient) =>
+                        {currentItem.get('item').get('ingredients').map(ingredient =>
                             <IngredientCheckbox
                                 onClick={onIngredientClick}
                                 ingredient={ingredient}
-                                currentItem={currentItem}
+                                checked={currentItem.get('ingredients').includes(ingredient)}
+                                key={ingredient.get('id')}
                             />
                         )}
                     </ul>
@@ -77,7 +80,6 @@ class IngredientModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        ingredients: getIngredients(state),
         currentItem: getCurrentItem(state)
     }
 }

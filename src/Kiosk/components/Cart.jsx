@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart } from '../actions'
 import { getRenderedCart, getTotalPriceOfCart } from '../selectors'
 import { List } from 'immutable'
+import { open as openPaymentModal } from './PaymentModal'
 
 class Cart extends React.Component {
     static propTypes = {
@@ -20,7 +21,7 @@ class Cart extends React.Component {
     render () {
         const { items, onEmptyCart, onRemoveItem, onPurchase, total } = this.props
         var listClass = classNames('collection', {
-            'hide': items.length === 0
+            'hide': items.isEmpty()
         })
 
         return (
@@ -63,7 +64,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(removeItemFromCart(itemIndex))
         },
         onPurchase: () => {
-            console.error('Purchase is not implemented :(')
+            openPaymentModal()
         }
     }
 }
