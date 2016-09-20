@@ -20,10 +20,6 @@ export const getCategories = () => {
     return axios.get('/categories/?format=json').then(res => res.data)
 }
 
-export const getIngredients = () => {
-    return axios.get('/ingredients/?format=json').then(res => res.data)
-}
-
 export const getItems = () => {
     return axios.get('/items/?format=json').then(res => res.data)
 }
