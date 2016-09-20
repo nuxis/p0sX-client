@@ -63,6 +63,10 @@ const showError = () => {
     NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
 }
 
+const getCrew = (card = '') => {
+    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data)
+}
+
 // Something probably has to be done here...
 const getOpenOrders = () => {
     return new Promise(function (resolve, reject) {
@@ -103,4 +107,6 @@ export {
     getInProgressOrders,
     getDiscounts,
     getCreditForCrew
+    getCrew,
+    postPurchase
 }
