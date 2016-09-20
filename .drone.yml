@@ -3,8 +3,6 @@ build:
         image: kradalby/ci-node-electron:latest
         pull: true
         commands:
-          - apt update
-          - apt upgrade -y
           - gem update fpm
           - npm set progress=false
           - npm install
@@ -20,8 +18,6 @@ build:
         image: kradalby/ci-node-electron:latest
         pull: true
         commands:
-          - apt update
-          - apt upgrade -y
           - npm set progress=false
           - npm install
           - npm run lint
