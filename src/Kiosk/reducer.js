@@ -206,3 +206,34 @@ export function payment (state = paymentInit, action) {
 }
 
 // END PAYMENT
+
+// CASHIER
+
+const cashierInit = new Map({
+    locked: true,
+    card: '',
+    name: ''
+})
+
+export function cashier (state = cashierInit, action) {
+    console.log('cashier state', state, action)
+    switch (action.type) {
+    case actions.CASHIER_FAILED:
+    case actions.CASHIER_LOGOUT:
+        return new Map({
+            locked: true,
+            card: '',
+            name: ''
+        })
+    case actions.CASHIER_SUCCESS:
+        return new Map({
+            locked: false,
+            card: action.card,
+            name: action.name
+        })
+    default:
+        return state
+    }
+}
+
+// END CASHIER
