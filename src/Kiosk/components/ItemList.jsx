@@ -42,7 +42,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // eslint-disable-next-line camelcase
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
             if (item.get('can_have_ingredients')) {
