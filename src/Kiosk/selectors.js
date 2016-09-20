@@ -40,23 +40,17 @@ export const getTotalPriceOfCart = createSelector(
 
 export const getIngredients = (state) => state.ingredients
 
-export const getIngredientsForCurrentItem = (state) => state.currentItem.get('item').get('ingredients')
-
 export const getItems = (state) => state.items
 
 export const getItemsByCategory = createSelector(
     [getItems, getSelectedCategory, getSearch],
     (items, categoryId, search) => {
-        var shownItems
-        if (categoryId === 0) {
-            shownItems = items
-        } else {
-            shownItems = items.filter((item) => item.get('category') === categoryId)
-        }
         if (search.length > 0) {
-            shownItems = shownItems.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
+            return items.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
+        } else if (categoryId > 0) {
+            return items.filter(item => item.get('category') === categoryId)
+        } else {
+            return items
         }
-
-        return shownItems
     }
 )

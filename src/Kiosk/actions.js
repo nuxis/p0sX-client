@@ -12,9 +12,6 @@ export const GET_ALL_KIOSK_DATA = 'GET_ALL_KIOSK_DATA'
 export const GET_ITEMS = 'GET_ITEMS'
 export const SET_ITEMS = 'SET_ITEMS'
 
-export const GET_INGREDIENTS = 'GET_INGREDIENTS'
-export const SET_INGREDIENTS = 'SET_INGREDIENTS'
-
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 
@@ -43,9 +40,6 @@ export const getAllKioskData = () => action(GET_ALL_KIOSK_DATA, {})
 
 export const getItems = () => action(GET_ITEMS, {})
 export const setItems = (items) => action(SET_ITEMS, { items })
-
-export const getIngredients = () => action(GET_INGREDIENTS, {})
-export const setIngredients = (ingredients) => action(SET_INGREDIENTS, { ingredients })
 
 export const getCategories = () => action(GET_CATEGORIES, {})
 export const setCategories = (categories) => action(SET_CATEGORIES, { categories })

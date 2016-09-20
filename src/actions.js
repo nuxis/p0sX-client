@@ -10,8 +10,7 @@ const setInitialData = () => {
             getCategories(),
             getIngredients(),
             getItems()
-        ])
-        .then(axios.spread((categories, ingredients, items) => {
+        ]).then(axios.spread((categories, ingredients, items) => {
             dispatch(addCategories(categories.data))
             dispatch(setIngredients(ingredients.data))
             dispatch(setItems(items.data))

@@ -9,7 +9,6 @@ export function * watchKioskData () {
         yield take(actions.GET_ALL_KIOSK_DATA)
         yield [
             call(getItems),
-            call(getIngredients),
             call(getCategories)
         ]
     }
@@ -26,22 +25,6 @@ function * getItems () {
     try {
         const items = yield call(api.getItems)
         yield put(actions.setItems(items))
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-export function * watchIngredients () {
-    while (true) {
-        yield take(actions.GET_INGREDIENTS)
-        yield call(getIngredients)
-    }
-}
-
-function * getIngredients () {
-    try {
-        const ingredients = yield call(api.getIngredients)
-        yield put(actions.setIngredients(ingredients))
     } catch (error) {
         console.error(error)
     }

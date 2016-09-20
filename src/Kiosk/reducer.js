@@ -117,21 +117,6 @@ export function cart (state = cartInit, action) {
 
 // END CART
 
-// INGREDIENTS
-
-const ingredientsInit = new List()
-
-export function ingredients (state = ingredientsInit, action) {
-    switch (action.type) {
-    case actions.SET_INGREDIENTS:
-        return action.ingredients
-    default:
-        return state
-    }
-}
-
-// END IGREDIENTS
-
 // ITEMS
 
 const itemsInit = new List()
