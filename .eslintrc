@@ -3,7 +3,10 @@
         "react",
         "immutable"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
+        "sourceType": "module",
+        "allowImportExportEverywhere": false,
         "ecmaFeatures": {
             "jsx": true
         }

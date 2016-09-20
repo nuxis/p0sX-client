@@ -2,13 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
 
-const SettingsModal = React.createClass({
-    propTypes: {
+class SettingsModal extends React.Component {
+    static propTypes = {
         onSave: React.PropTypes.func.isRequired,
         initial: React.PropTypes.bool.isRequired
-    },
-    render: function () {
-        const {onSave, initial} = this.props
+    }
+
+    onClick () {
+        const { onSave, initial } = this.props
+        onSave(initial)
+    }
+
+    render () {
         return (
             <div id='settings-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -40,22 +45,22 @@ const SettingsModal = React.createClass({
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={() => onSave(initial)} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
+                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
     }
-})
+}
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     var allSettings = settings.get()
     return {
         initial: Object.getOwnPropertyNames(allSettings).length === 0
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {
         onSave: (initial) => {
             var server = $('#server').val()
@@ -63,6 +68,8 @@ const mapDispatchToProps = (dispatch) => {
 
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
+
+            console.log(initial, 'Should we get data?')
         }
     }
 }

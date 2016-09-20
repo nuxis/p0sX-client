@@ -8,15 +8,16 @@ import { emptyCart, removeItemFromCart } from '../actions'
 import { getRenderedCart, getTotalPriceOfCart } from '../selectors'
 import { List } from 'immutable'
 
-const Cart = React.createClass({
-    propTypes: {
+class Cart extends React.Component {
+    static propTypes = {
         items: React.PropTypes.instanceOf(List).isRequired,
         onEmptyCart: React.PropTypes.func.isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         onPurchase: React.PropTypes.func.isRequired,
         total: React.PropTypes.number.isRequired
-    },
-    render: function () {
+    }
+
+    render () {
         const { items, onEmptyCart, onRemoveItem, onPurchase, total } = this.props
         var listClass = classNames('collection', {
             'hide': items.length === 0
@@ -33,7 +34,8 @@ const Cart = React.createClass({
                                 name={entry.get('item').get('name')}
                                 image={entry.get('item').get('image') || require('../../images/planet.png')}
                                 ingredients={entry.get('ingredients')}
-                                onRemoveItem={() => { onRemoveItem(index) }}
+                                index={index}
+                                onRemoveItem={onRemoveItem}
                             />
                         )}
                     </ul>
@@ -43,7 +45,7 @@ const Cart = React.createClass({
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -52,7 +54,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         onEmptyCart: () => {
             dispatch(emptyCart())

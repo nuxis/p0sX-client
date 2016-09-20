@@ -5,12 +5,13 @@ import { addItemToCart, openIngredientModalForItem } from '../actions'
 import { getItemsByCategory } from '../selectors'
 import { List } from 'immutable'
 
-const ItemList = React.createClass({
-    propTypes: {
+class ItemList extends React.Component {
+    static propTypes = {
         items: React.PropTypes.instanceOf(List).isRequired,
         onItemClick: React.PropTypes.func.isRequired
-    },
-    render: function () {
+    }
+
+    render () {
         const { items, onItemClick } = this.props
 
         return (
@@ -22,15 +23,16 @@ const ItemList = React.createClass({
                             name={item.get('name')}
                             price={item.get('price')}
                             image={item.get('image') || require('../../images/planet.png')}
-                            // eslint-disable-next-line camelcase
-                            onClick={() => onItemClick(item)}
+                            item={item}
+                            canHaveIngredients={item.get('can_have_ingredients')}
+                            onClick={onItemClick}
                         />
                     )}
                 </div>
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -40,7 +42,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // eslint-disable-next-line camelcase
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
             if (item.get('can_have_ingredients')) {

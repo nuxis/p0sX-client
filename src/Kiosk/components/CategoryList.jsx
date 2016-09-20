@@ -5,13 +5,14 @@ import { setActiveCategory } from '../actions'
 import { getCategories, getSelectedCategory } from '../selectors'
 import { List } from 'immutable'
 
-const CategoryList = React.createClass({
-    propTypes: {
+class CategoryList extends React.Component {
+    static propTypes = {
         categories: React.PropTypes.instanceOf(List).isRequired,
         selectedCategory: React.PropTypes.number.isRequired,
         onCategoryClick: React.PropTypes.func.isRequired
-    },
-    render: function () {
+    }
+
+    render () {
         const {categories, onCategoryClick, selectedCategory} = this.props
         return (
             <div className='col s12 m3 l2'>
@@ -21,14 +22,15 @@ const CategoryList = React.createClass({
                             key={category.get('id')}
                             name={category.get('name')}
                             active={selectedCategory === category.get('id')}
-                            onClick={() => onCategoryClick(category)}
+                            category={category}
+                            onClick={onCategoryClick}
                         />
                     )}
                 </div>
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = (state) => {
     return {

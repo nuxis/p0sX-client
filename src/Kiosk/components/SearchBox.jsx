@@ -22,12 +22,12 @@ class SearchBox extends React.Component {
     keyPress (e) {
         const { setSearchValue, shownItems, addItemToCart } = this.props
         setSearchValue(e.target.value)
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             const items = shownItems
             if (items.size === 1) {
                 addItemToCart(items.get(0))
                 setSearchValue('')
-                e.target.value = ''
+                $('#search').val('')
             }
         }
     }

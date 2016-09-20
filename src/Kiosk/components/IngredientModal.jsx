@@ -4,41 +4,76 @@ import { List, Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
 import { getIngredients, getCurrentItem } from '../selectors'
 
-const IngredientModal = React.createClass({
-    propTypes: {
+class IngredientCheckbox extends React.Component {
+    static propTypes = {
+        ingredient: React.PropTypes.object.isRequired,
+        currentItem: React.PropTypes.object.isRequired,
+        onClick: React.PropTypes.func.isRequired
+    }
+
+    static noop (e) {
+        e.stopPropagation()
+    }
+
+    click (e) {
+        const { onClick, ingredient } = this.props
+        e.stopPropagation()
+        onClick(ingredient)
+    }
+
+    render () {
+        const { ingredient, currentItem } = this.props
+        return (
+            <li className='collection-item' key={ingredient.get('id')} onClick={::this.click}>
+                <input
+                    onClick={IngredientCheckbox.noop}
+                    id={'ingredient-' + ingredient.get('id')}
+                    checked={currentItem.get('ingredients').includes(ingredient)}
+                    type='checkbox'
+                />
+                <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
+            </li>
+        )
+    }
+}
+
+class IngredientModal extends React.Component {
+    static propTypes = {
         ingredients: React.PropTypes.instanceOf(List).isRequired,
         currentItem: React.PropTypes.instanceOf(Map).isRequired,
         onClose: React.PropTypes.func.isRequired,
         onIngredientClick: React.PropTypes.func.isRequired
-    },
-    render: function () {
-        const { ingredients, currentItem, onClose, onIngredientClick } = this.props
+    }
+
+    close () {
+        const { onClose, currentItem } = this.props
+        onClose(currentItem)
+    }
+
+    render () {
+        const { ingredients, currentItem, onIngredientClick } = this.props
         return (
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Select ingredients for {currentItem.get('item').get('name')}</h4>
                     <ul className='collection'>
                         {ingredients.map((ingredient) =>
-                            <li className='collection-item' key={ingredient.get('id')} onClick={(e) => onIngredientClick(e, ingredient)}>
-                                <input
-                                    onClick={(e) => e.stopPropagation()}
-                                    id={'ingredient-' + ingredient.get('id')}
-                                    checked={currentItem.get('ingredients').includes(ingredient)}
-                                    type='checkbox'
-                                />
-                                <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
-                            </li>
-                         )}
+                            <IngredientCheckbox
+                                onClick={onIngredientClick}
+                                ingredient={ingredient}
+                                currentItem={currentItem}
+                            />
+                        )}
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={() => onClose(currentItem)} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
+                    <a href='#!' onClick={::this.close} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -52,8 +87,7 @@ const mapDispatchToProps = (dispatch) => {
         onClose: (currentItem) => {
             dispatch(addCurrentItemToCart(currentItem))
         },
-        onIngredientClick: (e, ingredient) => {
-            e.stopPropagation()
+        onIngredientClick: (ingredient) => {
             dispatch(toggleIngredient(ingredient))
         }
     }
