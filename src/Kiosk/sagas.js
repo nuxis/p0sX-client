@@ -4,7 +4,7 @@ import * as api from '../common/api'
 import * as actions from './actions'
 import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
-import Alert from 'react-s-alert'
+import { NotificationManager } from 'react-notifications'
 
 export function * watchKioskData () {
     while (true) {
@@ -79,11 +79,7 @@ function * postPurchase (action) {
         }
         const result = yield call(api.postPurchase, options)
         if (result.status === 200) {
-            Alert.success('Purchase complete', {
-                position: 'bottom-left',
-                effect: 'slide',
-                timeout: 5000
-            })
+            NotificationManager.success('That\'s good news. Let\'s hope nobody breaks it', 'Purchase complete', 5000)
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
