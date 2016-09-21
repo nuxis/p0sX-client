@@ -85,16 +85,18 @@ export function * watchPostPurchase () {
 }
 
 function * applyDiscounts (action) {
-    var discounts = yield select(selectors.getDiscounts, action.payment_method)
+    var discounts = yield select(selectors.getDiscounts, action.paymentMethod)
+    console.log(discounts)
     var items = yield select(selectors.getItems)
     discounts = discounts.map(d => d.set('item', items.find(i => i.get('id') === d.get('item'))))
     discounts = discounts.sortBy(d => d.get('item').get('price'))
     var cart = yield select(selectors.getCart)
+
     for (const discount of discounts) {
         // eslint-disable-next-line no-eval
         const evalFunc = eval(discount.get('expression'))
         const result = evalFunc(cart)
-        result.cart.forEach(item => {
+        result.used.forEach(item => {
             var index = cart.indexOf(item)
             cart = cart.remove(index)
         })
