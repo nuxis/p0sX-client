@@ -8,94 +8,71 @@ class PaymentModal extends React.Component {
     static propTypes = {
         onPurchase: React.PropTypes.func.isRequired,
         paymentState: React.PropTypes.number.isRequired,
-        selectCrew: React.PropTypes.func.isRequired,
-        selectCash: React.PropTypes.func.isRequired,
+        selectMethod: React.PropTypes.func.isRequired,
         onBack: React.PropTypes.func.isRequired,
-        removeDiscounts: React.PropTypes.func.isRequired,
-        total: React.PropTypes.number.isRequired,
-        cart: React.PropTypes.object.isRequired
+        onClose: React.PropTypes.func.isRequired,
+        total: React.PropTypes.number.isRequired
     }
 
     renderPaymentSelect () {
-        const { selectCrew, selectCash, removeDiscounts } = this.props
+        const { selectMethod } = this.props
         return (
-            <div id='payment-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4>Choose payment option</h4>
-                    <div onClick={selectCash} className='item-card z-depth-1 hoverable waves-effect'>
-                        <h5>Cash</h5>
-                        <i className='fa fa-money payment-glyph' aria-hidden='true' />
-                    </div>
-                    <div onClick={selectCrew} className='item-card z-depth-1 hoverable waves-effect'>
-                        <h5>Crew</h5>
-                        <i className='fa fa-credit-card payment-glyph' aria-hidden='true' />
-                    </div>
+            <div className='modal-content'>
+                <h4>Choose payment option</h4>
+                <div onClick={selectMethod} data-method={PAYMENT_METHOD.CASH} className='item-card z-depth-1 hoverable waves-effect'>
+                    <h5>Cash</h5>
+                    <i className='fa fa-money payment-glyph' aria-hidden='true' />
                 </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={removeDiscounts} className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                <div onClick={selectMethod} data-method={PAYMENT_METHOD.CREW} className='item-card z-depth-1 hoverable waves-effect'>
+                    <h5>Crew</h5>
+                    <i className='fa fa-credit-card payment-glyph' aria-hidden='true' />
                 </div>
             </div>
         )
     }
 
     renderCrew () {
-        const { removeDiscounts } = this.props
+        const { total, onBack } = this.props
         return (
-            <div id='payment-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge</h4>
-                    <div className='row'>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='number' required className='validate' />
-                            <label className='active' htmlFor='rfid'>Badge number</label>
-                        </div>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
-                            <label htmlFor='message'>Message for the kitchen</label>
-                        </div>
-                        <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
-                            Purchase
-                        </button>
+            <div className='modal-content'>
+                <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge to pay {total}Kr.</h4>
+                <div className='row'>
+                    <div className='input-field col s12'>
+                        <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='number' required className='validate' />
+                        <label className='active' htmlFor='rfid'>Badge number</label>
                     </div>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={removeDiscounts} className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                    <div className='input-field col s12'>
+                        <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                        <label htmlFor='message'>Message for the kitchen</label>
+                    </div>
+                    <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
+                        Purchase
+                    </button>
                 </div>
             </div>
         )
     }
 
     renderCash () {
-        const { total, removeDiscounts } = this.props
+        const { total, onBack } = this.props
         return (
-            <div id='payment-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4><i onClick={::this.back} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
-                    <div className='row'>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
-                            <label className='active' htmlFor='amount'>Amount received</label>
-                        </div>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
-                            <label htmlFor='message'>Message for the kitchen</label>
-                        </div>
-                        <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
-                            Purchase
-                        </button>
+            <div className='modal-content'>
+                <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
+                <div className='row'>
+                    <div className='input-field col s12'>
+                        <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
+                        <label className='active' htmlFor='amount'>Amount received</label>
                     </div>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={removeDiscounts} className='waves-effect waves-red btn-flat'>Cancel</a>
+                    <div className='input-field col s12'>
+                        <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                        <label htmlFor='message'>Message for the kitchen</label>
+                    </div>
+                    <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
+                        Purchase
+                    </button>
                 </div>
             </div>
         )
-    }
-
-    back () {
-        const { onBack, removeDiscounts } = this.props
-        onBack()
-        removeDiscounts()
     }
 
     onEnter (e) {
@@ -115,7 +92,7 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCrew () {
-        const { onPurchase, cart } = this.props
+        const { onPurchase } = this.props
         const { value, validity } = this.refs.rfid
         const message = this.refs.message.value
 
@@ -123,50 +100,37 @@ class PaymentModal extends React.Component {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
                 card: value,
-                message: message,
-                lines: cart.map(entry => {
-                    return {
-                        item: entry.get('item').get('id'),
-                        ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
-                    }
-                })
+                message: message
             }
             onPurchase(purchase)
         }
     }
 
     purchaseCash () {
-        const { onPurchase, cart } = this.props
+        const { onPurchase } = this.props
         const { validity } = this.refs.amount
         const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
-                message: message,
-                lines: cart.map(entry => {
-                    return {
-                        item: entry.get('item').get('id'),
-                        ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
-                    }
-                })
+                message: message
             }
             onPurchase(purchase)
         }
     }
 
     componentDidUpdate () {
-        if (this.refs.rfid !== undefined) {
+        const { paymentState } = this.props
+        if (paymentState === PAYMENT_METHOD.CREW) {
             this.refs.rfid.focus()
-        }
-        if (this.refs.amount !== undefined) {
+        } else if (paymentState === PAYMENT_METHOD.CASH) {
             this.refs.amount.focus()
         }
     }
 
-    render () {
-        const { paymentState } = this.props
-        switch (paymentState) {
+    renderContent (state) {
+        switch (state) {
         case PAYMENT_METHOD.SELECT:
             return this.renderPaymentSelect()
         case PAYMENT_METHOD.CREW:
@@ -177,35 +141,45 @@ class PaymentModal extends React.Component {
             return this.renderPaymentSelect()
         }
     }
+
+    render () {
+        const { paymentState, onClose } = this.props
+        return (
+            <div id='payment-modal' className='modal modal-fixed-footer'>
+                {this.renderContent(paymentState)}
+                <div className='modal-footer'>
+                    <a href='#!' onClick={onClose} className='waves-effect waves-red btn-flat'>Cancel</a>
+                </div>
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
         paymentState: state.payment.get('state'),
-        total: getTotalPriceOfCart(state),
-        cart: getRenderedCart(state)
+        total: getTotalPriceOfCart(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onPurchase: (options) => {
-            console.log('Purchase ', options)
             dispatch(postPurchase(options))
         },
-        selectCrew: () => {
-            dispatch(setPaymentState(PAYMENT_METHOD.CREW))
-        },
-        selectCash: () => {
-            dispatch(setPaymentState(PAYMENT_METHOD.CASH))
-            dispatch(applyDiscounts(PAYMENT_METHOD.CASH))
+        selectMethod: (e) => {
+            const method = parseInt(e.target.dataset.method)
+            dispatch(setPaymentState(method))
+            dispatch(applyDiscounts(method))
         },
         onBack: () => {
             dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
+            dispatch(removeDiscounts())
         },
-        removeDiscounts: () => {
+        onClose: () => {
             dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
             dispatch(removeDiscounts())
+            close()
         }
     }
 }

@@ -44,6 +44,10 @@ ul.search-list {
     margin-right: auto;
 }
 
+.item-card > * {
+    pointer-events: none;
+}
+
 .name-truncate {
     width: 120px;
     padding-left: 2px;

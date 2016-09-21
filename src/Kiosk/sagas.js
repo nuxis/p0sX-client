@@ -66,12 +66,21 @@ function * getDiscounts () {
 
 function * postPurchase (action) {
     try {
-        const result = yield call(api.postPurchase, action.options)
-        console.log(result)
+        const cart = yield select(selectors.getCart)
+        const options = {
+            ...action.options,
+            lines: cart.map(entry => {
+                return {
+                    item: entry.get('item').get('id'),
+                    ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
+                }
+            })
+        }
+        const result = yield call(api.postPurchase, options)
         if (result.status === 200) {
             closePaymentModal()
             yield put(actions.emptyCart())
-            yield put(actions.setPaymentState('select'))
+            yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
         } else {
             // TODO: Show error message of some sort.
         }
