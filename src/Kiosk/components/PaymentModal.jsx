@@ -1,22 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setPaymentState, postPurchase } from '../actions'
+import { setPaymentState, postPurchase, applyDiscounts, removeDiscounts } from '../actions'
 import { getTotalPriceOfCart, getRenderedCart } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
 
 class PaymentModal extends React.Component {
     static propTypes = {
         onPurchase: React.PropTypes.func.isRequired,
-        paymentState: React.PropTypes.string.isRequired,
+        paymentState: React.PropTypes.number.isRequired,
         selectCrew: React.PropTypes.func.isRequired,
         selectCash: React.PropTypes.func.isRequired,
         onBack: React.PropTypes.func.isRequired,
+        removeDiscounts: React.PropTypes.func.isRequired,
         total: React.PropTypes.number.isRequired,
         cart: React.PropTypes.object.isRequired
     }
 
     renderPaymentSelect () {
-        const { selectCrew, selectCash } = this.props
+        const { selectCrew, selectCash, removeDiscounts } = this.props
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -31,13 +32,14 @@ class PaymentModal extends React.Component {
                     </div>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                    <a href='#!' onClick={removeDiscounts} className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
     }
 
     renderCrew () {
+        const { removeDiscounts } = this.props
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -57,14 +59,14 @@ class PaymentModal extends React.Component {
                     </div>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                    <a href='#!' onClick={removeDiscounts} className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
     }
 
     renderCash () {
-        const { total } = this.props
+        const { total, removeDiscounts } = this.props
         return (
             <div id='payment-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -84,25 +86,26 @@ class PaymentModal extends React.Component {
                     </div>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
+                    <a href='#!' onClick={removeDiscounts} className='waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
     }
 
     back () {
-        const { onBack } = this.props
+        const { onBack, removeDiscounts } = this.props
         onBack()
+        removeDiscounts()
     }
 
     onEnter (e) {
         if (e.keyCode === 13) {
             const { paymentState } = this.props
             switch (paymentState) {
-            case 'crew':
+            case PAYMENT_METHOD.CREW:
                 this.purchaseCrew()
                 break
-            case 'cash':
+            case PAYMENT_METHOD.CASH:
                 this.purchaseCash()
                 break
             default:
@@ -164,11 +167,11 @@ class PaymentModal extends React.Component {
     render () {
         const { paymentState } = this.props
         switch (paymentState) {
-        case 'select':
+        case PAYMENT_METHOD.SELECT:
             return this.renderPaymentSelect()
-        case 'crew':
+        case PAYMENT_METHOD.CREW:
             return this.renderCrew()
-        case 'cash':
+        case PAYMENT_METHOD.CASH:
             return this.renderCash()
         default:
             return this.renderPaymentSelect()
@@ -191,19 +194,24 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(postPurchase(options))
         },
         selectCrew: () => {
-            dispatch(setPaymentState('crew'))
+            dispatch(setPaymentState(PAYMENT_METHOD.CREW))
         },
         selectCash: () => {
-            dispatch(setPaymentState('cash'))
+            dispatch(setPaymentState(PAYMENT_METHOD.CASH))
+            dispatch(applyDiscounts(PAYMENT_METHOD.CASH))
         },
         onBack: () => {
-            dispatch(setPaymentState('select'))
+            dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
+        },
+        removeDiscounts: () => {
+            dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
+            dispatch(removeDiscounts())
         }
     }
 }
 
 const open = () => {
-    $('#payment-modal').openModal()
+    $('#payment-modal').openModal({dismissible: false})
 }
 
 const close = () => {
