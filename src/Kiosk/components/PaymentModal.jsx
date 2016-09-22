@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setPaymentState, postPurchase, applyDiscounts, removeDiscounts } from '../actions'
-import { getTotalPriceOfCart, getRenderedCart } from '../selectors'
+import { getTotalPriceOfCart } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
+import { NotificationManager } from 'react-notifications'
 
 class PaymentModal extends React.Component {
     static propTypes = {
@@ -107,16 +108,20 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCash () {
-        const { onPurchase } = this.props
-        const { validity } = this.refs.amount
+        const { onPurchase, total } = this.props
+        const { validity, value } = this.refs.amount
         const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
+                total: total,
+                amountReceived: value,
                 message: message
             }
             onPurchase(purchase)
+        } else {
+            NotificationManager.error(`${value} is not enough, need ${total - value} more`, 'Need more coinz', 3000)
         }
     }
 

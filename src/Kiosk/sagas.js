@@ -79,12 +79,17 @@ function * postPurchase (action) {
         }
         const result = yield call(api.postPurchase, options)
         if (result.status === 200) {
-            NotificationManager.success('That\'s good news. Let\'s hope nobody breaks it', 'Purchase complete', 5000)
+            console.log(options)
+            if (options.payment_method === api.PAYMENT_METHOD.CASH) {
+                NotificationManager.success(`Give ${options.amountReceived - options.total} Kr. back`, 'Purchase complete', 5000)
+            } else {
+                NotificationManager.success('Purchase complete', 5000)
+            }
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
         } else {
-            // TODO: Show error message of some sort.
+            NotificationManager.error('Contact Tech crew', 'Purchase failed', 5000)
         }
     } catch (error) {
         console.error(error)
