@@ -5,6 +5,7 @@ import * as actions from './actions'
 import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
+import { close as closeLockModal } from './components/LockModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -147,6 +148,7 @@ export function * watchPostPurchase () {
     yield * takeEvery(actions.POST_PURCHASE, postPurchase)
 }
 
+<<<<<<< HEAD
 function * applyDiscounts (action) {
     var discounts = yield select(selectors.getDiscounts, action.paymentMethod)
     var items = yield select(selectors.getItems)
@@ -185,4 +187,35 @@ export function * watchUndoOrders () {
 
 export function * watchGetCreditForCrew () {
     yield * takeEvery(actions.GET_CREDIT_FOR_CREW, getCreditForCrew)
+}
+
+function * cashierLogin (action) {
+    try {
+        const crew = yield call(api.getCrew, action.card)
+        console.log(crew)
+        if (crew.length === 1) {
+            closeLockModal()
+            yield put(actions.cashierSuccess, crew.get(0))
+        } else {
+            yield put(actions.cashierFailed)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCashierLogin () {
+    yield * takeEvery(actions.CASHIER_LOGIN, cashierLogin)
+}
+
+function * cashierFailed () {
+    try {
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCashierFailed () {
+    yield * takeEvery(actions.CASHIER_FAILED, cashierFailed)
 }
