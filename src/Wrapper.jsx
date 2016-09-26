@@ -54,8 +54,8 @@ const Wrapper = React.createClass({
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
                             <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
-                            <NavItem key='kiosk' href='#/'>Kiosk</NavItem>
                             <NavItem key='logout' onClick={::this.props.logout} href='#'>Logout</NavItem>
+                            <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                         </ul>
                     </div>
                 </nav>
