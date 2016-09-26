@@ -2,6 +2,14 @@ body {
     background-color: white;
 }
 
+.notification-success {
+    background-color: #26a69a !important;
+}
+
+.notification-error {
+    background-color: #f44336 !important;
+}
+
 input[type="search"] {
     height: 64px !important; /* or height of nav */
     width: 400px !important;
@@ -13,6 +21,14 @@ ul.search-list {
 
 .link {
     cursor: pointer;
+}
+
+.collection a {
+    cursor: pointer;
+}
+
+.brand-logo {
+    margin-left: 10px;
 }
 
 .item-card {
@@ -57,6 +73,10 @@ ul.search-list {
     line-height: 125%;
 }
 
+#content > .col {
+    padding-right: 3px !important;
+    padding-left: 3px !important;
+}
 
 .hide {
     display: none;
@@ -88,7 +108,8 @@ ul.search-list {
 .pos-container {
     position: absolute;
     width: 100%;
-    height: calc(100% - 84px);
+    height: calc(100% - 77px);
+    margin-bottom: 0px !important;
 }
 
 ::-webkit-scrollbar {

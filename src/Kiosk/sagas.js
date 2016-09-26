@@ -83,7 +83,7 @@ function * postPurchase (action) {
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 NotificationManager.success(`Give ${options.amountReceived - options.total} Kr. back`, 'Purchase complete', 5000)
             } else {
-                NotificationManager.success('Purchase complete', 5000)
+                NotificationManager.success('Purchase complete', '', 5000)
             }
             closePaymentModal()
             yield put(actions.emptyCart())

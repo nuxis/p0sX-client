@@ -39,7 +39,7 @@ class PaymentModal extends React.Component {
                 <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge to pay {total}Kr.</h4>
                 <div className='row'>
                     <div className='input-field col s12'>
-                        <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='number' required className='validate' />
+                        <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='text' required className='validate' />
                         <label className='active' htmlFor='rfid'>Badge number</label>
                     </div>
                     <div className='input-field col s12'>
