@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { cashierLogin } from '../action'
+import { cashierLogin } from '../actions'
 
 class LockModal extends React.Component {
     static propTypes = {
@@ -16,18 +16,18 @@ class LockModal extends React.Component {
         }
     }
 
+    focus () {
+        $('#cardid').focus()
+    }
+
     render () {
         return (
             <div id='lock-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Scan card to unlock</h4>
                     <div className='input-field col s12'>
-                        <input id='cardid' type='hidden' className='validate' />
+                        <input id='cardid' type='text' className='validate' onBlur={::this.focus} onKeyUp={::this.keyPress} />
                     </div>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
         )
@@ -49,13 +49,12 @@ const mapDispatchToProps = (dispatch) => {
 
 const open = () => {
     // eslint-disable-next-line no-undef
-    Materialize.updateTextFields()
-    $('#lock-modal').openModal()
+    $('#lock-modal').openModal({dismissible: false})
+    $('#cardid').focus()
 }
 
 const close = () => {
     // eslint-disable-next-line no-undef
-    Materialize.updateTextFields()
     $('#lock-modal').closeModal()
 }
 

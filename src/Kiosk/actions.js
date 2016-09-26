@@ -46,7 +46,6 @@ export const SET_CREDIT = 'SET_CREDIT'
 export const CASHIER_LOGIN = 'CASHIER_LOGIN'
 export const CASHIER_LOGOUT = 'CASHIER_LOGOUT'
 export const CASHIER_SUCCESS = 'CASHIER_SUCCESS'
-export const CASHIER_FAILED = 'CASHIER_FAILED'
 export const CASHIER_CLEAR = 'CASHIER_CLEAR'
 
 // Action creators
@@ -97,5 +96,4 @@ export const setCredit = (credit) => action(SET_CREDIT, {credit})
 export const cashierLogin = (card) => action(CASHIER_LOGIN, { card })
 export const cashierLogout = () => action(CASHIER_LOGOUT, {})
 export const cashierSuccess = (crew) => action(CASHIER_SUCCESS, { crew })
-export const cashierFailed = () => action(CASHIER_FAILED, {})
 export const cashierClear = () => action(CASHIER_CLEAR, {})

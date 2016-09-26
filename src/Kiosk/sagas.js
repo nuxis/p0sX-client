@@ -5,7 +5,7 @@ import * as actions from './actions'
 import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { close as closeLockModal } from './components/LockModal'
+import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -148,7 +148,6 @@ export function * watchPostPurchase () {
     yield * takeEvery(actions.POST_PURCHASE, postPurchase)
 }
 
-<<<<<<< HEAD
 function * applyDiscounts (action) {
     var discounts = yield select(selectors.getDiscounts, action.paymentMethod)
     var items = yield select(selectors.getItems)
@@ -192,12 +191,12 @@ export function * watchGetCreditForCrew () {
 function * cashierLogin (action) {
     try {
         const crew = yield call(api.getCrew, action.card)
-        console.log(crew)
-        if (crew.length === 1) {
+        if (crew.size === 1) {
             closeLockModal()
-            yield put(actions.cashierSuccess, crew.get(0))
+            yield put(actions.cashierSuccess(crew.get(0)))
         } else {
-            yield put(actions.cashierFailed)
+            NotificationManager.error('Login failed', 'Are you crew?!', 5000)
+            yield put(actions.cashierClear)
         }
     } catch (error) {
         console.error(error)
@@ -208,14 +207,16 @@ export function * watchCashierLogin () {
     yield * takeEvery(actions.CASHIER_LOGIN, cashierLogin)
 }
 
-function * cashierFailed () {
+function * cashierLogout () {
     try {
-
+        openLockModal()
+        NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
+        yield put(actions.cashierClear)
     } catch (error) {
-        console.error(error)
+        console.log(error)
     }
 }
 
-export function * watchCashierFailed () {
-    yield * takeEvery(actions.CASHIER_FAILED, cashierFailed)
+export function * watchCashierLogout () {
+    yield * takeEvery(actions.CASHIER_LOGOUT, cashierLogout)
 }

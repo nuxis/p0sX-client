@@ -216,7 +216,6 @@ const cashierInit = new Map({
 })
 
 export function cashier (state = cashierInit, action) {
-    console.log('cashier state', state, action)
     switch (action.type) {
     case actions.CASHIER_CLEAR:
         return new Map({
@@ -228,7 +227,7 @@ export function cashier (state = cashierInit, action) {
         return new Map({
             locked: false,
             card: action.crew.get('card'),
-            name: action.crew.get('name')
+            name: `${action.crew.get('first_name')} ${action.crew.get('last_name')}`
         })
     default:
         return state
