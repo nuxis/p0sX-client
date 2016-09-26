@@ -1,6 +1,20 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
+// DISCOUNTS
+const discountsInit = List()
+
+export function discounts (state = discountsInit, action) {
+    switch (action.type) {
+    case actions.SET_DISCOUNTS:
+        return action.discounts
+    default:
+        return state
+    }
+}
+
+// END DISCOUNTS
+
 // SEARCH
 
 const searchInit = ''
@@ -110,6 +124,8 @@ export function cart (state = cartInit, action) {
         return state.remove(action.itemIndexInCart)
     case actions.EMPTY_CART:
         return new List()
+    case actions.REMOVE_DISCOUNTS:
+        return state.filter(line => line.get('item').get('price') > 0)
     default:
         return state
     }
@@ -124,7 +140,6 @@ const itemsInit = new List()
 export function items (state = itemsInit, action) {
     switch (action.type) {
     case actions.SET_ITEMS:
-        console.log(action.items)
         return action.items
     default:
         return state
@@ -136,11 +151,10 @@ export function items (state = itemsInit, action) {
 // PAYMENT
 
 const paymentInit = new Map({
-    state: 'select'
+    state: -1
 })
 
 export function payment (state = paymentInit, action) {
-    console.log('payment state:', state, action)
     switch (action.type) {
     case actions.SET_PAYMENT_STATE:
         return state.set('state', action.state)

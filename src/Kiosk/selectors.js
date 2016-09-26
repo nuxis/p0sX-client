@@ -54,3 +54,7 @@ export const getItemsByCategory = createSelector(
         }
     }
 )
+
+export const getDiscounts = (state, paymentMethod) => state.discounts.filter(d => d.get('payment_method') === paymentMethod)
+
+export const getItemById = (state, id) => state.items.find(item => item.get('id') === id)

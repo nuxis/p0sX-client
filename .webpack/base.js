@@ -17,7 +17,7 @@ export default {
                 loader: "style-loader!css-loader"
             },
             {
-                test: /\.(woff2)(\?.*$|$)$/,
+                test: /\.(woff)(\?.*$|$)$/,
                 loader: 'url-loader?limit=255000?mimetype=font/woff2'
             },
             {
@@ -25,7 +25,7 @@ export default {
                 loader: 'url-loader?limit=255000?mimetype=image/png'
             },
             {
-                test: /\.(ttf|woff|eot|svg)(\?.*$|$)$/,
+                test: /\.(ttf|eot|svg|woff2)(\?.*$|$)$/,
                 loader: 'empty-string-loader'
             }
         ]

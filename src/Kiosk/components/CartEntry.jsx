@@ -21,14 +21,13 @@ class CartEntry extends React.Component {
         return (
             <li className='collection-item avatar'>
                 <img src={image} alt='' className='circle' />
-                <span className='title'>{name} {ingredients.size ? 'med' : ''}</span>
+                <span className='title'>{name}</span>
                 <p>
-                    {ingredients.map((ingredient, i) =>
-                        <span key={ingredient.get('id')}>{ingredient.get('name')}{i < ingredients.size - 1 ? ', ' : <br />}</span>
-                    )}
+                    <span>{ingredients.map(i => i.get('name')).join(', ')}</span>
+                    {!ingredients.isEmpty() ? <br /> : ''}
                     {price} Kr.
                 </p>
-                <a href='#!' style={{marginRight: '-15px'}} className='secondary-content' onClick={::this.removeItem} title='Remove item'>
+                <a style={{marginRight: '-15px'}} className='secondary-content' onClick={::this.removeItem} title='Remove item'>
                     <i className='material-icons small red-text'>delete</i>
                 </a>
             </li>

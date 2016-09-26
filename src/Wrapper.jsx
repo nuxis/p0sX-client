@@ -6,6 +6,8 @@ import { NavItem, Icon } from 'react-materialize'
 import PaymentModal from './Kiosk/components/PaymentModal.jsx'
 import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
+import { NotificationContainer } from 'react-notifications'
+import 'react-notifications/lib/notifications.css'
 
 const Wrapper = React.createClass({
     propTypes: {
@@ -42,6 +44,7 @@ const Wrapper = React.createClass({
                 <IngredientModal />
                 <SettingsModal />
                 <PaymentModal />
+                <NotificationContainer />
             </div>
         )
     }

@@ -25,9 +25,9 @@ class Cart extends React.Component {
         })
 
         return (
-            <div style={{height: '100%'}} className='col s12 m3 l3'>
+            <div style={{height: '100%', paddingRight: '3px'}} className='col s12 m3 l3'>
                 <div className='cart-list' style={{overflowY: 'auto', height: 'calc(100% - 60px)', margin: '7.25px 0 5px 0'}}>
-                    <ul style={{margin: '0 0 0 0'}} className={listClass}>
+                    <ul style={{margin: '0 5px 0 0'}} className={listClass}>
                         {items.map((entry, index) =>
                             <CartEntry
                                 key={index}

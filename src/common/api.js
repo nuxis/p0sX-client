@@ -7,6 +7,7 @@ const ORDER_STATE = {
 }
 
 const PAYMENT_METHOD = {
+    'SELECT': -1,
     'CASH': 0,
     'CREW': 1,
     'CARD': 2,
@@ -18,6 +19,10 @@ const PAYMENT_METHOD = {
 
 const getCategories = () => {
     return axios.get('/categories/?format=json').then(res => res.data)
+}
+
+const getDiscounts = () => {
+    return axios.get('/discounts/?format=json').then(res => res.data)
 }
 
 const getIngredients = () => {
@@ -81,5 +86,6 @@ export {
     getUser,
     postPurchase,
     getOpenOrders,
-    getInProgressOrders
+    getInProgressOrders,
+    getDiscounts
 }
