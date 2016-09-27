@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import settings from './common/settings'
 import SettingsModal, { open as openSettings } from './common/components/SettingsModal.jsx'
+import CreditCheckModal, { open as openCreditCheck } from './Kiosk/components/CreditCheckModal.jsx'
 import PreviousOrderModal, { open as openPreviousOrder } from './Kiosk/components/PreviousOrderModal.jsx'
 import { NavItem, Icon } from 'react-materialize'
 import PaymentModal from './Kiosk/components/PaymentModal.jsx'
@@ -42,6 +43,7 @@ const Wrapper = React.createClass({
                         <ul className='right hide-on-med-and-down'>
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
+                            <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
                             <NavItem key='kiosk' href='#/'>Kiosk</NavItem>
                             <NavItem key='kitchen' href='#/kitchen'>Kitchen</NavItem>
                         </ul>
@@ -53,6 +55,7 @@ const Wrapper = React.createClass({
                 <PaymentModal />
                 <NotificationContainer />
                 <PreviousOrderModal />
+                <CreditCheckModal />
             </div>
         )
     }

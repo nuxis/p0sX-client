@@ -1,6 +1,25 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
+// CREDIT
+
+const creditInit = Map({
+    used: 0,
+    credit_limit: 0,
+    left: 0
+})
+
+export function creditCheck (state = creditInit, action) {
+    switch (action.type) {
+    case actions.SET_CREDIT:
+        return action.credit
+    default:
+        return state
+    }
+}
+
+// END CREDIT
+
 // LAST ORDER
 
 const lastOrderInit = Map({

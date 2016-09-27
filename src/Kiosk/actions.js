@@ -40,6 +40,9 @@ export const SET_LAST_ORDER = 'SET_LAST_ORDER'
 export const CLEAR_LAST_ORDER = 'CLEAR_LAST_ORDER'
 export const UNDO_ORDER = 'UNDO_ORDER'
 
+export const GET_CREDIT_FOR_CREW = 'GET_CREDIT_FOR_CREW'
+export const SET_CREDIT = 'SET_CREDIT'
+
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
@@ -81,3 +84,6 @@ export const setLastOrder = (cart) => action(SET_LAST_ORDER, {cart})
 export const clearLastOrder = () => action(CLEAR_LAST_ORDER, {})
 
 export const undoOrder = () => action(UNDO_ORDER, {})
+
+export const getCreditForCrew = (badge) => action(GET_CREDIT_FOR_CREW, {badge})
+export const setCredit = (credit) => action(SET_CREDIT, {credit})

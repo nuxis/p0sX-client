@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { NotificationManager } from 'react-notifications'
 
 const ORDER_STATE = {
     'OPEN': 0,
@@ -19,35 +20,47 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return axios.get('/categories/?format=json').then(res => res.data)
+    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showError())
 }
 
 const getDiscounts = () => {
-    return axios.get('/discounts/?format=json').then(res => res.data)
+    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showError())
 }
 
 const getIngredients = () => {
-    return axios.get('/ingredients/?format=json').then(res => res.data)
+    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showError())
 }
 
 const getItems = () => {
-    return axios.get('/items/?format=json').then(res => res.data)
+    return axios.get('/items/?format=json').then(res => res.data).catch(() => showError())
 }
 
 const getUsers = () => {
-    return axios.get('/users/?format=json').then(res => res.data)
+    return axios.get('/users/?format=json').then(res => res.data).catch(() => showError())
 }
 
 const getUser = (userId) => {
-    return axios.get(`/users/${userId}/?format=json`).then(res => res.data)
+    return axios.get(`/users/${userId}/?format=json`).then(res => res.data).catch(() => showError())
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/?format=json', purchase)
+    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showError())
 }
 
 const getOrders = () => {
-    return axios.get('/orders/?format=json').then(res => res.data)
+    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showError())
+}
+
+const getCreditForCrew = (badge) => {
+    return axios.get(`/credit/${badge}/?format=json`)
+        .then(res => res.data)
+        .catch(() => {
+            NotificationManager.error('Unable to fetch credit info for user', '', 5000)
+        })
+}
+
+const showError = () => {
+    NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
 }
 
 // Something probably has to be done here...
@@ -88,5 +101,6 @@ export {
     postPurchase,
     getOpenOrders,
     getInProgressOrders,
-    getDiscounts
+    getDiscounts,
+    getCreditForCrew
 }
