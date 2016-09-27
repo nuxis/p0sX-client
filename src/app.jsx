@@ -19,7 +19,6 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import settings from './common/settings'
 
 import configureStore from './configureStore'
-import { getAllKioskData } from './Kiosk/actions'
 import Wrapper from './Wrapper'
 
 // Global axios defaults

@@ -47,13 +47,12 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export function open() {
+export function open () {
     $('#previous-order-modal').openModal()
 }
 
-export function close() {
+export function close () {
     $('#previous-order-modal').closeModal()
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviousOrderModal)

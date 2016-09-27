@@ -8,9 +8,7 @@ const lastOrderInit = Map({
     id: 0
 })
 
-
-export function lastOrder(state = lastOrderInit, action)
-{
+export function lastOrder (state = lastOrderInit, action) {
     switch (action.type) {
     case actions.SET_LAST_ORDER:
         return action.cart
