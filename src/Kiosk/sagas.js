@@ -120,9 +120,16 @@ function * undoOrder () {
         if (lastOrder.get('lines').isEmpty()) {
             NotificationManager.error('There is nothing to undo', '', 5000)
         } else {
-            const options = {
-                ...lastOrder,
-                payment_method: api.PAYMENT_METHOD.UNDO
+            var options = lastOrder.toJS()
+            options = {
+                ...options,
+                payment_method: api.PAYMENT_METHOD.UNDO,
+                lines: options.lines.map(line => {
+                    return {
+                        item: line.item.id,
+                        ingredients: line.ingredients.map(i => i.id)
+                    }
+                })
             }
             const result = yield call(api.postPurchase, options)
             if (result) {
