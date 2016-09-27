@@ -15,13 +15,13 @@ class PreviousOrderModal extends React.Component {
                 <div className='modal-content'>
                     <h4>{order.get('id') === 0 ? 'Nothing to do' : `Order ${order.get('id')}`}</h4>
                     <ul className='collection'>
-                    {order.get('lines').map(line =>
-                        <li className='collection-item' key={line.get('id')}>
-                            <b>{line.get('id')}</b> - {line.get('item').get('name')}
-                            {!line.get('ingredients').isEmpty() ? ' with ' : ''}
-                            {line.get('ingredients').map(i => i.get('name')).join(', ')}
-                        </li>
-                    )}
+                        {order.get('lines').map(line =>
+                            <li className='collection-item' key={line.get('id')}>
+                                <b>{line.get('id')}</b> - {line.get('item').get('name')}
+                                {!line.get('ingredients').isEmpty() ? ' with ' : ''}
+                                {line.get('ingredients').map(i => i.get('name')).join(', ')}
+                            </li>
+                        )}
                     </ul>
                 </div>
                 <div className='modal-footer'>

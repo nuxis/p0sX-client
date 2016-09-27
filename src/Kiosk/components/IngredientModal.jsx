@@ -15,7 +15,7 @@ class IngredientCheckbox extends React.Component {
         e.stopPropagation()
     }
 
-    click (e) {
+    click = (e) => {
         const { onClick, ingredient } = this.props
         e.stopPropagation()
         onClick(ingredient)
@@ -24,7 +24,7 @@ class IngredientCheckbox extends React.Component {
     render () {
         const { ingredient, checked } = this.props
         return (
-            <li className='collection-item' onClick={::this.click}>
+            <li className='collection-item' onClick={this.click}>
                 <input
                     onClick={IngredientCheckbox.noop}
                     id={'ingredient-' + ingredient.get('id')}
@@ -45,7 +45,7 @@ class IngredientModal extends React.Component {
         onIngredientClick: React.PropTypes.func.isRequired
     }
 
-    close () {
+    close = () => {
         const { onClose, currentItem } = this.props
         onClose(currentItem)
     }
@@ -70,7 +70,7 @@ class IngredientModal extends React.Component {
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={::this.close} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
+                    <a href='#!' onClick={this.close} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>

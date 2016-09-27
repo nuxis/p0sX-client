@@ -87,7 +87,9 @@ function * postPurchase (action) {
 
         if (options.payment_method === api.PAYMENT_METHOD.CREW) {
             const credit = yield call(api.getCreditForCrew, options.card)
-            if (credit && options.total > credit.get('left')) {
+            if (!credit) {
+                return
+            } else if (options.total > credit.get('left')) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
                 closePaymentModal()
                 yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))

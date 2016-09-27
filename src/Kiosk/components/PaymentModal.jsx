@@ -39,14 +39,14 @@ class PaymentModal extends React.Component {
                 <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge to pay {total}Kr.</h4>
                 <div className='row'>
                     <div className='input-field col s12'>
-                        <input onKeyUp={::this.onEnter} ref='rfid' id='rfid' type='text' required className='validate' />
+                        <input onKeyUp={this.onEnter} ref='rfid' id='rfid' type='text' required className='validate' />
                         <label className='active' htmlFor='rfid'>Badge number</label>
                     </div>
                     <div className='input-field col s12'>
-                        <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                        <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
                         <label htmlFor='message'>Message for the kitchen</label>
                     </div>
-                    <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCrew}>
+                    <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCrew}>
                         Purchase
                     </button>
                 </div>
@@ -61,14 +61,14 @@ class PaymentModal extends React.Component {
                 <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
                 <div className='row'>
                     <div className='input-field col s12'>
-                        <input onKeyUp={::this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
+                        <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
                         <label className='active' htmlFor='amount'>Amount received</label>
                     </div>
                     <div className='input-field col s12'>
-                        <input onKeyUp={::this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                        <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
                         <label htmlFor='message'>Message for the kitchen</label>
                     </div>
-                    <button className='btn btn-large waves-effect waves-light' onClick={::this.purchaseCash}>
+                    <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCash}>
                         Purchase
                     </button>
                 </div>
@@ -76,7 +76,7 @@ class PaymentModal extends React.Component {
         )
     }
 
-    onEnter (e) {
+    onEnter = (e) => {
         if (e.keyCode === 13) {
             const { paymentState } = this.props
             switch (paymentState) {
@@ -92,7 +92,7 @@ class PaymentModal extends React.Component {
         }
     }
 
-    purchaseCrew () {
+    purchaseCrew = () => {
         const { onPurchase, total } = this.props
         const { value, validity } = this.refs.rfid
         const message = this.refs.message.value
@@ -108,7 +108,7 @@ class PaymentModal extends React.Component {
         }
     }
 
-    purchaseCash () {
+    purchaseCash = () => {
         const { onPurchase, total } = this.props
         const { validity, value } = this.refs.amount
         const message = this.refs.message.value

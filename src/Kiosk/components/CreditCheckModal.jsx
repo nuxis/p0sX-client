@@ -8,7 +8,7 @@ class PreviousOrderModal extends React.Component {
         checkCredit: React.PropTypes.func.isRequired
     }
 
-    onEnter (e) {
+    onEnter = (e) => {
         const { checkCredit } = this.props
         const { value } = this.refs.creditBadge
         if (e.keyCode === 13) {
@@ -18,7 +18,7 @@ class PreviousOrderModal extends React.Component {
         }
     }
 
-    onBlur () {
+    onBlur = () => {
         this.refs.creditBadge.focus()
     }
 
@@ -35,7 +35,7 @@ class PreviousOrderModal extends React.Component {
                     </div>
                     <div className='row'>
                         <div className='input-field col s12' style={{opacity: '0'}}>
-                            <input onKeyUp={::this.onEnter} onBlur={::this.onBlur} ref='creditBadge' type='text' id='credit-badge' required className='validate' />
+                            <input onKeyUp={this.onEnter} onBlur={this.onBlur} ref='creditBadge' type='text' id='credit-badge' required className='validate' />
                         </div>
                     </div>
                 </div>

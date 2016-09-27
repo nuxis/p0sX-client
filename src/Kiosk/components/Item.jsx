@@ -9,7 +9,7 @@ class Item extends React.Component {
         item: React.PropTypes.object.isRequired
     }
 
-    click () {
+    click = () => {
         const { onClick, item } = this.props
         onClick(item)
     }
@@ -17,7 +17,7 @@ class Item extends React.Component {
     render () {
         const { name, price, image } = this.props
         return (
-            <div className='item-card waves-effect z-depth-1 hoverable' onClick={::this.click}>
+            <div className='item-card waves-effect z-depth-1 hoverable' onClick={this.click}>
                 <img src={image} />
                 <div className='name-truncate'>{name}</div>
                 <div className='price grey-text text-darken-1'>{price} Kr.</div>

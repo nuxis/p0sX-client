@@ -11,7 +11,7 @@ class CartEntry extends React.Component {
         index: React.PropTypes.number.isRequired
     }
 
-    removeItem () {
+    removeItem = () => {
         const { onRemoveItem, index } = this.props
         onRemoveItem(index)
     }
@@ -27,7 +27,7 @@ class CartEntry extends React.Component {
                     {!ingredients.isEmpty() ? <br /> : ''}
                     {price} Kr.
                 </p>
-                <a style={{marginRight: '-15px'}} className='secondary-content' onClick={::this.removeItem} title='Remove item'>
+                <a style={{marginRight: '-15px'}} className='secondary-content' onClick={this.removeItem} title='Remove item'>
                     <i className='material-icons small red-text'>delete</i>
                 </a>
             </li>

@@ -13,8 +13,7 @@ import './css/style.css'
 
 import { Provider } from 'react-redux'
 import Kiosk from './Kiosk/Kiosk'
-import { useRouterHistory, Router, Route, IndexRoute } from 'react-router'
-import { createHashHistory } from 'history'
+import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import settings from './common/settings'
 
@@ -33,8 +32,6 @@ axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data
 // eslint-disable-next-line immutable/no-mutation
 axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
 
-const hashHistory = useRouterHistory(createHashHistory)()
-
 const store = configureStore(hashHistory)
 
 // Create an enhanced history that syncs navigation events with the store
@@ -49,4 +46,5 @@ const routes = (
         </Router>
     </Provider>
 )
+
 render(routes, document.getElementById('app'))

@@ -10,8 +10,9 @@ class SettingsModal extends React.Component {
         initial: React.PropTypes.bool.isRequired
     }
 
-    onClick () {
+    onClick = () => {
         const { onSave, initial } = this.props
+        console.log(initial)
         onSave(initial)
     }
 
@@ -47,7 +48,7 @@ class SettingsModal extends React.Component {
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={::this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
+                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>

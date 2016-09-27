@@ -1,6 +1,6 @@
-import ElectronSettings from 'electron-settings'
-import { remote } from 'electron'
+import settings from 'electron-settings'
 
-export default new ElectronSettings({
-    configDirPath: remote.app.getPath('userData')
-})
+export default {
+    set: (key, value) => settings.setSync(key, value),
+    get: (key) => settings.getSync(key)
+}

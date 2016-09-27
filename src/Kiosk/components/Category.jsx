@@ -9,7 +9,7 @@ class Category extends React.Component {
         category: React.PropTypes.object.isRequired
     }
 
-    click () {
+    click = () => {
         const { onClick, category } = this.props
         onClick(category)
     }
@@ -17,7 +17,7 @@ class Category extends React.Component {
     render () {
         const { name, active } = this.props
         return (
-            <a className={classNames({'collection-item': true, 'active': active})} onClick={::this.click}>
+            <a className={classNames({'collection-item': true, 'active': active})} onClick={this.click}>
                 {name}
             </a>
         )

@@ -13,13 +13,13 @@ class SearchBox extends React.Component {
     render () {
         return (
             <div className='input-field'>
-                <input onKeyUp={::this.keyPress} id='search' type='search' />
+                <input onKeyUp={this.keyPress} id='search' type='search' />
                 <label htmlFor='search'><i className='material-icons'>search</i></label>
             </div>
         )
     }
 
-    keyPress (e) {
+    keyPress = (e) => {
         const { setSearchValue, shownItems, addItemToCart } = this.props
         setSearchValue(e.target.value)
         if (e.keyCode === 13) {
