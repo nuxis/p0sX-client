@@ -12,7 +12,6 @@ class SettingsModal extends React.Component {
 
     onClick = () => {
         const { onSave, initial } = this.props
-        console.log(initial)
         onSave(initial)
     }
 

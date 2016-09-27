@@ -62,6 +62,7 @@
     "material-design-icons-iconfont": "^3.0.0",
     "materialize-css": "^0.97.6",
     "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.2.1",
     "react-materialize": "^0.17.0",
     "react-redux": "^4.4.5",
