@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import { categories, selectedCategory, currentItem, cart, items, search, payment, discounts, lastOrder } from './Kiosk/reducer'
+import { categories, selectedCategory, currentItem, cart, items, search, payment, discounts, lastOrder, creditCheck } from './Kiosk/reducer'
 
 export default combineReducers({
     items,
@@ -12,5 +12,6 @@ export default combineReducers({
     payment,
     discounts,
     lastOrder,
+    creditCheck,
     routing: routerReducer
 })

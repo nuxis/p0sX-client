@@ -77,9 +77,18 @@ function * postPurchase (action) {
                 }
             })
         }
+
+        if (options.payment_method === api.PAYMENT_METHOD.CREW) {
+            const credit = yield call(api.getCreditForCrew, options.card)
+            if (credit && options.total > credit.get('left')) {
+                NotificationManager.error('Not enough credit left on card', '', 5000)
+                return
+            }
+        }
+
         const result = yield call(api.postPurchase, options)
-        if (result.status === 200) {
-            yield put(actions.setLastOrder(result.data))
+        if (result) {
+            yield put(actions.setLastOrder(result))
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 NotificationManager.success(`Give ${options.amountReceived - options.total} Kr. back`, 'Purchase complete', 5000)
             } else {
@@ -88,8 +97,6 @@ function * postPurchase (action) {
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
-        } else {
-            NotificationManager.error('Contact Tech crew', 'Purchase failed', 5000)
         }
     } catch (error) {
         console.error(error)
@@ -107,11 +114,9 @@ function * undoOrder () {
                 payment_method: api.PAYMENT_METHOD.UNDO
             }
             const result = yield call(api.postPurchase, options)
-            if (result.status === 200) {
+            if (result) {
                 NotificationManager.success('The last purchase has been undone', '', 5000)
                 yield put(actions.clearLastOrder())
-            } else {
-                NotificationManager.error('Contact Tech crew', 'Purchase failed', 5000)
             }
         }
     } catch (error) {
@@ -144,10 +149,21 @@ function * applyDiscounts (action) {
     }
 }
 
+function * getCreditForCrew (badge) {
+    const result = yield call(api.getCreditForCrew, badge.badge)
+    if (result) {
+        yield put(actions.setCredit(result))
+    }
+}
+
 export function * watchApplyDiscounts () {
     yield * takeEvery(actions.APPLY_DISCOUNTS, applyDiscounts)
 }
 
 export function * watchUndoOrders () {
     yield * takeEvery(actions.UNDO_ORDER, undoOrder)
+}
+
+export function * watchGetCreditForCrew () {
+    yield * takeEvery(actions.GET_CREDIT_FOR_CREW, getCreditForCrew)
 }

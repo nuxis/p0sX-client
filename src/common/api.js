@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { NotificationManager } from 'react-notifications'
 
 const ORDER_STATE = {
     'OPEN': 0,
@@ -44,10 +45,22 @@ const getUser = (userId) => {
 
 const postPurchase = (purchase) => {
     return axios.post('/purchases/?format=json', purchase)
+        .then(res => res.data)
+        .catch(() => {
+            NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
+        })
 }
 
 const getOrders = () => {
     return axios.get('/orders/?format=json').then(res => res.data)
+}
+
+const getCreditForCrew = (badge) => {
+    return axios.get(`/credit/${badge}/?format=json`)
+        .then(res => res.data)
+        .catch(() => {
+            NotificationManager.error('Unable to fetch credit info for user', '', 5000)
+        })
 }
 
 // Something probably has to be done here...
@@ -88,5 +101,6 @@ export {
     postPurchase,
     getOpenOrders,
     getInProgressOrders,
-    getDiscounts
+    getDiscounts,
+    getCreditForCrew
 }

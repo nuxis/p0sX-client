@@ -93,13 +93,14 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCrew () {
-        const { onPurchase } = this.props
+        const { onPurchase, total } = this.props
         const { value, validity } = this.refs.rfid
         const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
+                total: total,
                 card: value,
                 message: message
             }
