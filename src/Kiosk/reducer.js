@@ -1,6 +1,29 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
+// LAST ORDER
+
+const lastOrderInit = Map({
+    lines: List(),
+    id: 0
+})
+
+export function lastOrder (state = lastOrderInit, action) {
+    switch (action.type) {
+    case actions.SET_LAST_ORDER:
+        return action.cart
+    case actions.CLEAR_LAST_ORDER:
+        return Map({
+            lines: List(),
+            id: 0
+        })
+    default:
+        return state
+    }
+}
+
+// END LAST ORDER
+
 // DISCOUNTS
 const discountsInit = List()
 

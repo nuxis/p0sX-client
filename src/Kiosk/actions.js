@@ -36,6 +36,10 @@ export const GET_DISCOUNTS = 'GET_DISCOUNTS'
 export const SET_DISCOUNTS = 'SET_DISCOUNTS'
 export const REMOVE_DISCOUNTS = 'REMOVE_DISCOUNTS'
 
+export const SET_LAST_ORDER = 'SET_LAST_ORDER'
+export const CLEAR_LAST_ORDER = 'CLEAR_LAST_ORDER'
+export const UNDO_ORDER = 'UNDO_ORDER'
+
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
@@ -71,3 +75,9 @@ export const postPurchase = (options) => action(POST_PURCHASE, {options})
 export const applyDiscounts = (paymentMethod) => action(APPLY_DISCOUNTS, {paymentMethod})
 
 export const removeDiscounts = () => action(REMOVE_DISCOUNTS, {})
+
+export const setLastOrder = (cart) => action(SET_LAST_ORDER, {cart})
+
+export const clearLastOrder = () => action(CLEAR_LAST_ORDER, {})
+
+export const undoOrder = () => action(UNDO_ORDER, {})

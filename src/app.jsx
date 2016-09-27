@@ -19,7 +19,6 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import settings from './common/settings'
 
 import configureStore from './configureStore'
-import { getAllKioskData } from './Kiosk/actions'
 import Wrapper from './Wrapper'
 
 // Global axios defaults
@@ -37,8 +36,6 @@ axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth
 const hashHistory = useRouterHistory(createHashHistory)()
 
 const store = configureStore(hashHistory)
-
-store.dispatch(getAllKioskData())
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(hashHistory, store)

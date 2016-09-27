@@ -10,9 +10,12 @@ body {
     background-color: #f44336 !important;
 }
 
+.notification {
+    box-shadow: none !important;
+}
+
 input[type="search"] {
-    height: 64px !important; /* or height of nav */
-    width: 400px !important;
+    height: 64px !important;
 }
 
 ul.search-list {

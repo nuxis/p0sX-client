@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
+import axios from 'axios'
+import { getAllKioskData } from '../../Kiosk/actions'
 
 class SettingsModal extends React.Component {
     static propTypes = {
@@ -45,7 +47,7 @@ class SettingsModal extends React.Component {
                     </ul>
                 </div>
                 <div className='modal-footer'>
-                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
+                    <a href='#!' onClick={::this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
                     <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
                 </div>
             </div>
@@ -60,25 +62,31 @@ const mapStateToProps = () => {
     }
 }
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (initial) => {
             var server = $('#server').val()
             var token = $('#token').val()
-
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
-
-            console.log(initial, 'Should we get data?')
+            // eslint-disable-next-line immutable/no-mutation
+            axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
+            // eslint-disable-next-line immutable/no-mutation
+            axios.defaults.baseURL = settings.get('server_address')
+            if (initial) {
+                dispatch(getAllKioskData())
+            }
         }
     }
 }
 
 const open = () => {
-    $('#server').val(settings.get('server_address'))
-    $('#token').val(settings.get('api_auth_token'))
-    // eslint-disable-next-line no-undef
-    Materialize.updateTextFields()
+    if (Object.getOwnPropertyNames(settings.get()).length !== 0) {
+        $('#server').val(settings.get('server_address'))
+        $('#token').val(settings.get('api_auth_token'))
+        // eslint-disable-next-line no-undef
+        Materialize.updateTextFields()
+    }
     $('#settings-modal').openModal()
 }
 

@@ -79,7 +79,7 @@ function * postPurchase (action) {
         }
         const result = yield call(api.postPurchase, options)
         if (result.status === 200) {
-            console.log(options)
+            yield put(actions.setLastOrder(result.data))
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 NotificationManager.success(`Give ${options.amountReceived - options.total} Kr. back`, 'Purchase complete', 5000)
             } else {
@@ -96,13 +96,35 @@ function * postPurchase (action) {
     }
 }
 
+function * undoOrder () {
+    try {
+        const lastOrder = yield select(selectors.getLastOrder)
+        if (lastOrder.get('lines').isEmpty()) {
+            NotificationManager.error('There is nothing to undo', '', 5000)
+        } else {
+            const options = {
+                ...lastOrder,
+                payment_method: api.PAYMENT_METHOD.UNDO
+            }
+            const result = yield call(api.postPurchase, options)
+            if (result.status === 200) {
+                NotificationManager.success('The last purchase has been undone', '', 5000)
+                yield put(actions.clearLastOrder())
+            } else {
+                NotificationManager.error('Contact Tech crew', 'Purchase failed', 5000)
+            }
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export function * watchPostPurchase () {
     yield * takeEvery(actions.POST_PURCHASE, postPurchase)
 }
 
 function * applyDiscounts (action) {
     var discounts = yield select(selectors.getDiscounts, action.paymentMethod)
-    console.log(discounts)
     var items = yield select(selectors.getItems)
     discounts = discounts.map(d => d.set('item', items.find(i => i.get('id') === d.get('item'))))
     discounts = discounts.sortBy(d => d.get('item').get('price'))
@@ -123,5 +145,9 @@ function * applyDiscounts (action) {
 }
 
 export function * watchApplyDiscounts () {
-    yield * takeEvery('APPLY_DISCOUNTS', applyDiscounts)
+    yield * takeEvery(actions.APPLY_DISCOUNTS, applyDiscounts)
+}
+
+export function * watchUndoOrders () {
+    yield * takeEvery(actions.UNDO_ORDER, undoOrder)
 }

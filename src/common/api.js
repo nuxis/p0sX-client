@@ -14,7 +14,8 @@ const PAYMENT_METHOD = {
     'VIPPS': 3,
     'MCASH': 4,
     'MOBILEPAY': 5,
-    'IZETTLE': 6
+    'IZETTLE': 6,
+    'UNDO': 7
 }
 
 const getCategories = () => {
