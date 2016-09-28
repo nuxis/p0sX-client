@@ -22,7 +22,7 @@ const Wrapper = React.createClass({
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node
         ]),
-        getInitialData: React.PropTypes.func.isRequired
+        getInitialData: React.PropTypes.func.isRequired,
         logout: React.PropTypes.func.isRequired,
         cashierName: React.PropTypes.string
     },
@@ -80,7 +80,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getInitialData: () => dispatch(getAllKioskData())
+        getInitialData: () => dispatch(getAllKioskData()),
         logout: () => {
             dispatch(cashierLogout())
         }
