@@ -10,13 +10,11 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-<<<<<<< HEAD
 import { getAllKioskData } from './Kiosk/actions'
-=======
 import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
+import ShiftModal, { open as openShiftModal } from './Kiosk/components/ShiftModal'
 import { cashierLogout } from './Kiosk/actions'
 import { getLoggedInCashier } from './Kiosk/selectors'
->>>>>>> login and logout functionality based on crew cards
 
 const Wrapper = React.createClass({
     propTypes: {
@@ -54,6 +52,7 @@ const Wrapper = React.createClass({
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
                             <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
+                            <NavItem key='shift' onClick={openShiftModal} href='#'>Shift</NavItem>
                             <NavItem key='logout' onClick={::this.props.logout} href='#'>Logout</NavItem>
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                         </ul>
@@ -64,6 +63,7 @@ const Wrapper = React.createClass({
                 <SettingsModal />
                 <PaymentModal />
                 <LockModal />
+                <ShiftModal />
                 <NotificationContainer />
                 <PreviousOrderModal />
                 <CreditCheckModal />
