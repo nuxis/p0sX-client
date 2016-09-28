@@ -6,7 +6,7 @@ import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
-import { open as openShiftModal, close as closeShiftModal } from './components/ShiftModal'
+import { open as openShiftModal } from './components/ShiftModal'
 
 export function * watchKioskData () {
     while (true) {
