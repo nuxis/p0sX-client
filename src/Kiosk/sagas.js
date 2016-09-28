@@ -6,7 +6,7 @@ import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
-import { open as openShiftModal } from './components/ShiftModal'
+import { open as openShiftModal, close as closeShiftModal } from './components/ShiftModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -214,7 +214,7 @@ function * cashierLogout () {
         NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
         yield put(actions.cashierClear)
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -239,4 +239,20 @@ function * openAndGetCurrentShift () {
 
 export function * watchOpenAndGetCurrentShift () {
     yield * takeEvery(actions.OPEN_AND_GET_CURRENT_SHIFT, openAndGetCurrentShift)
+}
+
+function * createNewShift () {
+    try {
+        const create = yield call(api.createShift)
+        if (create) {
+            NotificationManager.success('New shift successfully created!', '', 5000)
+            yield put(actions.openAndGetCurrentShift())
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCreateNewShift () {
+    yield * takeEvery(actions.CREATE_NEW_SHIFT, createNewShift)
 }

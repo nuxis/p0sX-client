@@ -20,27 +20,27 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getDiscounts = () => {
-    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getIngredients = () => {
-    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getItems = () => {
-    return axios.get('/items/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/items/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showError())
+    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getOrders = () => {
-    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getCreditForCrew = (badge) => {
@@ -52,18 +52,18 @@ const getCreditForCrew = (badge) => {
 }
 
 const getCrew = (card = '') => {
-    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showError())
+    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showPurchaseError())
 }
 
 const createShift = () => {
-    return axios.create('/shifts').then(res => res.data).catch(() => showError())
+    return axios.post('/create_shift/').then(res => res.data).catch(() => NotificationManager.error('Try again. If the error persists contact Tech crew', 'Creating new shift failed', 5000))
 }
 
 const getCurrentShift = () => {
-    return axios.get('/current_shift').then(res => res.data).catch(() => showError())
+    return axios.get('/current_shift').then(res => res.data).catch(() => showPurchaseError())
 }
 
-const showError = () => {
+const showPurchaseError = () => {
     NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
 }
 

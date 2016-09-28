@@ -1,32 +1,42 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { cashierLogin } from '../actions'
+import { createNewShift } from '../actions'
 import { getShift } from '../selectors'
 import { Map } from 'immutable'
 
 class ShiftModal extends React.Component {
     static propTypes = {
-        shift: React.PropTypes.instanceOf(Map).isRequired
+        shift: React.PropTypes.instanceOf(Map).isRequired,
+        newShift: React.PropTypes.func.isRequired
     }
 
     render () {
+        const {shift, newShift} = this.props
         return (
             <div id='shift-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h3>Shift</h3>
-                    <h6>Started: {new Date(this.props.shift.get('start')).toString()}</h6>
+                    <h6>Started: {new Date(shift.get('start')).toString()}</h6>
                     <table>
                         <tbody>
                             <tr>
                                 <td>Cash</td>
-                                <td>{this.props.shift.get('cash')}</td>
+                                <td>{shift.get('cash')}</td>
                             </tr>
                             <tr>
                                 <td>Crew</td>
-                                <td>{this.props.shift.get('crew')}</td>
+                                <td>{shift.get('crew')}</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div className='modal-footer'>
+                    <a className='btn-flat waves-effect waves-light left' onClick={newShift}>
+                        New Shift
+                    </a>
+                    <a className='btn-flat waves-effect waves-light' onClick={close}>
+                        Close
+                    </a>
                 </div>
             </div>
         )
@@ -41,8 +51,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        authenticateCrew: (card) => {
-            dispatch(cashierLogin(card))
+        newShift: () => {
+            if (confirm('Are you sure you want to create a new shift?')){
+                dispatch(createNewShift())
+            }
         }
     }
 }
