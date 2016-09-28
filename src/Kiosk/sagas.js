@@ -70,6 +70,7 @@ function * postPurchase (action) {
         const cart = yield select(selectors.getCart)
         const options = {
             ...action.options,
+            undo: false,
             lines: cart.map(entry => {
                 return {
                     item: entry.get('item').get('id'),
@@ -123,7 +124,7 @@ function * undoOrder () {
             var options = lastOrder.toJS()
             options = {
                 ...options,
-                payment_method: api.PAYMENT_METHOD.UNDO,
+                undo: true,
                 lines: options.lines.map(line => {
                     return {
                         item: line.item.id,
