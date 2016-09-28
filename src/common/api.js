@@ -35,14 +35,6 @@ const getItems = () => {
     return axios.get('/items/?format=json').then(res => res.data).catch(() => showError())
 }
 
-const getUsers = () => {
-    return axios.get('/users/?format=json').then(res => res.data).catch(() => showError())
-}
-
-const getUser = (userId) => {
-    return axios.get(`/users/${userId}/?format=json`).then(res => res.data).catch(() => showError())
-}
-
 const postPurchase = (purchase) => {
     return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showError())
 }
@@ -59,40 +51,15 @@ const getCreditForCrew = (badge) => {
         })
 }
 
+const getCrew = (card = '') => {
+    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showError())
+}
+
 const showError = () => {
     NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
 }
 
-const getCrew = (card = '') => {
-    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data)
-}
 
-// Something probably has to be done here...
-const getOpenOrders = () => {
-    return new Promise(function (resolve, reject) {
-        getOrders().then(function (response) {
-            const openOrders = response.filter((order) => {
-                return order.state === ORDER_STATE.OPEN
-            })
-            resolve(openOrders)
-        }).catch(function (error) {
-            reject(error)
-        })
-    })
-}
-
-const getInProgressOrders = () => {
-    return new Promise(function (resolve, reject) {
-        getOrders().then(function (response) {
-            const inProgressOrders = response.filter((order) => {
-                return order.state === ORDER_STATE.IN_PROGRESS
-            })
-            resolve(inProgressOrders)
-        }).catch(function (error) {
-            reject(error)
-        })
-    })
-}
 
 export {
     ORDER_STATE,
@@ -100,13 +67,9 @@ export {
     getCategories,
     getIngredients,
     getItems,
-    getUsers,
-    getUser,
     postPurchase,
-    getOpenOrders,
-    getInProgressOrders,
+    getOrders,
     getDiscounts,
-    getCreditForCrew
-    getCrew,
-    postPurchase
+    getCreditForCrew,
+    getCrew
 }
