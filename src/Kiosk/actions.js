@@ -104,4 +104,4 @@ export const cashierClear = () => action(CASHIER_CLEAR, {})
 
 export const openAndGetCurrentShift = () => action(OPEN_AND_GET_CURRENT_SHIFT, {})
 export const setCurrentShift = (shift) => action(SET_CURRENT_SHIFT, { shift })
-export const createNewShift = () => action(CREATE_NEW_SHIFT, {})
+export const createNewShift = (card) => action(CREATE_NEW_SHIFT, { card })

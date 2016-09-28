@@ -1,17 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createNewShift } from '../actions'
-import { getShift } from '../selectors'
+import { getShift, getLoggedInCashier } from '../selectors'
 import { Map } from 'immutable'
 
 class ShiftModal extends React.Component {
     static propTypes = {
         shift: React.PropTypes.instanceOf(Map).isRequired,
-        newShift: React.PropTypes.func.isRequired
+        dispatchCreateNewShift: React.PropTypes.func.isRequired,
+        card: React.PropTypes.string.isRequired
+    }
+
+    newShift = () => {
+        const {dispatchCreateNewShift, card} = this.props
+        dispatchCreateNewShift({card: card})
     }
 
     render () {
-        const {shift, newShift} = this.props
+        const {shift} = this.props
         return (
             <div id='shift-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -31,7 +37,7 @@ class ShiftModal extends React.Component {
                     </table>
                 </div>
                 <div className='modal-footer'>
-                    <a className='btn-flat waves-effect waves-light left' onClick={newShift}>
+                    <a className='btn-flat waves-effect waves-light left' onClick={this.newShift}>
                         New Shift
                     </a>
                     <a className='btn-flat waves-effect waves-light' onClick={close}>
@@ -45,15 +51,16 @@ class ShiftModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        shift: getShift(state)
+        shift: getShift(state),
+        card: getLoggedInCashier(state).get('card')
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        newShift: () => {
+        dispatchCreateNewShift: (payload) => {
             if (confirm('Are you sure you want to create a new shift?')){
-                dispatch(createNewShift())
+                dispatch(createNewShift(payload))
             }
         }
     }

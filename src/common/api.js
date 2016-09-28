@@ -55,8 +55,8 @@ const getCrew = (card = '') => {
     return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showPurchaseError())
 }
 
-const createShift = () => {
-    return axios.post('/create_shift/').then(res => res.data).catch(() => NotificationManager.error('Try again. If the error persists contact Tech crew', 'Creating new shift failed', 5000))
+const createShift = (data) => {
+    return axios.post('/create_shift/', data).then(res => res.data).catch(() => NotificationManager.error('Try again. If the error persists contact Tech crew', 'Creating new shift failed', 5000))
 }
 
 const getCurrentShift = () => {

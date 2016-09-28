@@ -229,6 +229,8 @@ function * openAndGetCurrentShift () {
             const shift = currentShifts.get(0)
             openShiftModal()
             yield put(actions.setCurrentShift(shift))
+        } else if (currentShifts.size === 0) {
+            yield put(actions.createNewShift())
         } else {
             NotificationManager.error('Retrieving the current shift failed, contact Tech crew', 'Getting shift failed', 5000)
         }
@@ -241,9 +243,9 @@ export function * watchOpenAndGetCurrentShift () {
     yield * takeEvery(actions.OPEN_AND_GET_CURRENT_SHIFT, openAndGetCurrentShift)
 }
 
-function * createNewShift () {
+function * createNewShift (action) {
     try {
-        const create = yield call(api.createShift)
+        const create = yield call(api.createShift, action.card)
         if (create) {
             NotificationManager.success('New shift successfully created!', '', 5000)
             yield put(actions.openAndGetCurrentShift())
