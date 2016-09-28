@@ -48,6 +48,10 @@ export const CASHIER_LOGOUT = 'CASHIER_LOGOUT'
 export const CASHIER_SUCCESS = 'CASHIER_SUCCESS'
 export const CASHIER_CLEAR = 'CASHIER_CLEAR'
 
+export const OPEN_AND_GET_CURRENT_SHIFT = 'OPEN_AND_GET_CURRENT_SHIFT'
+export const SET_CURRENT_SHIFT = 'SET_CURRENT_SHIFT'
+export const CREATE_NEW_SHIFT = 'CREATE_NEW_SHIFT'
+
 // Action creators
 export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
 
@@ -97,3 +101,7 @@ export const cashierLogin = (card) => action(CASHIER_LOGIN, { card })
 export const cashierLogout = () => action(CASHIER_LOGOUT, {})
 export const cashierSuccess = (crew) => action(CASHIER_SUCCESS, { crew })
 export const cashierClear = () => action(CASHIER_CLEAR, {})
+
+export const openAndGetCurrentShift = () => action(OPEN_AND_GET_CURRENT_SHIFT, {})
+export const setCurrentShift = (shift) => action(SET_CURRENT_SHIFT, { shift })
+export const createNewShift = () => action(CREATE_NEW_SHIFT, {})

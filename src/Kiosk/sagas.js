@@ -6,6 +6,7 @@ import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
+import { open as openShiftModal } from './components/ShiftModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -219,4 +220,23 @@ function * cashierLogout () {
 
 export function * watchCashierLogout () {
     yield * takeEvery(actions.CASHIER_LOGOUT, cashierLogout)
+}
+
+function * openAndGetCurrentShift () {
+    try {
+        const currentShifts = yield call(api.getCurrentShift)
+        if (currentShifts.size === 1) {
+            const shift = currentShifts.get(0)
+            openShiftModal()
+            yield put(actions.setCurrentShift(shift))
+        } else {
+            NotificationManager.error('Retrieving the current shift failed, contact Tech crew', 'Getting shift failed', 5000)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchOpenAndGetCurrentShift () {
+    yield * takeEvery(actions.OPEN_AND_GET_CURRENT_SHIFT, openAndGetCurrentShift)
 }

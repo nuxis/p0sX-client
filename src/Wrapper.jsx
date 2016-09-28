@@ -10,10 +10,9 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-import { getAllKioskData } from './Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, cashierLogout } from './Kiosk/actions'
 import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
-import ShiftModal, { open as openShiftModal } from './Kiosk/components/ShiftModal'
-import { cashierLogout } from './Kiosk/actions'
+import ShiftModal from './Kiosk/components/ShiftModal'
 import { getLoggedInCashier } from './Kiosk/selectors'
 
 const Wrapper = React.createClass({
@@ -24,6 +23,7 @@ const Wrapper = React.createClass({
         ]),
         getInitialData: React.PropTypes.func.isRequired,
         logout: React.PropTypes.func.isRequired,
+        openShiftModal: React.PropTypes.func.isRequired,
         cashierName: React.PropTypes.string
     },
 
@@ -39,6 +39,7 @@ const Wrapper = React.createClass({
         }
     },
     render: function () {
+        const {logout, openShiftModal, cashierName, children} = this.props
         return (
             <div>
                 <nav>
@@ -48,17 +49,16 @@ const Wrapper = React.createClass({
                             <li><SearchBar /></li>
                         </ul>
                         <ul className='right hide-on-med-and-down'>
-                            <li>{this.props.cashierName}</li>
-                            <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
+                            <li>{cashierName}</li>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
                             <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
                             <NavItem key='shift' onClick={openShiftModal} href='#'>Shift</NavItem>
-                            <NavItem key='logout' onClick={::this.props.logout} href='#'>Logout</NavItem>
+                            <NavItem key='logout' onClick={logout} href='#'>Logout</NavItem>
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                         </ul>
                     </div>
                 </nav>
-                {this.props.children}
+                {children}
                 <IngredientModal />
                 <SettingsModal />
                 <PaymentModal />
@@ -83,6 +83,9 @@ const mapDispatchToProps = (dispatch) => {
         getInitialData: () => dispatch(getAllKioskData()),
         logout: () => {
             dispatch(cashierLogout())
+        },
+        openShiftModal: () => {
+            dispatch(openAndGetCurrentShift())
         }
     }
 }

@@ -235,3 +235,28 @@ export function cashier (state = cashierInit, action) {
 }
 
 // END CASHIER
+
+// SHIFT
+
+const shiftInit = new Map({
+    'cash': 0,
+    'crew': 0,
+    'card': 0,
+    'vipps': 0,
+    'mcash': 0,
+    'mobilepay': 0,
+    'izettle': 0,
+    'undo': 0,
+    'start': '2016-01-01T00:00:00.000000Z'
+})
+
+export function shift (state = shiftInit, action) {
+    switch (action.type) {
+    case actions.SET_CURRENT_SHIFT:
+        return action.shift
+    default:
+        return state
+    }
+}
+
+// END SHIFT

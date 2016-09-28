@@ -55,11 +55,17 @@ const getCrew = (card = '') => {
     return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showError())
 }
 
+const createShift = () => {
+    return axios.create('/shifts').then(res => res.data).catch(() => showError())
+}
+
+const getCurrentShift = () => {
+    return axios.get('/current_shift').then(res => res.data).catch(() => showError())
+}
+
 const showError = () => {
     NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
 }
-
-
 
 export {
     ORDER_STATE,
@@ -71,5 +77,7 @@ export {
     getOrders,
     getDiscounts,
     getCreditForCrew,
-    getCrew
+    getCrew,
+    createShift,
+    getCurrentShift
 }
