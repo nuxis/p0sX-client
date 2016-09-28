@@ -230,7 +230,8 @@ function * openAndGetCurrentShift () {
             openShiftModal()
             yield put(actions.setCurrentShift(shift))
         } else if (currentShifts.size === 0) {
-            yield put(actions.createNewShift())
+            const card = yield select(selectors.getLoggedInCashier)
+            yield put(actions.createNewShift(card))
         } else {
             NotificationManager.error('Retrieving the current shift failed, contact Tech crew', 'Getting shift failed', 5000)
         }
