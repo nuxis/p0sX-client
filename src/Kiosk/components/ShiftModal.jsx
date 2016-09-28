@@ -25,10 +25,6 @@ class ShiftModal extends React.Component {
                                 <td>Crew</td>
                                 <td>{this.props.shift.get('crew')}</td>
                             </tr>
-                            <tr>
-                                <td>Undo</td>
-                                <td>{this.props.shift.get('undo')}</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
