@@ -10,7 +10,7 @@ export default function * root () {
         watchPostPurchase(),
         watchApplyDiscounts(),
         watchUndoOrders(),
-        watchGetCreditForCrew()
+        watchGetCreditForCrew(),
         watchCashierLogin(),
         watchCashierLogout()
     ]
