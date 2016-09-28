@@ -60,3 +60,7 @@ export const getDiscounts = (state, paymentMethod) => state.discounts.filter(d =
 export const getItemById = (state, id) => state.items.find(item => item.get('id') === id)
 
 export const getLastOrder = (state) => state.lastOrder
+
+export const getLoggedInCashier = (state) => state.cashier
+
+export const getShift = (state) => state.shift

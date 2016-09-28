@@ -1,5 +1,5 @@
 import { fork } from 'redux-saga/effects'
-import { watchKioskData, watchItems, watchCategories, watchPostPurchase, watchApplyDiscounts, watchDiscounts, watchUndoOrders, watchGetCreditForCrew } from './Kiosk/sagas'
+import { watchKioskData, watchItems, watchCategories, watchPostPurchase, watchApplyDiscounts, watchDiscounts, watchUndoOrders, watchGetCreditForCrew, watchCashierLogin, watchCashierLogout, watchOpenAndGetCurrentShift, watchCreateNewShift } from './Kiosk/sagas'
 
 export default function * root () {
     yield [
@@ -10,6 +10,10 @@ export default function * root () {
         watchPostPurchase(),
         watchApplyDiscounts(),
         watchUndoOrders(),
-        watchGetCreditForCrew()
+        watchGetCreditForCrew(),
+        watchCashierLogin(),
+        watchCashierLogout(),
+        watchOpenAndGetCurrentShift(),
+        watchCreateNewShift()
     ]
 }

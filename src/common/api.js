@@ -20,35 +20,27 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getDiscounts = () => {
-    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getIngredients = () => {
-    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getItems = () => {
-    return axios.get('/items/?format=json').then(res => res.data).catch(() => showError())
-}
-
-const getUsers = () => {
-    return axios.get('/users/?format=json').then(res => res.data).catch(() => showError())
-}
-
-const getUser = (userId) => {
-    return axios.get(`/users/${userId}/?format=json`).then(res => res.data).catch(() => showError())
+    return axios.get('/items/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showError())
+    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getOrders = () => {
-    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showError())
+    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showPurchaseError())
 }
 
 const getCreditForCrew = (badge) => {
@@ -59,35 +51,20 @@ const getCreditForCrew = (badge) => {
         })
 }
 
-const showError = () => {
+const getCrew = (card = '') => {
+    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showPurchaseError())
+}
+
+const createShift = (data) => {
+    return axios.post('/create_shift/', data).then(res => res.data).catch(() => NotificationManager.error('Try again. If the error persists contact Tech crew', 'Creating new shift failed', 5000))
+}
+
+const getCurrentShift = () => {
+    return axios.get('/current_shift').then(res => res.data).catch(() => showPurchaseError())
+}
+
+const showPurchaseError = () => {
     NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
-}
-
-// Something probably has to be done here...
-const getOpenOrders = () => {
-    return new Promise(function (resolve, reject) {
-        getOrders().then(function (response) {
-            const openOrders = response.filter((order) => {
-                return order.state === ORDER_STATE.OPEN
-            })
-            resolve(openOrders)
-        }).catch(function (error) {
-            reject(error)
-        })
-    })
-}
-
-const getInProgressOrders = () => {
-    return new Promise(function (resolve, reject) {
-        getOrders().then(function (response) {
-            const inProgressOrders = response.filter((order) => {
-                return order.state === ORDER_STATE.IN_PROGRESS
-            })
-            resolve(inProgressOrders)
-        }).catch(function (error) {
-            reject(error)
-        })
-    })
 }
 
 export {
@@ -96,11 +73,11 @@ export {
     getCategories,
     getIngredients,
     getItems,
-    getUsers,
-    getUser,
     postPurchase,
-    getOpenOrders,
-    getInProgressOrders,
+    getOrders,
     getDiscounts,
-    getCreditForCrew
+    getCreditForCrew,
+    getCrew,
+    createShift,
+    getCurrentShift
 }

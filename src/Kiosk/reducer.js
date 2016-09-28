@@ -206,3 +206,57 @@ export function payment (state = paymentInit, action) {
 }
 
 // END PAYMENT
+
+// CASHIER
+
+const cashierInit = new Map({
+    locked: true,
+    card: '',
+    name: ''
+})
+
+export function cashier (state = cashierInit, action) {
+    switch (action.type) {
+    case actions.CASHIER_CLEAR:
+        return new Map({
+            locked: true,
+            card: '',
+            name: ''
+        })
+    case actions.CASHIER_SUCCESS:
+        return new Map({
+            locked: false,
+            card: action.crew.get('card'),
+            name: `${action.crew.get('first_name')} ${action.crew.get('last_name')}`
+        })
+    default:
+        return state
+    }
+}
+
+// END CASHIER
+
+// SHIFT
+
+const shiftInit = new Map({
+    'cash': 0,
+    'crew': 0,
+    'card': 0,
+    'vipps': 0,
+    'mcash': 0,
+    'mobilepay': 0,
+    'izettle': 0,
+    'undo': 0,
+    'start': '2016-01-01T00:00:00.000000Z'
+})
+
+export function shift (state = shiftInit, action) {
+    switch (action.type) {
+    case actions.SET_CURRENT_SHIFT:
+        return action.shift
+    default:
+        return state
+    }
+}
+
+// END SHIFT

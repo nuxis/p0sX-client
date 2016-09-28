@@ -5,6 +5,8 @@ import * as actions from './actions'
 import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
+import { close as closeLockModal, open as openLockModal } from './components/LockModal'
+import { open as openShiftModal } from './components/ShiftModal'
 
 export function * watchKioskData () {
     while (true) {
@@ -185,4 +187,74 @@ export function * watchUndoOrders () {
 
 export function * watchGetCreditForCrew () {
     yield * takeEvery(actions.GET_CREDIT_FOR_CREW, getCreditForCrew)
+}
+
+function * cashierLogin (action) {
+    try {
+        const crew = yield call(api.getCrew, action.card)
+        if (crew.size === 1) {
+            closeLockModal()
+            yield put(actions.cashierSuccess(crew.get(0)))
+        } else {
+            NotificationManager.error('Login failed', 'Are you crew?!', 5000)
+            yield put(actions.cashierClear)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCashierLogin () {
+    yield * takeEvery(actions.CASHIER_LOGIN, cashierLogin)
+}
+
+function * cashierLogout () {
+    try {
+        openLockModal()
+        NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
+        yield put(actions.cashierClear)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCashierLogout () {
+    yield * takeEvery(actions.CASHIER_LOGOUT, cashierLogout)
+}
+
+function * openAndGetCurrentShift () {
+    try {
+        const currentShifts = yield call(api.getCurrentShift)
+        if (currentShifts.size === 1) {
+            const shift = currentShifts.get(0)
+            openShiftModal()
+            yield put(actions.setCurrentShift(shift))
+        } else if (currentShifts.size === 0) {
+            yield put(actions.createNewShift())
+        } else {
+            NotificationManager.error('Retrieving the current shift failed, contact Tech crew', 'Getting shift failed', 5000)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchOpenAndGetCurrentShift () {
+    yield * takeEvery(actions.OPEN_AND_GET_CURRENT_SHIFT, openAndGetCurrentShift)
+}
+
+function * createNewShift (action) {
+    try {
+        const create = yield call(api.createShift, action.card)
+        if (create) {
+            NotificationManager.success('New shift successfully created!', '', 5000)
+            yield put(actions.openAndGetCurrentShift())
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export function * watchCreateNewShift () {
+    yield * takeEvery(actions.CREATE_NEW_SHIFT, createNewShift)
 }

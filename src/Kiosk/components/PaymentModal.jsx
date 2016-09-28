@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setPaymentState, postPurchase, applyDiscounts, removeDiscounts } from '../actions'
-import { getTotalPriceOfCart } from '../selectors'
+import { getTotalPriceOfCart, getLoggedInCashier } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
 import { NotificationManager } from 'react-notifications'
 
@@ -12,7 +12,8 @@ class PaymentModal extends React.Component {
         selectMethod: React.PropTypes.func.isRequired,
         onBack: React.PropTypes.func.isRequired,
         onClose: React.PropTypes.func.isRequired,
-        total: React.PropTypes.number.isRequired
+        total: React.PropTypes.number.isRequired,
+        cashierCard: React.PropTypes.string.isRequired
     }
 
     renderPaymentSelect () {
@@ -93,7 +94,7 @@ class PaymentModal extends React.Component {
     }
 
     purchaseCrew = () => {
-        const { onPurchase, total } = this.props
+        const { onPurchase, total, cashierCard } = this.props
         const { value, validity } = this.refs.rfid
         const message = this.refs.message.value
 
@@ -102,14 +103,15 @@ class PaymentModal extends React.Component {
                 payment_method: PAYMENT_METHOD.CREW,
                 total: total,
                 card: value,
-                message: message
+                message: message,
+                cashier_card: cashierCard
             }
             onPurchase(purchase)
         }
     }
 
     purchaseCash = () => {
-        const { onPurchase, total } = this.props
+        const { onPurchase, total, cashierCard } = this.props
         const { validity, value } = this.refs.amount
         const message = this.refs.message.value
 
@@ -118,7 +120,9 @@ class PaymentModal extends React.Component {
                 payment_method: PAYMENT_METHOD.CASH,
                 total: total,
                 amountReceived: value,
-                message: message
+                message: message,
+                cashier_card: cashierCard
+
             }
             onPurchase(purchase)
         } else {
@@ -164,7 +168,8 @@ class PaymentModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         paymentState: state.payment.get('state'),
-        total: getTotalPriceOfCart(state)
+        total: getTotalPriceOfCart(state),
+        cashierCard: getLoggedInCashier(state).get('card')
     }
 }
 

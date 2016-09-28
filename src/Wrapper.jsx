@@ -10,7 +10,10 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-import { getAllKioskData } from './Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, cashierLogout } from './Kiosk/actions'
+import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
+import ShiftModal from './Kiosk/components/ShiftModal'
+import { getLoggedInCashier } from './Kiosk/selectors'
 
 const Wrapper = React.createClass({
     propTypes: {
@@ -18,7 +21,10 @@ const Wrapper = React.createClass({
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node
         ]),
-        getInitialData: React.PropTypes.func.isRequired
+        getInitialData: React.PropTypes.func.isRequired,
+        logout: React.PropTypes.func.isRequired,
+        openShiftModal: React.PropTypes.func.isRequired,
+        cashierName: React.PropTypes.string
     },
 
     componentDidMount: function () {
@@ -29,9 +35,11 @@ const Wrapper = React.createClass({
             openSettings()
         } else {
             getInitialData()
+            openLockModal()
         }
     },
     render: function () {
+        const {logout, openShiftModal, cashierName, children} = this.props
         return (
             <div>
                 <nav>
@@ -41,18 +49,21 @@ const Wrapper = React.createClass({
                             <li><SearchBar /></li>
                         </ul>
                         <ul className='right hide-on-med-and-down'>
-                            <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
+                            <li>{cashierName}</li>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
                             <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
-                            <NavItem key='kiosk' href='#/'>Kiosk</NavItem>
-                            <NavItem key='kitchen' href='#/kitchen'>Kitchen</NavItem>
+                            <NavItem key='shift' onClick={openShiftModal} href='#'>Shift</NavItem>
+                            <NavItem key='logout' onClick={logout} href='#'>Logout</NavItem>
+                            <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                         </ul>
                     </div>
                 </nav>
-                {this.props.children}
+                {children}
                 <IngredientModal />
                 <SettingsModal />
                 <PaymentModal />
+                <LockModal />
+                <ShiftModal />
                 <NotificationContainer />
                 <PreviousOrderModal />
                 <CreditCheckModal />
@@ -61,13 +72,21 @@ const Wrapper = React.createClass({
     }
 })
 
-const mapStateToProps = () => {
-    return {}
+const mapStateToProps = (state) => {
+    return {
+        cashierName: getLoggedInCashier(state).get('name')
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getInitialData: () => dispatch(getAllKioskData())
+        getInitialData: () => dispatch(getAllKioskData()),
+        logout: () => {
+            dispatch(cashierLogout())
+        },
+        openShiftModal: () => {
+            dispatch(openAndGetCurrentShift())
+        }
     }
 }
 
