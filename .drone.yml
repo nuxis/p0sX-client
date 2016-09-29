@@ -3,8 +3,6 @@ build:
         image: kradalby/ci-node-electron:latest
         pull: true
         commands:
-          - apt-get update
-          - apt-get install -y libudev-dev
           - gem update fpm
           - npm set progress=false
           - npm prune
