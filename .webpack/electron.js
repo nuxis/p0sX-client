@@ -23,6 +23,8 @@ export default {
 
     externals: [
         ...baseConfig.externals,
-        'font-awesome'
+        'font-awesome',
+        'serialport',
+        'usb'
     ]
 };

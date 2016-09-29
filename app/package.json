@@ -11,5 +11,8 @@
         "name" : "Kralian devcorp",
         "email" : "kradalby@kradalby.no"
     },
-    "main": "main.js"
+    "main": "main.js",
+	"dependencies": {
+      "escpos": "git+https://github.com/nuxis/node-escpos.git"
+	}
 }
