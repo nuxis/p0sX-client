@@ -40,11 +40,11 @@ notify:
 deploy:
   rsync:
     user: www
-    host: onyx.fap.no
+    host: seel.fap.no
     port: 22
     source: dist/
-    target: /storage/www/p0sX/
-    delete: false
+    target: /usr/local/www/p0sx.kradalby.no/
+    delete: true
     recursive: true
     when:
         branch: master
