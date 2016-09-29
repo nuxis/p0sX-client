@@ -5,6 +5,7 @@ build:
         commands:
           - gem update fpm
           - npm set progress=false
+          - npm prune
           - npm install
           - npm install 7zip-bin-linux
           - cd app && npm install && cd ..
