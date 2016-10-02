@@ -61,13 +61,33 @@ class PaymentModal extends React.Component {
             <div className='modal-content'>
                 <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
                 <div className='row'>
-                    <div className='input-field col s12'>
-                        <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
-                        <label className='active' htmlFor='amount'>Amount received</label>
+                    <div className='col s6'>
+                        <div className='input-field col s12'>
+                            <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
+                            <label className='active' htmlFor='amount'>Amount received</label>
+                        </div>
+                        <div className='input-field col s12'>
+                            <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
+                            <label htmlFor='message'>Message for the kitchen</label>
+                        </div>
                     </div>
-                    <div className='input-field col s12'>
-                        <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
-                        <label htmlFor='message'>Message for the kitchen</label>
+
+                    <div className='col s6'>
+                        <div className='numpad-container'>
+                            <div className='numpad'>
+                                <div onClick={this.numpadClick} className='button'>1</div>
+                                <div onClick={this.numpadClick} className='button'>2</div>
+                                <div onClick={this.numpadClick} className='button'>3</div>
+                                <div onClick={this.numpadClick} className='button'>4</div>
+                                <div onClick={this.numpadClick} className='button'>5</div>
+                                <div onClick={this.numpadClick} className='button'>6</div>
+                                <div onClick={this.numpadClick} className='button'>7</div>
+                                <div onClick={this.numpadClick} className='button'>8</div>
+                                <div onClick={this.numpadClick} className='button'>9</div>
+                                <div onClick={this.numpadClick} className='button'>0</div>
+                                <div onClick={this.numpadClick} className='button'>Back</div>
+                            </div>
+                        </div>
                     </div>
                     <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCash}>
                         Purchase
@@ -75,6 +95,17 @@ class PaymentModal extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    numpadClick = (e) => {
+        var amount = $('#amount')
+        if (e.target.innerHTML === 'Back') {
+            amount.val(amount.val().slice(0, -1))
+        } else {
+            amount.val(amount.val() + e.target.innerHTML)
+        }
+        // eslint-disable-next-line no-undef
+        Materialize.updateTextFields()
     }
 
     onEnter = (e) => {
