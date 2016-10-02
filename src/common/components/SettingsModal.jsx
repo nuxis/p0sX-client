@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
 import axios from 'axios'
-import { getAllKioskData } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift } from '../../Kiosk/actions'
 
 class SettingsModal extends React.Component {
     static propTypes = {
         onSave: React.PropTypes.func.isRequired,
-        initial: React.PropTypes.bool.isRequired
+        initial: React.PropTypes.bool.isRequired,
+        openShiftModal: React.PropTypes.func.isRequired
     }
 
     onClick = () => {
@@ -16,6 +17,7 @@ class SettingsModal extends React.Component {
     }
 
     render () {
+        const { openShiftModal } = this.props
         return (
             <div id='settings-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
@@ -24,15 +26,21 @@ class SettingsModal extends React.Component {
                         <li className='active'>
                             <div className='collapsible-header active'><i className='material-icons'>list</i>Shifts</div>
                             <div className='collapsible-body'>
-                                <p>
-                                    Settings about shifts and so on...
-                                </p>
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <button onClick={openShiftModal} className='btn'>Shift info</button>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                         <li>
                             <div className='collapsible-header red-text'><i className='material-icons black-text'>vpn_key</i>Here be dragons</div>
                             <div className='collapsible-body'>
                                 <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input id='name' type='text' className='validate' />
+                                        <label className='active' htmlFor='name'>Name</label>
+                                    </div>
                                     <div className='input-field col s12'>
                                         <input id='server' type='url' className='validate' />
                                         <label className='active' htmlFor='server'>Server</label>
@@ -67,6 +75,8 @@ const mapDispatchToProps = (dispatch) => {
         onSave: (initial) => {
             var server = $('#server').val()
             var token = $('#token').val()
+            var name = $('#name').val()
+            settings.set('name', name)
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
             // eslint-disable-next-line immutable/no-mutation
@@ -76,6 +86,10 @@ const mapDispatchToProps = (dispatch) => {
             if (initial) {
                 dispatch(getAllKioskData())
             }
+        },
+        openShiftModal: () => {
+            $('#settings-modal').closeModal()
+            dispatch(openAndGetCurrentShift())
         }
     }
 }

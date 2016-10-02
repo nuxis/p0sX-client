@@ -1,6 +1,7 @@
 import escpos from 'escpos'
+import moment from 'moment'
 
-const print = (adapter, config, items) => {
+const print = (adapter, config, cart, id, total) => {
     var device
     switch (adapter) {
     case 'Network':
@@ -18,21 +19,49 @@ const print = (adapter, config, items) => {
     }
 
     const printer = new escpos.Printer(device)
-    device.open(() => {
-        printer.font('a')
-            .align('ct')
-            .text('Polar Part 25: Get Cyberpunk\'d')
-            .style('B')
-            .align('lt')
-        items.forEach(item => printer.text(itemToString(item)))
-        printer.feed(2)
-            .text('Have a nice day!')
-        printer.feed(2).cut().cashdraw().close()
+    escpos.Image.load(require('../images/receipt.png'), (img) => {
+        device.open(() => {
+            printer.font('b')
+                .print('\x1b\x74\x13')
+                .size(1, 1)
+                .align('CT')
+                .image(img, 'd24')
+                .text('Polar Party 25: Get Cyberpunk\'d')
+                .feed(1)
+                .align('LT')
+                .text('  Polar Interesseorganisasjon')
+                .text('  Adresse: Kolstadgata 1 0652 Oslo')
+                .text('  Org nr: 986 255 486')
+                .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:SS"))
+                .text('')
+            for(var i = 0; i < cart.length; i++) {
+                printer.text(itemToString(cart[i]))
+            }
+            printer
+                .feed(1)
+                .text('  MVA                      : 0,- (fritatt)')
+                .style('BU')
+                .text('  Total                    : ' + total + ',-')
+                .style('NORMAL')
+                .feed(1)
+                .size(2, 2)
+                .text('  Ordre:  ' + id)
+                .size(1, 1)
+                .cashdraw()
+                .cut(true, 6)
+                .close()
+        })
     })
 }
 
+
 const itemToString = (item) => {
-    return item.get('name') + ' ' + item.get('price') + ',-'
+    var outString = '  ' + item.name
+    while (outString.length < 27) {
+        outString = outString + ' '
+    }
+
+    return outString + ': ' + item.price + ',-'
 }
 
 export default print

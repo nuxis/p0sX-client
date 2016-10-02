@@ -7,6 +7,9 @@ import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
+import receipt from '../common/receipt'
+import kitchenPrinter from '../common/kitchen'
+import settings from '../common/settings'
 
 export function * watchKioskData () {
     while (true) {
@@ -103,11 +106,27 @@ function * postPurchase (action) {
         const result = yield call(api.postPurchase, options)
         if (result) {
             yield put(actions.setLastOrder(result))
+            yield put(actions.setLastCart(cart))
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
-                NotificationManager.success(`Give ${options.amountReceived - options.total} Kr. back`, 'Purchase complete', 5000)
+                NotificationManager.success(`Give ${options.amountReceived - options.total},- back`, 'Purchase complete', 9999999999999999)
             } else {
-                NotificationManager.success('Purchase complete', '', 5000)
+                NotificationManager.success('Purchase complete', '', 9999999999999999)
             }
+            sendOrderToKitchen(cart, result.get('id'))
+            const items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen')).toJS()
+            if (items.length > 0) {
+                var receiptItems = yield select(selectors.getRenderedCart)
+                const total = yield select(selectors.getTotalPriceOfCart)
+                receiptItems = receiptItems.map(entry => {
+                    return {
+                        name: entry.get('item').get('name'),
+                        price: entry.get('item').get('price')
+                    }
+                }).toJS()
+                const receiptConfig = settings.get('receiptPrinter')
+                receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total)
+            }
+
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
@@ -115,6 +134,22 @@ function * postPurchase (action) {
     } catch (error) {
         console.error(error)
     }
+}
+
+function sendOrderToKitchen (cart, orderId) {
+    var items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen'))
+    if (items.size === 0) {
+        return
+    }
+    items = items.map(entry => {
+        return {
+            name: entry.get('item').get('name'),
+            ingredients: entry.get('ingredients').toJS(),
+            message: entry.get('message')
+        }
+    }).toJS()
+    const kitchenConfig = settings.get('kitchenPrinter')
+    kitchenPrinter(kitchenConfig.type, kitchenConfig.config, items, orderId)
 }
 
 function * undoOrder () {

@@ -40,6 +40,8 @@ export const SET_LAST_ORDER = 'SET_LAST_ORDER'
 export const CLEAR_LAST_ORDER = 'CLEAR_LAST_ORDER'
 export const UNDO_ORDER = 'UNDO_ORDER'
 
+export const SET_LAST_CART = 'SET_LAST_CART'
+
 export const GET_CREDIT_FOR_CREW = 'GET_CREDIT_FOR_CREW'
 export const SET_CREDIT = 'SET_CREDIT'
 
@@ -53,7 +55,7 @@ export const SET_CURRENT_SHIFT = 'SET_CURRENT_SHIFT'
 export const CREATE_NEW_SHIFT = 'CREATE_NEW_SHIFT'
 
 // Action creators
-export const addCurrentItemToCart = (currentItem) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem })
+export const addCurrentItemToCart = (currentItem, message) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem, message })
 
 export const addItemToCart = (item) => action(ADD_ITEM_TO_CART, { item })
 
@@ -105,3 +107,5 @@ export const cashierClear = () => action(CASHIER_CLEAR, {})
 export const openAndGetCurrentShift = () => action(OPEN_AND_GET_CURRENT_SHIFT, {})
 export const setCurrentShift = (shift) => action(SET_CURRENT_SHIFT, { shift })
 export const createNewShift = (card) => action(CREATE_NEW_SHIFT, { card })
+
+export const setLastCart = (cart) => action(SET_LAST_CART, { cart })

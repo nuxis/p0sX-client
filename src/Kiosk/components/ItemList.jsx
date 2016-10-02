@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
-            if (!item.get('ingredients').isEmpty()) {
+            if (item.get('created_in_the_kitchen')) {
                 $('#ingredient-modal').openModal()
                 dispatch(openIngredientModalForItem(item))
             } else {

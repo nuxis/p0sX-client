@@ -2,6 +2,16 @@ body {
     background-color: white;
 }
 
+.modal.modal-fixed-footer {
+    width: 75% !important;
+    height: 90% !important;
+    max-height: 100% !important;
+    overflow-y: hidden !important;
+    top: 15px !important;
+}
+
+
+
 .notification-success {
     background-color: #26a69a !important;
 }
@@ -12,6 +22,12 @@ body {
 
 .notification {
     box-shadow: none !important;
+    font-size: 1.5em !important;
+}
+
+.notification-container {
+    min-width: 320px !important;
+    max-width: 500px !important;
 }
 
 input[type="search"] {
