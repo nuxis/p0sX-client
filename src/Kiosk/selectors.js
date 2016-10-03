@@ -45,6 +45,7 @@ export const getItems = (state) => state.items
 export const getItemsByCategory = createSelector(
     [getItems, getSelectedCategory, getSearch],
     (items, categoryId, search) => {
+        items = items.filter(item => item.get('price') > 0)
         if (search.length > 0) {
             return items.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
         } else if (categoryId > 0) {
@@ -64,3 +65,18 @@ export const getLastOrder = (state) => state.lastOrder
 export const getLoggedInCashier = (state) => state.cashier
 
 export const getShift = (state) => state.shift
+
+export const getLastCart = (state) => state.lastCart
+
+export const getTotalPriceOfLastCart = createSelector(
+    [getLastCart],
+    (cart) => {
+        return cart.reduce((accumulator, entry) => {
+            accumulator += entry.get('item').get('price')
+            accumulator += entry.get('ingredients').reduce((accumulator, ingredient) => {
+                return accumulator + parseInt(ingredient.get('price'))
+            }, 0)
+            return accumulator
+        }, 0)
+    }
+)

@@ -56,7 +56,7 @@ class IngredientModal extends React.Component {
             <div id='ingredient-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4 style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-                        Select ingredients for {currentItem.get('item').get('name')}
+                        Options for {currentItem.get('item').get('name')}
                     </h4>
                     <ul className='collection'>
                         {currentItem.get('item').get('ingredients').map(ingredient =>
@@ -68,6 +68,12 @@ class IngredientModal extends React.Component {
                             />
                         )}
                     </ul>
+                    <div className='row'>
+                        <div className='input-field col s12'>
+                            <input ref='itemMessage' id='item-message'  type='text' className='validate'  />
+                            <label htmlFor='item-message'>Message</label>
+                        </div>
+                    </div>
                 </div>
                 <div className='modal-footer'>
                     <a href='#!' onClick={this.close} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
@@ -87,7 +93,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onClose: (currentItem) => {
-            dispatch(addCurrentItemToCart(currentItem))
+            dispatch(addCurrentItemToCart(currentItem, $('#item-message').val()))
         },
         onIngredientClick: (ingredient) => {
             dispatch(toggleIngredient(ingredient))

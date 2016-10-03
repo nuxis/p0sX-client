@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { createNewShift } from '../actions'
 import { getShift, getLoggedInCashier } from '../selectors'
 import { Map } from 'immutable'
+import printShift from '../../common/print-shift'
+import settings from '../../common/settings'
+
 
 class ShiftModal extends React.Component {
     static propTypes = {
@@ -12,6 +15,9 @@ class ShiftModal extends React.Component {
     }
 
     newShift = () => {
+        const { shift } = this.props
+        const printerSettings = settings.get('receiptPrinter')
+        printShift(printerSettings.type, printerSettings.config, shift, settings.get('name'))
         const {dispatchCreateNewShift, card} = this.props
         dispatchCreateNewShift({card: card})
     }

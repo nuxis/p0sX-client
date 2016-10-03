@@ -10,10 +10,12 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBar from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
-import { getAllKioskData, openAndGetCurrentShift, cashierLogout } from './Kiosk/actions'
+import { getAllKioskData, cashierLogout } from './Kiosk/actions'
 import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
 import { getLoggedInCashier } from './Kiosk/selectors'
+import * as selectors from './Kiosk/selectors'
+import receipt from './common/receipt'
 
 const Wrapper = React.createClass({
     propTypes: {
@@ -23,8 +25,8 @@ const Wrapper = React.createClass({
         ]),
         getInitialData: React.PropTypes.func.isRequired,
         logout: React.PropTypes.func.isRequired,
-        openShiftModal: React.PropTypes.func.isRequired,
-        cashierName: React.PropTypes.string
+        cashierName: React.PropTypes.string,
+        printReceipt: React.PropTypes.func.isRequired
     },
 
     componentDidMount: function () {
@@ -39,7 +41,7 @@ const Wrapper = React.createClass({
         }
     },
     render: function () {
-        const {logout, openShiftModal, cashierName, children} = this.props
+        const {logout, cashierName, children, printReceipt} = this.props
         return (
             <div>
                 <nav>
@@ -50,9 +52,9 @@ const Wrapper = React.createClass({
                         </ul>
                         <ul className='right hide-on-med-and-down'>
                             <li>{cashierName}</li>
+                            <NavItem key='receipt' onClick={printReceipt} href='#'>Receipt</NavItem>
                             <NavItem key='undo' onClick={openPreviousOrder} href='#'>Previous order</NavItem>
                             <NavItem key='credit' onClick={openCreditCheck} href='#'>Credit check</NavItem>
-                            <NavItem key='shift' onClick={openShiftModal} href='#'>Shift</NavItem>
                             <NavItem key='logout' onClick={logout} href='#'>Logout</NavItem>
                             <NavItem key='settings' onClick={openSettings} href='#'><Icon>settings</Icon></NavItem>
                         </ul>
@@ -74,7 +76,20 @@ const Wrapper = React.createClass({
 
 const mapStateToProps = (state) => {
     return {
-        cashierName: getLoggedInCashier(state).get('name')
+        cashierName: getLoggedInCashier(state).get('name'),
+        printReceipt: () => {
+            var receiptItems = selectors.getLastCart(state)
+            const total = selectors.getTotalPriceOfLastCart(state)
+            const id = selectors.getLastOrder(state).get('id')
+            receiptItems = receiptItems.map(entry => {
+                return {
+                    name: entry.get('item').get('name'),
+                    price: entry.get('item').get('price')
+                }
+            }).toJS()
+            const receiptConfig = settings.get('receiptPrinter')
+            receipt(receiptConfig.type, receiptConfig.config, receiptItems, id, total)
+        }
     }
 }
 
@@ -83,9 +98,6 @@ const mapDispatchToProps = (dispatch) => {
         getInitialData: () => dispatch(getAllKioskData()),
         logout: () => {
             dispatch(cashierLogout())
-        },
-        openShiftModal: () => {
-            dispatch(openAndGetCurrentShift())
         }
     }
 }

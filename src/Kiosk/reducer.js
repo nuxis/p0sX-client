@@ -20,6 +20,19 @@ export function creditCheck (state = creditInit, action) {
 
 // END CREDIT
 
+// LAST CART
+
+export function lastCart (state = cartInit, action) {
+    switch (action.type) {
+        case actions.SET_LAST_CART:
+            return action.cart
+        default:
+            return state
+    }
+}
+
+// END LAST CART
+
 // LAST ORDER
 
 const lastOrderInit = Map({
@@ -152,14 +165,16 @@ export function cart (state = cartInit, action) {
         return state.push(
             Map({
                 item: action.item,
-                ingredients: List()
+                ingredients: List(),
+                message: ''
             })
       )
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return state.push(
             Map({
                 item: action.currentItem.get('item'),
-                ingredients: action.currentItem.get('ingredients')
+                ingredients: action.currentItem.get('ingredients'),
+                message: action.message
             })
       )
     case actions.REMOVE_ITEM_FROM_CART:

@@ -2,12 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
 import axios from 'axios'
-import { getAllKioskData } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, emptyCart } from '../../Kiosk/actions'
 
 class SettingsModal extends React.Component {
     static propTypes = {
         onSave: React.PropTypes.func.isRequired,
-        initial: React.PropTypes.bool.isRequired
+        initial: React.PropTypes.bool.isRequired,
+        openShiftModal: React.PropTypes.func.isRequired,
+        fetchData: React.PropTypes.func.isRequired
     }
 
     onClick = () => {
@@ -16,23 +18,32 @@ class SettingsModal extends React.Component {
     }
 
     render () {
+        const { openShiftModal, fetchData } = this.props
         return (
             <div id='settings-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Change settings</h4>
                     <ul className='collapsible' data-collapsible='accordion'>
                         <li className='active'>
-                            <div className='collapsible-header active'><i className='material-icons'>list</i>Shifts</div>
+                            <div className='collapsible-header active'><i className='material-icons'>list</i>General</div>
                             <div className='collapsible-body'>
-                                <p>
-                                    Settings about shifts and so on...
-                                </p>
+                                <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <a onClick={openShiftModal} className='waves-effect waves-light btn'>Shift info</a>
+                                        &nbsp;
+                                        <a onClick={fetchData} className='waves-effect waves-light btn'>Update data</a>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                         <li>
                             <div className='collapsible-header red-text'><i className='material-icons black-text'>vpn_key</i>Here be dragons</div>
                             <div className='collapsible-body'>
                                 <div className='row'>
+                                    <div className='input-field col s12'>
+                                        <input id='name' type='text' className='validate' />
+                                        <label className='active' htmlFor='name'>Name</label>
+                                    </div>
                                     <div className='input-field col s12'>
                                         <input id='server' type='url' className='validate' />
                                         <label className='active' htmlFor='server'>Server</label>
@@ -67,6 +78,8 @@ const mapDispatchToProps = (dispatch) => {
         onSave: (initial) => {
             var server = $('#server').val()
             var token = $('#token').val()
+            var name = $('#name').val()
+            settings.set('name', name)
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
             // eslint-disable-next-line immutable/no-mutation
@@ -76,6 +89,14 @@ const mapDispatchToProps = (dispatch) => {
             if (initial) {
                 dispatch(getAllKioskData())
             }
+        },
+        openShiftModal: () => {
+            $('#settings-modal').closeModal()
+            dispatch(openAndGetCurrentShift())
+        },
+        fetchData: () => {
+            dispatch(getAllKioskData())
+            dispatch(emptyCart())
         }
     }
 }
