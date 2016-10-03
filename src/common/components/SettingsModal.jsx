@@ -2,13 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
 import axios from 'axios'
-import { getAllKioskData, openAndGetCurrentShift } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, emptyCart } from '../../Kiosk/actions'
 
 class SettingsModal extends React.Component {
     static propTypes = {
         onSave: React.PropTypes.func.isRequired,
         initial: React.PropTypes.bool.isRequired,
-        openShiftModal: React.PropTypes.func.isRequired
+        openShiftModal: React.PropTypes.func.isRequired,
+        fetchData: React.PropTypes.func.isRequired
     }
 
     onClick = () => {
@@ -17,18 +18,20 @@ class SettingsModal extends React.Component {
     }
 
     render () {
-        const { openShiftModal } = this.props
+        const { openShiftModal, fetchData } = this.props
         return (
             <div id='settings-modal' className='modal modal-fixed-footer'>
                 <div className='modal-content'>
                     <h4>Change settings</h4>
                     <ul className='collapsible' data-collapsible='accordion'>
                         <li className='active'>
-                            <div className='collapsible-header active'><i className='material-icons'>list</i>Shifts</div>
+                            <div className='collapsible-header active'><i className='material-icons'>list</i>General</div>
                             <div className='collapsible-body'>
                                 <div className='row'>
                                     <div className='input-field col s12'>
-                                        <button onClick={openShiftModal} className='btn'>Shift info</button>
+                                        <a onClick={openShiftModal} className='waves-effect waves-light btn'>Shift info</a>
+                                        &nbsp;
+                                        <a onClick={fetchData} className='waves-effect waves-light btn'>Update data</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,6 +93,10 @@ const mapDispatchToProps = (dispatch) => {
         openShiftModal: () => {
             $('#settings-modal').closeModal()
             dispatch(openAndGetCurrentShift())
+        },
+        fetchData: () => {
+            dispatch(getAllKioskData())
+            dispatch(emptyCart())
         }
     }
 }
