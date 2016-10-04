@@ -1,6 +1,20 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
+
+// PURCHASE IN PROGRESS
+
+const inProgresInit = false
+
+export function purchaseInProgress (state = inProgresInit, action) {
+    switch (action.type) {
+    case actions.SET_PURCHASE_IN_PROGRESS:
+        return action.value
+    default:
+        return state
+    }
+}
+
 // CREDIT
 
 const creditInit = Map({

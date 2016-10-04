@@ -105,6 +105,7 @@ const open = () => {
     if (Object.getOwnPropertyNames(settings.get()).length !== 0) {
         $('#server').val(settings.get('server_address'))
         $('#token').val(settings.get('api_auth_token'))
+        $('#name').val(settings.get('name'))
         // eslint-disable-next-line no-undef
         Materialize.updateTextFields()
     }

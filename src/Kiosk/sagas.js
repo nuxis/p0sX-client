@@ -72,6 +72,11 @@ function * getDiscounts () {
 
 function * postPurchase (action) {
     try {
+        const purchaseInProgress = yield select(selectors.getPurchaseInProgress)
+        if (purchaseInProgress) {
+            return
+        }
+        yield put(actions.setPurchaseInProgress(true))
         const cart = yield select(selectors.getCart)
         const options = {
             ...action.options,
@@ -88,17 +93,20 @@ function * postPurchase (action) {
             NotificationManager.error('The cart has a negative total sum', '', 5000)
             closePaymentModal()
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPurchaseInProgress(false))
             return
         }
 
         if (options.payment_method === api.PAYMENT_METHOD.CREW) {
             const credit = yield call(api.getCreditForCrew, options.card)
             if (!credit) {
+                yield put(actions.setPurchaseInProgress(false))
                 return
             } else if (options.total > credit.get('left')) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
                 closePaymentModal()
                 yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+                yield put(actions.setPurchaseInProgress(false))
                 return
             }
         }
@@ -127,7 +135,7 @@ function * postPurchase (action) {
 
                 receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total, options.payment_method === api.PAYMENT_METHOD.CASH)
 
-                items = cart.map(entry => {
+                items = items.map(entry => {
                     return {
                         name: entry.get('item').get('name'),
                         ingredients: entry.get('ingredients').toJS(),
@@ -149,6 +157,7 @@ function * postPurchase (action) {
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPurchaseInProgress(false))
         }
     } catch (error) {
         console.error(error)

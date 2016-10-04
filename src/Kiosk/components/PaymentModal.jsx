@@ -124,7 +124,8 @@ class PaymentModal extends React.Component {
         }
     }
 
-    purchaseCrew = () => {
+    purchaseCrew = (e) => {
+        e.target.onClick = undefined
         const { onPurchase, total, cashierCard } = this.props
         const { value, validity } = this.refs.rfid
         const message = this.refs.message.value
@@ -141,7 +142,8 @@ class PaymentModal extends React.Component {
         }
     }
 
-    purchaseCash = () => {
+    purchaseCash = (e) => {
+        e.target.onClick = undefined
         const { onPurchase, total, cashierCard } = this.props
         const { validity, value } = this.refs.amount
         const message = this.refs.message.value

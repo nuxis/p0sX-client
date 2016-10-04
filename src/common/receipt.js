@@ -20,7 +20,7 @@ const print = (adapter, config, cart, id, total, openDrawer) => {
 
     const printer = new escpos.Printer(device)
     escpos.Image.load(require('../images/receipt.png'), (img) => {
-        device.open((err) => {
+        device.open(() => {
             printer.font('b')
                 .size(1, 1)
                 .align('CT')
@@ -74,7 +74,9 @@ const cashDraw = (adapter, config) => {
 
     const printer = new escpos.Printer(device)
     device.open(() => {
-        printer.cashdraw().close()
+        printer.cashdraw()
+            .flush()
+            .close()
     })
 }
 

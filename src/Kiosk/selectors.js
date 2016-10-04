@@ -68,6 +68,8 @@ export const getShift = (state) => state.shift
 
 export const getLastCart = (state) => state.lastCart
 
+export const getPurchaseInProgress = (state) => state.purchaseInProgress
+
 export const getTotalPriceOfLastCart = createSelector(
     [getLastCart],
     (cart) => {
