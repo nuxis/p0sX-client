@@ -94,6 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onClose: (currentItem) => {
             dispatch(addCurrentItemToCart(currentItem, $('#item-message').val()))
+            $('#item-message').val('')
         },
         onIngredientClick: (ingredient) => {
             dispatch(toggleIngredient(ingredient))

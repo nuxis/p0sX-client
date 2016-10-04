@@ -1,6 +1,6 @@
 import escpos from 'escpos'
 
-const kitchen = (adapter, config, cart, id) => {
+const kitchen = (adapter, config, entry, id) => {
     var device
     switch (adapter) {
     case 'Network':
@@ -17,27 +17,26 @@ const kitchen = (adapter, config, cart, id) => {
         break
     }
 
-
     const printer = new escpos.Printer(device)
     device.open(() => {
-        for(var i = 0; i < cart.length; i++) {
-            printer.font('b')
-                .print('\x1b\x74\x13')
-                .align('CT')
-                .size(2, 2)
-                .text('Ordre: ' + id)
-                .size(1, 1)
-                .feed(2)
-                .align('LT')
-            printer.text('    ' + cart[i].name)
-            cart[i].ingredients.forEach(i => {
-                printer.text('        ' + i.name, 'CP858')
-            })
-            printer.feed(1)
-                .text('    ' + cart[i].message)
-                .cut(true, 5)
-        }
-        printer.close()
+        console.log('print start?')
+        printer.font('b')
+            .align('CT')
+            .size(2, 2)
+            .text('Ordre: ' + id)
+            .size(1, 1)
+            .feed(2)
+            .align('LT')
+        printer.text('    ' + entry.name)
+        entry.ingredients.forEach(i => {
+            printer.text('        ' + i.name)
+        })
+        printer.feed(1)
+            .text('    ' + entry.message)
+            .cut(true, 5)
+            .close()
+
+        console.log('print done?')
     })
 }
 

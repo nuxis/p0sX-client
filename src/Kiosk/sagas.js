@@ -1,4 +1,4 @@
-import { call, put, take, select } from 'redux-saga/effects'
+import { call, put, take, select, spawn } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
@@ -7,7 +7,7 @@ import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
-import receipt from '../common/receipt'
+import receipt, { cashDraw } from '../common/receipt'
 import kitchenPrinter from '../common/kitchen'
 import settings from '../common/settings'
 
@@ -112,9 +112,10 @@ function * postPurchase (action) {
             } else {
                 NotificationManager.success('Purchase complete', '', 9999999999999999)
             }
-            sendOrderToKitchen(cart, result.get('id'))
-            const items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen')).toJS()
-            if (items.length > 0) {
+
+            var items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen'))
+            const receiptConfig = settings.get('receiptPrinter')
+            if (items.size > 0) {
                 var receiptItems = yield select(selectors.getRenderedCart)
                 const total = yield select(selectors.getTotalPriceOfCart)
                 receiptItems = receiptItems.map(entry => {
@@ -123,10 +124,28 @@ function * postPurchase (action) {
                         price: entry.get('item').get('price')
                     }
                 }).toJS()
-                const receiptConfig = settings.get('receiptPrinter')
-                receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total)
-            }
 
+                receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total, options.payment_method === api.PAYMENT_METHOD.CASH)
+
+                items = cart.map(entry => {
+                    return {
+                        name: entry.get('item').get('name'),
+                        ingredients: entry.get('ingredients').toJS(),
+                        message: entry.get('message')
+                    }
+                }).toJS()
+
+                console.log(items)
+                const kitchenConfig = settings.get('kitchenPrinter')
+
+                for (const entry of items) {
+                    //kitchenPrinter(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                    console.log('send to kitchen')
+                    kitchenPrinter(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                }
+            } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
+                cashDraw(receiptConfig.type, receiptConfig.config)
+            }
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
@@ -134,22 +153,6 @@ function * postPurchase (action) {
     } catch (error) {
         console.error(error)
     }
-}
-
-function sendOrderToKitchen (cart, orderId) {
-    var items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen'))
-    if (items.size === 0) {
-        return
-    }
-    items = items.map(entry => {
-        return {
-            name: entry.get('item').get('name'),
-            ingredients: entry.get('ingredients').toJS(),
-            message: entry.get('message')
-        }
-    }).toJS()
-    const kitchenConfig = settings.get('kitchenPrinter')
-    kitchenPrinter(kitchenConfig.type, kitchenConfig.config, items, orderId)
 }
 
 function * undoOrder () {
@@ -232,7 +235,7 @@ function * cashierLogin (action) {
             yield put(actions.cashierSuccess(crew.get(0)))
         } else {
             NotificationManager.error('Login failed', 'Are you crew?!', 5000)
-            yield put(actions.cashierClear)
+            yield put(actions.cashierClear())
         }
     } catch (error) {
         console.error(error)
@@ -247,7 +250,7 @@ function * cashierLogout () {
     try {
         openLockModal()
         NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
-        yield put(actions.cashierClear)
+        yield put(actions.cashierClear())
     } catch (error) {
         console.error(error)
     }
