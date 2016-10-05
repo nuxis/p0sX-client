@@ -27,6 +27,7 @@
         "react/jsx-indent-props": [2, 4]
     },
     "env": {
-        "jquery": true
+        "jquery": true,
+        "browser": true
     }
 }

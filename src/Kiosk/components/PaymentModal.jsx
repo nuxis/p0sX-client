@@ -93,6 +93,7 @@ class PaymentModal extends React.Component {
     clear = () => {
         var amount = $('#amount')
         amount.val('')
+        // eslint-disable-next-line no-undef
         Materialize.updateTextFields()
     }
 
@@ -143,7 +144,7 @@ class PaymentModal extends React.Component {
                 cashier_card: cashierCard
             }
             onPurchase(purchase)
-            // eslint-disable-next-line no-mutation
+            // eslint-disable-next-line immutable/no-mutation
             this.refs.rfid.value = ''
         }
     }
@@ -153,7 +154,7 @@ class PaymentModal extends React.Component {
         const { validity, value } = this.refs.amount
 
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
-        if(validity.valid && parseInt(value) > 1000000) {
+        if (validity.valid && parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
             $('#amount').val('')
         } else if (validity.valid) {

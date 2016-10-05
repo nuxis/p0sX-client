@@ -1,7 +1,7 @@
 import escpos from 'escpos'
 import moment from 'moment'
 
-function getDevice(adapter, config) {
+function getDevice (adapter, config) {
     switch (adapter) {
     case 'Network':
         return new escpos.Network(config.address, config.port)
@@ -27,7 +27,7 @@ const kitchenReceipt = (adapter, config, entry, id) => {
             .size(1, 1)
             .feed(1)
             .align('LT')
-            .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
+            .text('  Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
             .feed(1)
         printer.text('  ' + entry.name)
         entry.ingredients.forEach(i => {
@@ -51,7 +51,7 @@ const customerReceipt = (adapter, config, entries, id, openDrawer) => {
             .size(1, 1)
             .feed(1)
             .align('LT')
-            .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
+            .text('  Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
             .feed(1)
         entries.forEach(entry => {
             printer.text('  ' + entry.name)
@@ -68,7 +68,6 @@ const customerReceipt = (adapter, config, entries, id, openDrawer) => {
         }
         printer.cut(true, 5)
             .close()
-
     })
 }
 

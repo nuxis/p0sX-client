@@ -1,18 +1,18 @@
 import escpos from 'escpos'
 import moment from 'moment'
 
-function getDevice(adapter, config) {
+function getDevice (adapter, config) {
     switch (adapter) {
-        case 'Network':
-            return new escpos.Network(config.address, config.port)
-        case 'USB':
-            return new escpos.USB(config.vid, config.pid)
-        case 'Serial':
-            return new escpos.Serial(config.path, config.options)
-        case 'Console':
-            return new escpos.Console(config.handler)
-        default:
-            return undefined
+    case 'Network':
+        return new escpos.Network(config.address, config.port)
+    case 'USB':
+        return new escpos.USB(config.vid, config.pid)
+    case 'Serial':
+        return new escpos.Serial(config.path, config.options)
+    case 'Console':
+        return new escpos.Console(config.handler)
+    default:
+        return undefined
     }
 }
 
@@ -31,9 +31,9 @@ const print = (adapter, config, cart, id, total, openDrawer) => {
                 .text('  Polar Interesseorganisasjon')
                 .text('  Adresse: Kolstadgata 1 0652 Oslo')
                 .text('  Org nr: 986 255 486')
-                .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
+                .text('  Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
                 .text('')
-            for(let entry of cart) {
+            for (const entry of cart) {
                 printer.text(itemToString(entry))
             }
             printer

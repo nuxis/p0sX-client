@@ -70,7 +70,7 @@ class IngredientModal extends React.Component {
                     </ul>
                     <div className='row'>
                         <div className='input-field col s12'>
-                            <input ref='itemMessage' id='item-message'  type='text' className='validate'  />
+                            <input ref='itemMessage' id='item-message' type='text' className='validate' />
                             <label htmlFor='item-message'>Message</label>
                         </div>
                     </div>

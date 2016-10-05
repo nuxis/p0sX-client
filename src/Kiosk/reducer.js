@@ -1,7 +1,6 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
 
-
 // PURCHASE IN PROGRESS
 
 const inProgresInit = false
@@ -38,10 +37,10 @@ export function creditCheck (state = creditInit, action) {
 
 export function lastCart (state = cartInit, action) {
     switch (action.type) {
-        case actions.SET_LAST_CART:
-            return action.cart
-        default:
-            return state
+    case actions.SET_LAST_CART:
+        return action.cart
+    default:
+        return state
     }
 }
 

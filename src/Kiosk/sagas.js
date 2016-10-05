@@ -1,4 +1,4 @@
-import { call, put, take, select, spawn } from 'redux-saga/effects'
+import { call, put, take, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
@@ -7,7 +7,7 @@ import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
-import receipt, { cashDraw } from '../common/receipt'
+import { cashDraw } from '../common/receipt'
 import { kitchenReceipt, customerReceipt } from '../common/kitchen'
 import settings from '../common/settings'
 
@@ -127,7 +127,6 @@ function * postPurchase (action) {
 
             receiptItems = receiptItems.filter(entry => entry.get('item').get('created_in_the_kitchen'))
             if (receiptItems.size > 0) {
-                const total = yield select(selectors.getTotalPriceOfCart)
                 receiptItems = receiptItems.map(entry => {
                     return {
                         name: entry.get('item').get('name'),
