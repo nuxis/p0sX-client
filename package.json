@@ -83,7 +83,8 @@
     "reselect": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "moment": "latest"
   },
   "build": {
     "appId": "org.nuxis.p0sX",

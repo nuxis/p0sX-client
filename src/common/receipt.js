@@ -1,23 +1,23 @@
 import escpos from 'escpos'
 import moment from 'moment'
 
-const print = (adapter, config, cart, id, total, openDrawer) => {
-    var device
+function getDevice(adapter, config) {
     switch (adapter) {
-    case 'Network':
-        device = new escpos.Network(config.address, config.port)
-        break
-    case 'USB':
-        device = new escpos.USB(config.vid, config.pid)
-        break
-    case 'Serial':
-        device = new escpos.Serial(config.path, config.options)
-        break
-    case 'Console':
-        device = new escpos.Console(config.handler)
-        break
+        case 'Network':
+            return new escpos.Network(config.address, config.port)
+        case 'USB':
+            return new escpos.USB(config.vid, config.pid)
+        case 'Serial':
+            return new escpos.Serial(config.path, config.options)
+        case 'Console':
+            return new escpos.Console(config.handler)
+        default:
+            return undefined
     }
+}
 
+const print = (adapter, config, cart, id, total, openDrawer) => {
+    const device = getDevice(adapter, config)
     const printer = new escpos.Printer(device)
     escpos.Image.load(require('../images/receipt.png'), (img) => {
         device.open(() => {
@@ -31,10 +31,10 @@ const print = (adapter, config, cart, id, total, openDrawer) => {
                 .text('  Polar Interesseorganisasjon')
                 .text('  Adresse: Kolstadgata 1 0652 Oslo')
                 .text('  Org nr: 986 255 486')
-                .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:SS"))
+                .text('  Dato: ' + moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
                 .text('')
-            for(var i = 0; i < cart.length; i++) {
-                printer.text(itemToString(cart[i]))
+            for(let entry of cart) {
+                printer.text(itemToString(entry))
             }
             printer
                 .feed(1)
@@ -42,10 +42,6 @@ const print = (adapter, config, cart, id, total, openDrawer) => {
                 .style('BU')
                 .text('  Total                    : ' + total + ',-')
                 .style('NORMAL')
-                .feed(1)
-                .size(2, 2)
-                .text('  Ordre: ' + id)
-                .size(1, 1)
             if (openDrawer) {
                 printer.cashdraw()
             }
@@ -56,22 +52,7 @@ const print = (adapter, config, cart, id, total, openDrawer) => {
 }
 
 const cashDraw = (adapter, config) => {
-    var device
-    switch (adapter) {
-        case 'Network':
-            device = new escpos.Network(config.address, config.port)
-            break
-        case 'USB':
-            device = new escpos.USB(config.vid, config.pid)
-            break
-        case 'Serial':
-            device = new escpos.Serial(config.path, config.options)
-            break
-        case 'Console':
-            device = new escpos.Console(config.handler)
-            break
-    }
-
+    const device = getDevice(adapter, config)
     const printer = new escpos.Printer(device)
     device.open(() => {
         printer.cashdraw()

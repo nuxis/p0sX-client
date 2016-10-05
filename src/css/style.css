@@ -161,11 +161,16 @@ ul.search-list {
 }
 
 .numpad {
-    width: 330px;
-    height: 400px;
-
+    height: 390px;
     display: flex;
     flex-flow: row wrap;
+}
+
+.bill-pad {
+    height: 150px;
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 10px;
 }
 
 .button {

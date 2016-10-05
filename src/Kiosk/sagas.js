@@ -8,7 +8,7 @@ import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
 import receipt, { cashDraw } from '../common/receipt'
-import kitchenPrinter from '../common/kitchen'
+import { kitchenReceipt, customerReceipt } from '../common/kitchen'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -118,38 +118,30 @@ function * postPurchase (action) {
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 NotificationManager.success(`Give ${options.amountReceived - options.total},- back`, 'Purchase complete', 9999999999999999)
             } else {
-                NotificationManager.success('Purchase complete', '', 9999999999999999)
+                NotificationManager.success('Purchase complete', '', 7000)
             }
 
-            var items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen'))
+            var receiptItems = yield select(selectors.getRenderedCart)
             const receiptConfig = settings.get('receiptPrinter')
-            if (items.size > 0) {
-                var receiptItems = yield select(selectors.getRenderedCart)
+            const kitchenConfig = settings.get('kitchenPrinter')
+
+            receiptItems = receiptItems.filter(entry => entry.get('item').get('created_in_the_kitchen'))
+            if (receiptItems.size > 0) {
                 const total = yield select(selectors.getTotalPriceOfCart)
                 receiptItems = receiptItems.map(entry => {
                     return {
                         name: entry.get('item').get('name'),
-                        price: entry.get('item').get('price')
-                    }
-                }).toJS()
-
-                receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total, options.payment_method === api.PAYMENT_METHOD.CASH)
-
-                items = items.map(entry => {
-                    return {
-                        name: entry.get('item').get('name'),
                         ingredients: entry.get('ingredients').toJS(),
+                        price: entry.get('item').get('price'),
                         message: entry.get('message')
                     }
                 }).toJS()
 
-                console.log(items)
-                const kitchenConfig = settings.get('kitchenPrinter')
-
-                for (const entry of items) {
-                    //kitchenPrinter(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
-                    console.log('send to kitchen')
-                    kitchenPrinter(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                // Print receipt for the customer
+                customerReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH)
+                // Print separate notes for the kitchen
+                for (const entry of receiptItems) {
+                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 cashDraw(receiptConfig.type, receiptConfig.config)

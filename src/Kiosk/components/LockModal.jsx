@@ -7,7 +7,7 @@ class LockModal extends React.Component {
         authenticateCrew: React.PropTypes.func.isRequired
     }
 
-    keyPress (e) {
+    keyPress = (e) => {
         const { authenticateCrew } = this.props
         if (e.keyCode === 13) {
             const card = $('#cardid').val()
@@ -16,7 +16,7 @@ class LockModal extends React.Component {
         }
     }
 
-    focus () {
+    focus = () => {
         $('#cardid').focus()
     }
 
@@ -26,7 +26,7 @@ class LockModal extends React.Component {
                 <div className='modal-content'>
                     <h4>Scan card to unlock</h4>
                     <div className='input-field col s12'>
-                        <input id='cardid' type='text' className='validate' onBlur={::this.focus} onKeyUp={::this.keyPress} />
+                        <input id='cardid' type='password' className='validate' onBlur={this.focus} onKeyUp={this.keyPress} />
                     </div>
                 </div>
             </div>
