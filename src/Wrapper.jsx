@@ -13,7 +13,6 @@ import 'react-notifications/lib/notifications.css'
 import { getAllKioskData, cashierLogout } from './Kiosk/actions'
 import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
-import { getLoggedInCashier } from './Kiosk/selectors'
 import * as selectors from './Kiosk/selectors'
 import receipt from './common/receipt'
 
@@ -76,7 +75,7 @@ const Wrapper = React.createClass({
 
 const mapStateToProps = (state) => {
     return {
-        cashierName: getLoggedInCashier(state).get('name'),
+        cashierName: selectors.getLoggedInCashier(state).get('name'),
         printReceipt: () => {
             var receiptItems = selectors.getLastCart(state)
             const total = selectors.getTotalPriceOfLastCart(state)

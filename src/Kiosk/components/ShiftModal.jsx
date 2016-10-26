@@ -6,7 +6,6 @@ import { Map } from 'immutable'
 import printShift from '../../common/print-shift'
 import settings from '../../common/settings'
 
-
 class ShiftModal extends React.Component {
     static propTypes = {
         shift: React.PropTypes.instanceOf(Map).isRequired,
@@ -65,7 +64,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatchCreateNewShift: (payload) => {
-            if (confirm('Are you sure you want to create a new shift?')){
+            if (confirm('Are you sure you want to create a new shift?')) {
                 dispatch(createNewShift(payload))
             }
         }

@@ -79,7 +79,7 @@ app.on('ready', () => {
         height: 768,
         frame: true
     })
-    mainWindow.openDevTools()
+    // mainWindow.openDevTools()
 
     // Tell Electron where to load the entry point from
     mainWindow.loadURL(`file://${__dirname}/app.html`)

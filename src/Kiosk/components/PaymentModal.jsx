@@ -40,12 +40,8 @@ class PaymentModal extends React.Component {
                 <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge to pay {total}Kr.</h4>
                 <div className='row'>
                     <div className='input-field col s12'>
-                        <input onKeyUp={this.onEnter} ref='rfid' id='rfid' type='text' required className='validate' />
+                        <input onKeyUp={this.onEnter} ref='rfid' id='rfid' type='password' required className='validate' />
                         <label className='active' htmlFor='rfid'>Badge number</label>
-                    </div>
-                    <div className='input-field col s12'>
-                        <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
-                        <label htmlFor='message'>Message for the kitchen</label>
                     </div>
                     <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCrew}>
                         Purchase
@@ -63,38 +59,42 @@ class PaymentModal extends React.Component {
                 <div className='row'>
                     <div className='col s6'>
                         <div className='input-field col s12'>
-                            <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' required min={total} className='validate' />
+                            <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' min={total} className='validate' />
                             <label className='active' htmlFor='amount'>Amount received</label>
                         </div>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={this.onEnter} ref='message' id='message' type='text' required maxLength='64' className='validate' />
-                            <label htmlFor='message'>Message for the kitchen</label>
-                        </div>
                     </div>
-
+                    <div className='numpad col s6'>
+                        <div onClick={this.numpadClick} className='button'>1</div>
+                        <div onClick={this.numpadClick} className='button'>2</div>
+                        <div onClick={this.numpadClick} className='button'>3</div>
+                        <div onClick={this.numpadClick} className='button'>4</div>
+                        <div onClick={this.numpadClick} className='button'>5</div>
+                        <div onClick={this.numpadClick} className='button'>6</div>
+                        <div onClick={this.numpadClick} className='button'>7</div>
+                        <div onClick={this.numpadClick} className='button'>8</div>
+                        <div onClick={this.numpadClick} className='button'>9</div>
+                        <div onClick={this.numpadClick} className='button'>0</div>
+                        <div onClick={this.numpadClick} className='button'>Back</div>
+                    </div>
+                </div>
+                <div className='row'>
                     <div className='col s6'>
-                        <div className='numpad-container'>
-                            <div className='numpad'>
-                                <div onClick={this.numpadClick} className='button'>1</div>
-                                <div onClick={this.numpadClick} className='button'>2</div>
-                                <div onClick={this.numpadClick} className='button'>3</div>
-                                <div onClick={this.numpadClick} className='button'>4</div>
-                                <div onClick={this.numpadClick} className='button'>5</div>
-                                <div onClick={this.numpadClick} className='button'>6</div>
-                                <div onClick={this.numpadClick} className='button'>7</div>
-                                <div onClick={this.numpadClick} className='button'>8</div>
-                                <div onClick={this.numpadClick} className='button'>9</div>
-                                <div onClick={this.numpadClick} className='button'>0</div>
-                                <div onClick={this.numpadClick} className='button'>Back</div>
-                            </div>
+                        <div className='col s12'>
+                            <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCash}>
+                                Purchase
+                            </button>
                         </div>
                     </div>
-                    <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCash}>
-                        Purchase
-                    </button>
                 </div>
             </div>
         )
+    }
+
+    clear = () => {
+        var amount = $('#amount')
+        amount.val('')
+        // eslint-disable-next-line no-undef
+        Materialize.updateTextFields()
     }
 
     numpadClick = (e) => {
@@ -104,6 +104,13 @@ class PaymentModal extends React.Component {
         } else {
             amount.val(amount.val() + e.target.innerHTML)
         }
+        // eslint-disable-next-line no-undef
+        Materialize.updateTextFields()
+    }
+
+    billClick = (e) => {
+        var amount = $('#amount')
+        amount.val(e.target.innerHTML)
         // eslint-disable-next-line no-undef
         Materialize.updateTextFields()
     }
@@ -127,33 +134,36 @@ class PaymentModal extends React.Component {
     purchaseCrew = () => {
         const { onPurchase, total, cashierCard } = this.props
         const { value, validity } = this.refs.rfid
-        const message = this.refs.message.value
 
         if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
                 total: total,
                 card: value,
-                message: message,
+                message: '',
                 cashier_card: cashierCard
             }
             onPurchase(purchase)
+            // eslint-disable-next-line immutable/no-mutation
+            this.refs.rfid.value = ''
         }
     }
 
     purchaseCash = () => {
         const { onPurchase, total, cashierCard } = this.props
         const { validity, value } = this.refs.amount
-        const message = this.refs.message.value
 
-        if (validity.valid) {
+        // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
+        if (validity.valid && parseInt(value) > 1000000) {
+            NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
+            $('#amount').val('')
+        } else if (validity.valid) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
                 total: total,
-                amountReceived: value,
-                message: message,
+                amountReceived: value !== '' ? value : total.toString(),
+                message: '',
                 cashier_card: cashierCard
-
             }
             onPurchase(purchase)
         } else {

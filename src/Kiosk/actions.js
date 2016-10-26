@@ -54,6 +54,8 @@ export const OPEN_AND_GET_CURRENT_SHIFT = 'OPEN_AND_GET_CURRENT_SHIFT'
 export const SET_CURRENT_SHIFT = 'SET_CURRENT_SHIFT'
 export const CREATE_NEW_SHIFT = 'CREATE_NEW_SHIFT'
 
+export const SET_PURCHASE_IN_PROGRESS = 'SET_PURCHASE_IN_PROGRESS'
+
 // Action creators
 export const addCurrentItemToCart = (currentItem, message) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem, message })
 
@@ -109,3 +111,5 @@ export const setCurrentShift = (shift) => action(SET_CURRENT_SHIFT, { shift })
 export const createNewShift = (card) => action(CREATE_NEW_SHIFT, { card })
 
 export const setLastCart = (cart) => action(SET_LAST_CART, { cart })
+
+export const setPurchaseInProgress = (value) => action(SET_PURCHASE_IN_PROGRESS, {value})

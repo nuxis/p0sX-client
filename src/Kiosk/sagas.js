@@ -7,8 +7,8 @@ import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
 import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
-import receipt from '../common/receipt'
-import kitchenPrinter from '../common/kitchen'
+import { cashDraw } from '../common/receipt'
+import { kitchenReceipt, customerReceipt } from '../common/kitchen'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -72,6 +72,11 @@ function * getDiscounts () {
 
 function * postPurchase (action) {
     try {
+        const purchaseInProgress = yield select(selectors.getPurchaseInProgress)
+        if (purchaseInProgress) {
+            return
+        }
+        yield put(actions.setPurchaseInProgress(true))
         const cart = yield select(selectors.getCart)
         const options = {
             ...action.options,
@@ -88,17 +93,20 @@ function * postPurchase (action) {
             NotificationManager.error('The cart has a negative total sum', '', 5000)
             closePaymentModal()
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPurchaseInProgress(false))
             return
         }
 
         if (options.payment_method === api.PAYMENT_METHOD.CREW) {
             const credit = yield call(api.getCreditForCrew, options.card)
             if (!credit) {
+                yield put(actions.setPurchaseInProgress(false))
                 return
             } else if (options.total > credit.get('left')) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
                 closePaymentModal()
                 yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+                yield put(actions.setPurchaseInProgress(false))
                 return
             }
         }
@@ -110,46 +118,41 @@ function * postPurchase (action) {
             if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 NotificationManager.success(`Give ${options.amountReceived - options.total},- back`, 'Purchase complete', 9999999999999999)
             } else {
-                NotificationManager.success('Purchase complete', '', 9999999999999999)
+                NotificationManager.success('Purchase complete', '', 7000)
             }
-            sendOrderToKitchen(cart, result.get('id'))
-            const items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen')).toJS()
-            if (items.length > 0) {
-                var receiptItems = yield select(selectors.getRenderedCart)
-                const total = yield select(selectors.getTotalPriceOfCart)
+
+            var receiptItems = yield select(selectors.getRenderedCart)
+            const receiptConfig = settings.get('receiptPrinter')
+            const kitchenConfig = settings.get('kitchenPrinter')
+
+            receiptItems = receiptItems.filter(entry => entry.get('item').get('created_in_the_kitchen'))
+            if (receiptItems.size > 0) {
                 receiptItems = receiptItems.map(entry => {
                     return {
                         name: entry.get('item').get('name'),
-                        price: entry.get('item').get('price')
+                        ingredients: entry.get('ingredients').toJS(),
+                        price: entry.get('item').get('price'),
+                        message: entry.get('message')
                     }
                 }).toJS()
-                const receiptConfig = settings.get('receiptPrinter')
-                receipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), total)
-            }
 
+                // Print receipt for the customer
+                customerReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH)
+                // Print separate notes for the kitchen
+                for (const entry of receiptItems) {
+                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                }
+            } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
+                cashDraw(receiptConfig.type, receiptConfig.config)
+            }
             closePaymentModal()
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPurchaseInProgress(false))
         }
     } catch (error) {
         console.error(error)
     }
-}
-
-function sendOrderToKitchen (cart, orderId) {
-    var items = cart.filter(entry => entry.get('item').get('created_in_the_kitchen'))
-    if (items.size === 0) {
-        return
-    }
-    items = items.map(entry => {
-        return {
-            name: entry.get('item').get('name'),
-            ingredients: entry.get('ingredients').toJS(),
-            message: entry.get('message')
-        }
-    }).toJS()
-    const kitchenConfig = settings.get('kitchenPrinter')
-    kitchenPrinter(kitchenConfig.type, kitchenConfig.config, items, orderId)
 }
 
 function * undoOrder () {
@@ -232,7 +235,7 @@ function * cashierLogin (action) {
             yield put(actions.cashierSuccess(crew.get(0)))
         } else {
             NotificationManager.error('Login failed', 'Are you crew?!', 5000)
-            yield put(actions.cashierClear)
+            yield put(actions.cashierClear())
         }
     } catch (error) {
         console.error(error)
@@ -247,7 +250,7 @@ function * cashierLogout () {
     try {
         openLockModal()
         NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
-        yield put(actions.cashierClear)
+        yield put(actions.cashierClear())
     } catch (error) {
         console.error(error)
     }
