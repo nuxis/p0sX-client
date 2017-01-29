@@ -25,7 +25,8 @@
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "@types/immutable": "^3.8.4",
     "@types/react": "^0.14.37",
@@ -69,22 +70,26 @@
     "json-loader": "^0.5.4",
     "material-design-icons-iconfont": "^3.0.0",
     "materialize-css": "^0.97.6",
+    "material-ui": "^0.16.7",
     "moment": "^2.15.1",
-    "react": "^15.3.2",
+    "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.3.2",
-    "react-dom": "^15.2.1",
+    "react-dom": "^15.4.2",
     "react-materialize": "^0.17.0",
     "react-notifications": "^1.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.4",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.5.2",
     "redux-saga": "^0.11.0",
     "reselect": "^2.5.3",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "moment": "latest"
+    "flexboxgrid": "^6.3.1",
+    "react-flexbox-grid": "^0.10.2",
+    "roboto-fontface": "^0.7.0"
   },
   "build": {
     "appId": "org.nuxis.p0sX",

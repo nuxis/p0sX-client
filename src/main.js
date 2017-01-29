@@ -77,6 +77,7 @@ app.on('ready', () => {
     const mainWindow = new BrowserWindow({
         width: 1024,
         height: 768,
+        minWidth: 800,
         frame: true
     })
     // mainWindow.openDevTools()

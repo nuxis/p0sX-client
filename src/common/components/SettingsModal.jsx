@@ -1,84 +1,86 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import settings from '../settings'
+import * as selectors from '../../Kiosk/selectors'
 import axios from 'axios'
-import { getAllKioskData, openAndGetCurrentShift, emptyCart } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings } from '../../Kiosk/actions'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
+import {red500} from 'material-ui/styles/colors'
 
 class SettingsModal extends React.Component {
     static propTypes = {
-        onSave: React.PropTypes.func.isRequired,
-        initial: React.PropTypes.bool.isRequired,
-        openShiftModal: React.PropTypes.func.isRequired,
-        fetchData: React.PropTypes.func.isRequired
+        open: React.PropTypes.any,
+        toggleOpen: React.PropTypes.any.isRequired,
+        onSave: React.PropTypes.func,
+        server: React.PropTypes.string,
+        token: React.PropTypes.string,
+        name: React.PropTypes.string,
+        initial: React.PropTypes.bool
     }
 
-    onClick = () => {
-        const { onSave, initial } = this.props
+    onSave = () => {
+        const { onSave, toggleOpen, initial } = this.props
         onSave(initial)
+        toggleOpen()
     }
 
     render () {
-        const { openShiftModal, fetchData } = this.props
+        const { open, toggleOpen, server, token, name } = this.props
+
+        const actions = [
+            <FlatButton
+                label='Cancel'
+                primary
+                onTouchTap={toggleOpen}
+                rippleColor={red500}
+            />,
+            <FlatButton
+                label='Save'
+                primary
+                onTouchTap={this.onSave}
+            />
+        ]
+
         return (
-            <div id='settings-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4>Change settings</h4>
-                    <ul className='collapsible' data-collapsible='accordion'>
-                        <li className='active'>
-                            <div className='collapsible-header active'><i className='material-icons'>list</i>General</div>
-                            <div className='collapsible-body'>
-                                <div className='row'>
-                                    <div className='input-field col s12'>
-                                        <a onClick={openShiftModal} className='waves-effect waves-light btn'>Shift info</a>
-                                        &nbsp;
-                                        <a onClick={fetchData} className='waves-effect waves-light btn'>Update data</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className='collapsible-header red-text'><i className='material-icons black-text'>vpn_key</i>Here be dragons</div>
-                            <div className='collapsible-body'>
-                                <div className='row'>
-                                    <div className='input-field col s12'>
-                                        <input id='name' type='text' className='validate' />
-                                        <label className='active' htmlFor='name'>Name</label>
-                                    </div>
-                                    <div className='input-field col s12'>
-                                        <input id='server' type='url' className='validate' />
-                                        <label className='active' htmlFor='server'>Server</label>
-                                    </div>
-                                    <div className='input-field col s12'>
-                                        <input id='token' type='text' className='validate' />
-                                        <label className='active' htmlFor='token'>Token</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
-                </div>
-            </div>
+            <Dialog actions={actions} modal onRequestClose={toggleOpen} open={open} title='Settings'>
+                <TextField
+                    id='server'
+                    floatingLabelText='Server'
+                    defaultValue={server}
+                    fullWidth
+                /><br />
+                <TextField
+                    id='token'
+                    floatingLabelText='Token'
+                    defaultValue={token}
+                    fullWidth
+                /><br />
+                <TextField
+                    id='name'
+                    floatingLabelText='Name'
+                    defaultValue={name}
+                    fullWidth
+                />
+            </Dialog>
         )
     }
 }
 
-const mapStateToProps = () => {
-    var allSettings = settings.get()
+const mapStateToProps = (state) => {
     return {
-        initial: Object.getOwnPropertyNames(allSettings).length === 0
+        initial: Object.getOwnPropertyNames(settings.get()).length === 0,
+        ...selectors.getSettings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onSave: (initial) => {
-            var server = $('#server').val()
-            var token = $('#token').val()
-            var name = $('#name').val()
+            const server = $('#server').val()
+            const token = $('#token').val()
+            const name = $('#name').val()
             settings.set('name', name)
             settings.set('server_address', server)
             settings.set('api_auth_token', token)
@@ -86,6 +88,11 @@ const mapDispatchToProps = (dispatch) => {
             axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
             // eslint-disable-next-line immutable/no-mutation
             axios.defaults.baseURL = settings.get('server_address')
+            dispatch(updateSettings({
+                server: server,
+                token: token,
+                name: name
+            }))
             if (initial) {
                 dispatch(getAllKioskData())
             }
@@ -101,22 +108,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const open = () => {
-    if (Object.getOwnPropertyNames(settings.get()).length !== 0) {
-        $('#server').val(settings.get('server_address'))
-        $('#token').val(settings.get('api_auth_token'))
-        $('#name').val(settings.get('name'))
-        // eslint-disable-next-line no-undef
-        Materialize.updateTextFields()
-    }
-    $('#settings-modal').openModal()
-}
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(SettingsModal)
-
-export {
-    open
-}

@@ -16,13 +16,13 @@ export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 
 export const EMPTY_CART = 'EMPTY_CART'
-
 export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART'
+export const EDIT_CART_ITEM = 'EDIT_CART_ITEM'
 
 export const SET_ACTIVE_CATEGORY = 'SET_ACTIVE_CATEGORY'
 
 export const OPEN_INGREDIENT_MODAL_FOR_ITEM = 'OPEN_INGREDIENT_MODAL_FOR_ITEM'
-
+export const TOGGLE_INGREDIENT_MODAL = 'TOGGLE_INGREDIENT_MODAL'
 export const TOGGLE_INGREDIENT = 'TOGGLE_INGREDIENT'
 
 export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
@@ -56,10 +56,17 @@ export const CREATE_NEW_SHIFT = 'CREATE_NEW_SHIFT'
 
 export const SET_PURCHASE_IN_PROGRESS = 'SET_PURCHASE_IN_PROGRESS'
 
+export const TOGGLE_SETTINGS_MODAL = 'TOGGLE_SETTINGS_MODAL'
+export const UPDATE_SETTINGS = 'UPDATE_SETTINGS'
+
 // Action creators
+export const toggleSettingsModal = () => action(TOGGLE_SETTINGS_MODAL, {})
+export const updateSettings = (settings) => action(UPDATE_SETTINGS, {...settings})
+
 export const addCurrentItemToCart = (currentItem, message) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem, message })
 
 export const addItemToCart = (item) => action(ADD_ITEM_TO_CART, { item })
+export const editCartItem = (itemIndex) => action(EDIT_CART_ITEM, {itemIndex})
 
 export const getAllKioskData = () => action(GET_ALL_KIOSK_DATA, {})
 
@@ -78,8 +85,8 @@ export const removeItemFromCart = (itemIndexInCart) => action(REMOVE_ITEM_FROM_C
 
 export const setActiveCategory = (category) => action(SET_ACTIVE_CATEGORY, { category })
 
-export const openIngredientModalForItem = (item) => action(OPEN_INGREDIENT_MODAL_FOR_ITEM, { item })
-
+export const openIngredientModalForItem = (item, ingredients, message, edit) => action(OPEN_INGREDIENT_MODAL_FOR_ITEM, { item, ingredients, message, edit })
+export const toggleIngredientModal = () => action(TOGGLE_INGREDIENT_MODAL, {})
 export const toggleIngredient = (ingredient) => action(TOGGLE_INGREDIENT, { ingredient })
 
 export const setSearchString = (value) => action(SET_SEARCH_VALUE, { value })

@@ -5,8 +5,10 @@ export const getCategories = (state) => state.categories
 export const getSelectedCategory = (state) => state.selectedCategory
 
 export const getCurrentItem = (state) => state.currentItem
+export const getIngredientModalOpen = (state) => state.currentItem.get('modalOpen')
 
 export const getCart = (state) => state.cart
+export const getCartItemByIndex = (state, index) => state.cart.get(index)
 
 export const getSearch = (state) => state.search
 
@@ -69,6 +71,8 @@ export const getShift = (state) => state.shift
 export const getLastCart = (state) => state.lastCart
 
 export const getPurchaseInProgress = (state) => state.purchaseInProgress
+
+export const getSettings = (state) => state.settings
 
 export const getTotalPriceOfLastCart = createSelector(
     [getLastCart],

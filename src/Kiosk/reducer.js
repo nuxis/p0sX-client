@@ -117,6 +117,36 @@ export function categories (state = categoriesInit, action) {
 
 // END CATEGORIES
 
+// SETTINGS
+
+const settingsInit = {
+    open: false,
+    server: '',
+    token: '',
+    name: ''
+}
+
+export function settings (state = settingsInit, action) {
+    switch (action.type) {
+    case actions.TOGGLE_SETTINGS_MODAL:
+        return {
+            ...state,
+            open: !state.open
+        }
+    case actions.UPDATE_SETTINGS:
+        return {
+            ...state,
+            server: action.server,
+            token: action.token,
+            name: action.name
+        }
+    default:
+        return state
+    }
+}
+
+// END SETTINGS
+
 // SELECTEDCATEGORY
 
 const selectedCategoryInit = 0
@@ -142,7 +172,10 @@ const currentItemInit = new Map({
         name: 'NOTHING',
         ingredients: List()
     }),
-    ingredients: List()
+    ingredients: List(),
+    message: '',
+    modalOpen: false,
+    edit: false
 })
 
 export function currentItem (state = currentItemInit, action) {
@@ -150,7 +183,10 @@ export function currentItem (state = currentItemInit, action) {
     case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
         return new Map({
             item: action.item,
-            ingredients: action.item.get('ingredients').filter(i => i.get('default'))
+            ingredients: action.ingredients || action.item.get('ingredients').filter(i => i.get('default')),
+            message: action.message || '',
+            modalOpen: true,
+            edit: action.edit || false
         })
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
@@ -158,7 +194,8 @@ export function currentItem (state = currentItemInit, action) {
         } else {
             return state.set('ingredients', state.get('ingredients').push(action.ingredient))
         }
-
+    case actions.TOGGLE_INGREDIENT_MODAL:
+        return state.set('modalOpen', !state.get('modalOpen'))
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return currentItemInit
     default:

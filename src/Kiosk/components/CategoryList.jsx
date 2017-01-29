@@ -1,32 +1,41 @@
 import React from 'react'
-import Category from './Category.jsx'
 import { connect } from 'react-redux'
 import { setActiveCategory } from '../actions'
 import { getCategories, getSelectedCategory } from '../selectors'
-import { List } from 'immutable'
+import { List as ImmutableList } from 'immutable'
+import {List, ListItem, makeSelectable} from 'material-ui/List'
+import Divider from 'material-ui/Divider'
+
+const SelectableList = makeSelectable(List)
 
 class CategoryList extends React.Component {
     static propTypes = {
-        categories: React.PropTypes.instanceOf(List).isRequired,
-        selectedCategory: React.PropTypes.number.isRequired,
-        onCategoryClick: React.PropTypes.func.isRequired
+        categories: React.PropTypes.instanceOf(ImmutableList),
+        onCategoryClick: React.PropTypes.func,
+        selectedCategory: React.PropTypes.number
+    }
+
+    handleSelectionChange = (event, value) => {
+        const {onCategoryClick, categories} = this.props
+        onCategoryClick(categories.find(c => c.get('id') === value))
     }
 
     render () {
-        const {categories, onCategoryClick, selectedCategory} = this.props
+        const {categories, selectedCategory} = this.props
         return (
-            <div className='col s12 m3 l2'>
-                <div className='collection'>
+            <div className='col col-xs-2 col-sm-2 col-md-2 col-lg-2'>
+                <SelectableList value={selectedCategory} onChange={this.handleSelectionChange}>
                     {categories.map((category) =>
-                        <Category
-                            key={category.get('id')}
-                            name={category.get('name')}
-                            active={selectedCategory === category.get('id')}
-                            category={category}
-                            onClick={onCategoryClick}
-                        />
+                        [
+                            <ListItem
+                                key={category.get('id')}
+                                primaryText={category.get('name')}
+                                value={category.get('id')}
+                            />,
+                            <Divider />
+                        ]
                     )}
-                </div>
+                </SelectableList>
             </div>
         )
     }

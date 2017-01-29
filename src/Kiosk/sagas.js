@@ -297,3 +297,16 @@ function * createNewShift (action) {
 export function * watchCreateNewShift () {
     yield * takeEvery(actions.CREATE_NEW_SHIFT, createNewShift)
 }
+
+function * editCartItem (action) {
+    const item = yield select(selectors.getCartItemByIndex, action.itemIndex)
+    console.log(action, item)
+    if (item.get('item').get('created_in_the_kitchen')) {
+        yield put(actions.openIngredientModalForItem(item.get('item'), item.get('ingredients'), item.get('message'), true))
+        yield put(actions.removeItemFromCart(action.itemIndex))
+    }
+}
+
+export function * watchEditCartItem () {
+    yield * takeEvery(actions.EDIT_CART_ITEM, editCartItem)
+}

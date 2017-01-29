@@ -2,7 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
-import { getCurrentItem } from '../selectors'
+import { getCurrentItem, getIngredientModalOpen } from '../selectors'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import Checkbox from 'material-ui/Checkbox'
+import TextField from 'material-ui/TextField'
+import {List, ListItem} from 'material-ui/List'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
@@ -19,30 +24,36 @@ class IngredientCheckbox extends React.Component {
         const { onClick, ingredient } = this.props
         e.stopPropagation()
         onClick(ingredient)
+        console.log('clicked...')
     }
 
     render () {
         const { ingredient, checked } = this.props
+
+        const style = {
+            paddingTop: '8px',
+            paddingBottom: '8px',
+            paddingLeft: '50px'
+        }
+
         return (
-            <li className='collection-item' onClick={this.click}>
-                <input
-                    onClick={IngredientCheckbox.noop}
-                    id={'ingredient-' + ingredient.get('id')}
-                    checked={checked}
-                    type='checkbox'
-                    readOnly
-                />
-                <label htmlFor={'ingredient-' + ingredient.get('id')}>{ingredient.get('name')} {ingredient.get('price')},-</label>
-            </li>
+            <ListItem
+                style={style}
+                onClick={this.click}
+                primaryText={ingredient.get('name') + ' ' + ingredient.get('price') + ',-'}
+                leftCheckbox={<Checkbox style={{top: '4px'}} onClick={IngredientCheckbox.noop} checked={checked} />}
+            />
         )
     }
 }
 
 class IngredientModal extends React.Component {
     static propTypes = {
-        currentItem: React.PropTypes.instanceOf(Map).isRequired,
-        onClose: React.PropTypes.func.isRequired,
-        onIngredientClick: React.PropTypes.func.isRequired
+        currentItem: React.PropTypes.instanceOf(Map),
+        onClose: React.PropTypes.func,
+        onIngredientClick: React.PropTypes.func,
+        toggleOpen: React.PropTypes.any.isRequired,
+        open: React.PropTypes.any
     }
 
     close = () => {
@@ -51,42 +62,58 @@ class IngredientModal extends React.Component {
     }
 
     render () {
-        const { currentItem, onIngredientClick } = this.props
+        const { currentItem, onIngredientClick, open, toggleOpen } = this.props
+
+        const editActions = [
+            <FlatButton
+                label='save'
+                primary
+                onTouchTap={this.close}
+            />
+        ]
+
+        const addActions = [
+            <FlatButton
+                label='Cancel'
+                primary
+                onTouchTap={toggleOpen}
+            />,
+            <FlatButton
+                label='Add to cart'
+                primary
+                keyboardFocused
+                onTouchTap={this.close}
+            />
+        ]
+
         return (
-            <div id='ingredient-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4 style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-                        Options for {currentItem.get('item').get('name')}
-                    </h4>
-                    <ul className='collection'>
-                        {currentItem.get('item').get('ingredients').map(ingredient =>
-                            <IngredientCheckbox
-                                onClick={onIngredientClick}
-                                ingredient={ingredient}
-                                checked={currentItem.get('ingredients').includes(ingredient)}
-                                key={ingredient.get('id')}
-                            />
-                        )}
-                    </ul>
-                    <div className='row'>
-                        <div className='input-field col s12'>
-                            <input ref='itemMessage' id='item-message' type='text' className='validate' />
-                            <label htmlFor='item-message'>Message</label>
-                        </div>
-                    </div>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={this.close} className='modal-action modal-close waves-effect waves-green btn-flat'>Add to cart</a>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
-                </div>
-            </div>
+            <Dialog bodyStyle={{paddingBottom: '0px'}} autoScrollBodyContent actions={currentItem.get('edit') ? editActions : addActions} modal onRequestClose={toggleOpen} open={open} title={'Options for ' + currentItem.get('item').get('name')}>
+                <List>
+                    {currentItem.get('item').get('ingredients').map(ingredient =>
+                        <IngredientCheckbox
+                            onClick={onIngredientClick}
+                            ingredient={ingredient}
+                            checked={currentItem.get('ingredients').includes(ingredient)}
+                            key={ingredient.get('id')}
+                        />
+                    )}
+                </List>
+                <TextField
+                    id='item-message'
+                    hintText='Message'
+                    defaultValue={currentItem.get('message')}
+                    fullWidth
+                    inputStyle={{marginTop: '0px'}}
+                />
+            </Dialog>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        currentItem: getCurrentItem(state)
+        currentItem: getCurrentItem(state),
+        open: getIngredientModalOpen(state)
     }
 }
 

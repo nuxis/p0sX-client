@@ -1,5 +1,7 @@
 import React from 'react'
-import classNames from 'classnames'
+import RaisedButton from 'material-ui/RaisedButton'
+import Delete from 'material-ui/svg-icons/action/delete'
+import {white, red500} from 'material-ui/styles/colors'
 
 const CheckoutButton = React.createClass({
     propTypes: {
@@ -8,16 +10,9 @@ const CheckoutButton = React.createClass({
     },
     render: function () {
         const {onClick, active} = this.props
-        var btnClass = classNames('btn', 'btn-large', 'red', 'right', {
-            'disabled': !active,
-            'waves-effect': active,
-            'waves-light': active
-        })
 
         return (
-            <button style={{padding: '0 1rem 0 1rem', width: '25%'}} className={btnClass} onClick={onClick} title='Empty cart'>
-                <i className='material-icons'>delete</i>
-            </button>
+            <RaisedButton disabled={!active} onClick={onClick} fullWidth backgroundColor={red500} icon={<Delete color={white} />} />
         )
     }
 })
