@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import settings from './common/settings'
 import SettingsModal, { open as openSettings } from './common/components/SettingsModal.jsx'
 import CreditCheckModal, { open as openCreditCheck } from './Kiosk/components/CreditCheckModal.jsx'
 import PreviousOrderModal, { open as openPreviousOrder } from './Kiosk/components/PreviousOrderModal.jsx'
@@ -10,6 +9,7 @@ import SearchBar from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
 import { getAllKioskData, cashierLogout, toggleSettingsModal, updateSettings, toggleIngredientModal } from './Kiosk/actions'
+import { loadStrings } from './actions'
 import LockModal, { open as openLockModal } from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
 import * as selectors from './Kiosk/selectors'
@@ -26,7 +26,7 @@ class OpenModal extends React.Component {
     static propTypes = {
         style: React.PropTypes.object,
         modal: React.PropTypes.node.isRequired,
-        label: React.PropTypes.string.isRequired,
+        label: React.PropTypes.string,
         icon: React.PropTypes.node
     }
 
@@ -49,28 +49,37 @@ const Wrapper = React.createClass({
             React.PropTypes.node
         ]),
         getInitialData: React.PropTypes.func.isRequired,
+        settingsEmpty: React.PropTypes.bool,
         logout: React.PropTypes.func.isRequired,
         cashierName: React.PropTypes.string,
         printReceipt: React.PropTypes.func.isRequired,
         toggleSettingsModal: React.PropTypes.func.isRequired,
-        setSettingsFromFile: React.PropTypes.func.isRequired,
-        toggleIngredientModal: React.PropTypes.func.isRequired
+        toggleIngredientModal: React.PropTypes.func.isRequired,
+        loadStrings: React.PropTypes.func,
+        strings: React.PropTypes.object,
+        language: React.PropTypes.string
     },
 
-    componentDidMount: function () {
-        const { getInitialData, setSettingsFromFile, toggleSettingsModal } = this.props
-        var allSettings = settings.get()
-        if (Object.getOwnPropertyNames(allSettings).length === 0) {
-            console.log('Need sum config')
+    componentDidUpdate: function (prevProps) {
+        const {language, loadStrings} = this.props
+        if (prevProps.language !== language) {
+            loadStrings(language)
+        }
+    },
+
+    componentWillMount: function () {
+        const { getInitialData, toggleSettingsModal, loadStrings, language, settingsEmpty } = this.props
+        if (settingsEmpty) {
+            loadStrings(language)
             toggleSettingsModal()
         } else {
-            setSettingsFromFile()
+            loadStrings(language)
             getInitialData()
             // openLockModal()
         }
     },
     render: function () {
-        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal} = this.props
+        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings} = this.props
 
         const style = {
             backgroundColor: cyan500
@@ -94,9 +103,9 @@ const Wrapper = React.createClass({
                         <SearchBar />
                     </ToolbarGroup>
                     <ToolbarGroup lastChild>
-                        <OpenModal style={buttonStyle} label='settings' icon={<SettingsIcon />} modal={<SettingsModal toggleOpen={toggleSettingsModal} />} />
-                        <FlatButton style={buttonStyle} label='receipt' icon={<ReceiptIcon />} onClick={printReceipt} />
-                        <FlatButton style={buttonStyle} label='log out' icon={<LogoutIcon />} onClick={logout} />
+                        <OpenModal style={buttonStyle} label={strings.settings} icon={<SettingsIcon />} modal={<SettingsModal toggleOpen={toggleSettingsModal} />} />
+                        <FlatButton style={buttonStyle} label={strings.receipt} icon={<ReceiptIcon />} onClick={printReceipt} />
+                        <FlatButton style={buttonStyle} label={strings.logout} icon={<LogoutIcon />} onClick={logout} />
                     </ToolbarGroup>
                 </Toolbar>
                 {children}
@@ -110,6 +119,9 @@ const Wrapper = React.createClass({
 const mapStateToProps = (state) => {
     return {
         cashierName: selectors.getLoggedInCashier(state).get('name'),
+        language: selectors.getSettings(state).language,
+        strings: selectors.getStrings(state),
+        settingsEmpty: Object.getOwnPropertyNames(selectors.getSettings(state)).length === 1,
         printReceipt: () => {
             var receiptItems = selectors.getLastCart(state)
             const total = selectors.getTotalPriceOfLastCart(state)
@@ -138,12 +150,8 @@ const mapDispatchToProps = (dispatch) => {
         toggleIngredientModal: () => {
             dispatch(toggleIngredientModal())
         },
-        setSettingsFromFile: () => {
-            dispatch(updateSettings({
-                server: settings.get('server_address'),
-                token: settings.get('api_auth_token'),
-                name: settings.get('name')
-            }))
+        loadStrings: (language) => {
+            dispatch(loadStrings(language))
         }
     }
 }

@@ -3,6 +3,13 @@
 import axios from 'axios'
 import { getCategories, getIngredients, getItems } from './common/api'
 
+function action (type, payload = {}) {
+    return { type, ...payload }
+}
+
+export const LOAD_STRINGS = 'LOAD_STRINGS'
+export const loadStrings = (language) => action(LOAD_STRINGS, {language})
+
 const setInitialData = () => {
     return (dispatch) => {
         console.log('Calls for apiz')

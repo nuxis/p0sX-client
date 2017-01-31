@@ -2,7 +2,7 @@ import React from 'react'
 import CartEntry from './CartEntry.jsx'
 import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart, editCartItem } from '../actions'
-import { getRenderedCart, getTotalPriceOfCart } from '../selectors'
+import { getRenderedCart, getTotalPriceOfCart, getStrings } from '../selectors'
 import { List as ImmutableList } from 'immutable'
 import { open as openPaymentModal } from './PaymentModal'
 import {List} from 'material-ui/List'
@@ -17,11 +17,12 @@ class Cart extends React.Component {
         onRemoveItem: React.PropTypes.func,
         onEditItem: React.PropTypes.func,
         onPurchase: React.PropTypes.func,
-        total: React.PropTypes.number
+        total: React.PropTypes.number,
+        strings: React.PropTypes.object
     }
 
     render () {
-        const { items, onEmptyCart, onRemoveItem, onEditItem, onPurchase, total } = this.props
+        const { items, onEmptyCart, onRemoveItem, onEditItem, onPurchase, total, strings } = this.props
         const placeholderImage = require('../../images/planet.png')
         return (
             <div style={{height: '100%'}} className='col col-xs-3 col-sm-3 col-md-3 col-lg-3'>
@@ -39,6 +40,7 @@ class Cart extends React.Component {
                                     onRemoveItem={onRemoveItem}
                                     onEditItem={onEditItem}
                                     editable={entry.get('item').get('created_in_the_kitchen')}
+                                    price_text={strings.price_short}
                                 />
                             )}
                         </List>
@@ -49,7 +51,7 @@ class Cart extends React.Component {
                         <RaisedButton onClick={onPurchase}
                             disabled={items.isEmpty()}
                             fullWidth primary
-                            label={'Total: ' + total + ',-'}
+                            label={strings.total + ' ' + total + strings.price_short}
                         />
                     </div>
                     <div className='col-xs-4 xs-last'>
@@ -69,7 +71,8 @@ class Cart extends React.Component {
 const mapStateToProps = (state) => {
     return {
         items: getRenderedCart(state),
-        total: getTotalPriceOfCart(state)
+        total: getTotalPriceOfCart(state),
+        strings: getStrings(state)
     }
 }
 

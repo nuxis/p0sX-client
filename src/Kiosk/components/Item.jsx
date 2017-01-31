@@ -5,7 +5,7 @@ class Item extends React.Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired,
         name: React.PropTypes.string.isRequired,
-        price: React.PropTypes.number.isRequired,
+        price: React.PropTypes.string.isRequired,
         image: React.PropTypes.string.isRequired,
         id: React.PropTypes.number.isRequired
     }
@@ -25,7 +25,7 @@ class Item extends React.Component {
             <Paper className='item-card hoverable' zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onTouchTap={this.click}>
                 <img src={image} />
                 <div className='name-truncate'>{name}</div>
-                <div className='price grey-text text-darken-1'>{price} Kr.</div>
+                <div className='price grey-text text-darken-1'>{price}</div>
             </Paper>
         )
     }

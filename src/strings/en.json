@@ -1,0 +1,17 @@
+{
+  "add_to_cart": "Add to cart",
+  "settings": "Settings",
+  "receipt": "Receipt",
+  "logout": "Log out",
+  "cancel": "Cancel",
+  "save": "Save",
+  "name": "Name",
+  "server": "Server",
+  "language": "Language",
+  "token": "Token",
+  "price_text": "Kr.",
+  "price_short": ",-",
+  "message": "Message",
+  "total": "Total",
+  "select_ingredients": "Select ingredients for"
+}

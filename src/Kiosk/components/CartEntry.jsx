@@ -15,7 +15,8 @@ class CartEntry extends React.Component {
         onEditItem: React.PropTypes.func.isRequired,
         image: React.PropTypes.string,
         index: React.PropTypes.number.isRequired,
-        editable: React.PropTypes.bool.isRequired
+        editable: React.PropTypes.bool.isRequired,
+        price_text: React.PropTypes.string.isRequired
     }
 
     removeItem = (e) => {
@@ -30,7 +31,7 @@ class CartEntry extends React.Component {
     }
 
     render () {
-        const { name, price, ingredients, image, editable } = this.props
+        const { name, price, ingredients, image, editable, price_text } = this.props
 
         const textStyle = {
             whiteSpace: 'nowrap',
@@ -43,7 +44,7 @@ class CartEntry extends React.Component {
                 onTouchTap={this.editItem}
                 leftAvatar={<Avatar src={image} />}
                 primaryText={<div style={textStyle}>{name}</div>}
-                secondaryText={(!ingredients.isEmpty() ? '+ingredients ' : '') + price + ',-'}
+                secondaryText={(!ingredients.isEmpty() ? '+ingredients ' : '') + price + price_text}
                 secondaryTextLines={1}
                 disabled={!editable}
                 rightIconButton={<IconButton onClick={this.removeItem} disableTouchRipple><Delete color={red500} /></IconButton>}

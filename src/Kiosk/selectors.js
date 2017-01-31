@@ -86,3 +86,5 @@ export const getTotalPriceOfLastCart = createSelector(
         }, 0)
     }
 )
+
+export const getStrings = (state) => state.strings

@@ -1,14 +1,15 @@
 import React from 'react'
 import Item from './Item.jsx'
 import { connect } from 'react-redux'
-import { addItemToCart, openIngredientModalForItem, toggleIngredientModal } from '../actions'
-import { getItemsByCategory } from '../selectors'
+import { addItemToCart, openIngredientModalForItem } from '../actions'
+import { getItemsByCategory, getStrings } from '../selectors'
 import { List } from 'immutable'
 
 class ItemList extends React.Component {
     static propTypes = {
         items: React.PropTypes.instanceOf(List),
-        onItemClick: React.PropTypes.func
+        onItemClick: React.PropTypes.func,
+        strings: React.PropTypes.object
     }
 
     onItemClick = (id) => {
@@ -17,7 +18,7 @@ class ItemList extends React.Component {
     }
 
     render () {
-        const { items } = this.props
+        const { items, strings } = this.props
 
         return (
             <div style={{height: '100%', paddingTop: '8px'}} className='col col-xs-7 col-sm-7 col-md-7 col-lg-7'>
@@ -26,7 +27,7 @@ class ItemList extends React.Component {
                         <Item
                             key={item.get('id')}
                             name={item.get('name')}
-                            price={item.get('price')}
+                            price={item.get('price') + ' ' + strings.price_text}
                             image={item.get('image') || require('../../images/planet.png')}
                             id={item.get('id')}
                             onClick={this.onItemClick}
@@ -40,7 +41,8 @@ class ItemList extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        items: getItemsByCategory(state)
+        items: getItemsByCategory(state),
+        strings: getStrings(state)
     }
 }
 

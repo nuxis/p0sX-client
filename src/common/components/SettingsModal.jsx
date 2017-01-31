@@ -1,66 +1,89 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import settings from '../settings'
-import * as selectors from '../../Kiosk/selectors'
-import axios from 'axios'
+import { getSettings, getStrings } from '../../Kiosk/selectors'
 import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings } from '../../Kiosk/actions'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
-import {red500} from 'material-ui/styles/colors'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 class SettingsModal extends React.Component {
     static propTypes = {
-        open: React.PropTypes.any,
         toggleOpen: React.PropTypes.any.isRequired,
         onSave: React.PropTypes.func,
-        server: React.PropTypes.string,
-        token: React.PropTypes.string,
-        name: React.PropTypes.string,
-        initial: React.PropTypes.bool
+        settings: React.PropTypes.object,
+        updateSettings: React.PropTypes.func,
+        initial: React.PropTypes.bool,
+        strings: React.PropTypes.object
+    }
+
+    componentWillMount = () => {
+        const {api_auth_token, server_address, language, name} = this.props.settings
+        this.setState({
+            api_auth_token,
+            server_address,
+            language,
+            name
+        })
     }
 
     onSave = () => {
         const { onSave, toggleOpen, initial } = this.props
-        onSave(initial)
+        onSave(this.state, initial)
         toggleOpen()
     }
 
-    render () {
-        const { open, toggleOpen, server, token, name } = this.props
+    handleLanguageChange = (event, index, value) => this.setState({language: value})
+    handleServerChange = (event, value) => this.setState({server_address: value})
+    handleTokenChange = (event, value) => this.setState({api_auth_token: value})
+    handleNameChange = (event, value) => this.setState({name: value})
 
+    render () {
+        const { toggleOpen, settings, strings } = this.props
+        const { api_auth_token, server_address, language, name } = this.state
         const actions = [
             <FlatButton
-                label='Cancel'
+                label={strings.cancel}
                 primary
                 onTouchTap={toggleOpen}
-                rippleColor={red500}
             />,
             <FlatButton
-                label='Save'
+                label={strings.save}
                 primary
                 onTouchTap={this.onSave}
             />
         ]
 
         return (
-            <Dialog actions={actions} modal onRequestClose={toggleOpen} open={open} title='Settings'>
+            <Dialog actions={actions} modal onRequestClose={toggleOpen} open={settings.open} title={strings.settings}>
+                <TextField
+                    id='name'
+                    floatingLabelText={strings.name}
+                    defaultValue={name}
+                    onChange={this.handleNameChange}
+                    fullWidth
+                /><br />
+                <SelectField
+                    floatingLabelText={strings.language}
+                    value={language}
+                    onChange={this.handleLanguageChange}
+                >
+                    <MenuItem value='en' primaryText='English' />
+                    <MenuItem value='no' primaryText='Norsk' />
+                </SelectField><br />
                 <TextField
                     id='server'
-                    floatingLabelText='Server'
-                    defaultValue={server}
+                    floatingLabelText={strings.server}
+                    defaultValue={server_address}
+                    onChange={this.handleServerChange}
                     fullWidth
                 /><br />
                 <TextField
                     id='token'
-                    floatingLabelText='Token'
-                    defaultValue={token}
-                    fullWidth
-                /><br />
-                <TextField
-                    id='name'
-                    floatingLabelText='Name'
-                    defaultValue={name}
+                    floatingLabelText={strings.token}
+                    defaultValue={api_auth_token}
+                    onChange={this.handleTokenChange}
                     fullWidth
                 />
             </Dialog>
@@ -70,35 +93,21 @@ class SettingsModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        initial: Object.getOwnPropertyNames(settings.get()).length === 0,
-        ...selectors.getSettings(state)
+        initial: Object.getOwnPropertyNames(getSettings(state)).length === 1,
+        settings: getSettings(state),
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSave: (initial) => {
-            const server = $('#server').val()
-            const token = $('#token').val()
-            const name = $('#name').val()
-            settings.set('name', name)
-            settings.set('server_address', server)
-            settings.set('api_auth_token', token)
-            // eslint-disable-next-line immutable/no-mutation
-            axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
-            // eslint-disable-next-line immutable/no-mutation
-            axios.defaults.baseURL = settings.get('server_address')
-            dispatch(updateSettings({
-                server: server,
-                token: token,
-                name: name
-            }))
+        onSave: (settings, initial) => {
+            dispatch(updateSettings(settings))
             if (initial) {
                 dispatch(getAllKioskData())
             }
         },
         openShiftModal: () => {
-            $('#settings-modal').closeModal()
             dispatch(openAndGetCurrentShift())
         },
         fetchData: () => {

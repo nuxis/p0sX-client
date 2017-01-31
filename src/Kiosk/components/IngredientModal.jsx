@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Map } from 'immutable'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
-import { getCurrentItem, getIngredientModalOpen } from '../selectors'
+import { getCurrentItem, getIngredientModalOpen, getStrings } from '../selectors'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
 import {List, ListItem} from 'material-ui/List'
+import Divider from 'material-ui/Divider'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
@@ -24,24 +25,16 @@ class IngredientCheckbox extends React.Component {
         const { onClick, ingredient } = this.props
         e.stopPropagation()
         onClick(ingredient)
-        console.log('clicked...')
     }
 
     render () {
         const { ingredient, checked } = this.props
 
-        const style = {
-            paddingTop: '8px',
-            paddingBottom: '8px',
-            paddingLeft: '50px'
-        }
-
         return (
             <ListItem
-                style={style}
                 onClick={this.click}
                 primaryText={ingredient.get('name') + ' ' + ingredient.get('price') + ',-'}
-                leftCheckbox={<Checkbox style={{top: '4px'}} onClick={IngredientCheckbox.noop} checked={checked} />}
+                leftCheckbox={<Checkbox onClick={IngredientCheckbox.noop} checked={checked} />}
             />
         )
     }
@@ -53,7 +46,8 @@ class IngredientModal extends React.Component {
         onClose: React.PropTypes.func,
         onIngredientClick: React.PropTypes.func,
         toggleOpen: React.PropTypes.any.isRequired,
-        open: React.PropTypes.any
+        open: React.PropTypes.any,
+        strings: React.PropTypes.object
     }
 
     close = () => {
@@ -62,11 +56,11 @@ class IngredientModal extends React.Component {
     }
 
     render () {
-        const { currentItem, onIngredientClick, open, toggleOpen } = this.props
+        const { currentItem, onIngredientClick, open, toggleOpen, strings } = this.props
 
         const editActions = [
             <FlatButton
-                label='save'
+                label={strings.save}
                 primary
                 onTouchTap={this.close}
             />
@@ -74,33 +68,39 @@ class IngredientModal extends React.Component {
 
         const addActions = [
             <FlatButton
-                label='Cancel'
+                label={strings.cancel}
                 primary
                 onTouchTap={toggleOpen}
             />,
             <FlatButton
-                label='Add to cart'
+                label={strings.add_to_cart}
                 primary
                 keyboardFocused
                 onTouchTap={this.close}
             />
         ]
 
+        const title = strings.select_ingredients + ' ' + currentItem.get('item').get('name')
+
         return (
-            <Dialog bodyStyle={{paddingBottom: '0px'}} autoScrollBodyContent actions={currentItem.get('edit') ? editActions : addActions} modal onRequestClose={toggleOpen} open={open} title={'Options for ' + currentItem.get('item').get('name')}>
+            <Dialog autoScrollBodyContent actions={currentItem.get('edit') ? editActions : addActions} modal onRequestClose={toggleOpen} open={open} title={title}>
                 <List>
                     {currentItem.get('item').get('ingredients').map(ingredient =>
-                        <IngredientCheckbox
-                            onClick={onIngredientClick}
-                            ingredient={ingredient}
-                            checked={currentItem.get('ingredients').includes(ingredient)}
-                            key={ingredient.get('id')}
-                        />
+                        [
+                            <Divider />,
+                            <IngredientCheckbox
+                                onClick={onIngredientClick}
+                                ingredient={ingredient}
+                                checked={currentItem.get('ingredients').includes(ingredient)}
+                                key={ingredient.get('id')}
+                            />
+                        ]
                     )}
+                    <Divider />
                 </List>
                 <TextField
                     id='item-message'
-                    hintText='Message'
+                    hintText={strings.message}
                     defaultValue={currentItem.get('message')}
                     fullWidth
                     inputStyle={{marginTop: '0px'}}
@@ -113,15 +113,16 @@ class IngredientModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         currentItem: getCurrentItem(state),
-        open: getIngredientModalOpen(state)
+        open: getIngredientModalOpen(state),
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onClose: (currentItem) => {
-            dispatch(addCurrentItemToCart(currentItem, $('#item-message').val()))
-            $('#item-message').val('')
+            const message = $('#item-message')
+            dispatch(addCurrentItemToCart(currentItem, message.val()))
         },
         onIngredientClick: (ingredient) => {
             dispatch(toggleIngredient(ingredient))

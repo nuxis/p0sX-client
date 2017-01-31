@@ -1,5 +1,7 @@
 import { List, Map } from 'immutable'
 import * as actions from './actions'
+import SettingsFile from '../common/settings'
+import axios from 'axios'
 
 // PURCHASE IN PROGRESS
 
@@ -121,9 +123,7 @@ export function categories (state = categoriesInit, action) {
 
 const settingsInit = {
     open: false,
-    server: '',
-    token: '',
-    name: ''
+    ...SettingsFile.get()
 }
 
 export function settings (state = settingsInit, action) {
@@ -134,11 +134,14 @@ export function settings (state = settingsInit, action) {
             open: !state.open
         }
     case actions.UPDATE_SETTINGS:
+        SettingsFile.setObject(action.settings)
+        // eslint-disable-next-line immutable/no-mutation
+        axios.defaults.headers.common['Authorization'] = `Token ${settings.api_auth_token}`
+        // eslint-disable-next-line immutable/no-mutation
+        axios.defaults.baseURL = settings.server_address
         return {
             ...state,
-            server: action.server,
-            token: action.token,
-            name: action.name
+            ...action.settings
         }
     default:
         return state

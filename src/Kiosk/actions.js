@@ -61,7 +61,7 @@ export const UPDATE_SETTINGS = 'UPDATE_SETTINGS'
 
 // Action creators
 export const toggleSettingsModal = () => action(TOGGLE_SETTINGS_MODAL, {})
-export const updateSettings = (settings) => action(UPDATE_SETTINGS, {...settings})
+export const updateSettings = (settings) => action(UPDATE_SETTINGS, {settings})
 
 export const addCurrentItemToCart = (currentItem, message) => action(ADD_CURRENT_ITEM_TO_CART, { currentItem, message })
 
