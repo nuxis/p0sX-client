@@ -1,19 +1,17 @@
 import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
-// import 'materialize-css'
 import axios from 'axios'
 import { fromJS } from 'immutable'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 // CSS
-// import 'material-design-icons-iconfont/dist/material-design-icons.css'
-// import 'materialize-css/bin/materialize.css'
 import 'font-awesome/css/font-awesome.min.css'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import './css/style.css'
 import 'flexboxgrid/dist/flexboxgrid.min.css'
+import 'react-notifications/lib/notifications.css'
 
 import { Provider } from 'react-redux'
 import Kiosk from './Kiosk/Kiosk'

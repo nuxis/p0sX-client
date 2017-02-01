@@ -1,10 +1,9 @@
 import React from 'react'
 import CartEntry from './CartEntry.jsx'
 import { connect } from 'react-redux'
-import { emptyCart, removeItemFromCart, editCartItem } from '../actions'
+import { emptyCart, removeItemFromCart, editCartItem, setPaymentModalOpen } from '../actions'
 import { getRenderedCart, getTotalPriceOfCart, getStrings } from '../selectors'
 import { List as ImmutableList } from 'immutable'
-import { open as openPaymentModal } from './PaymentModal'
 import {List} from 'material-ui/List'
 import RaisedButton from 'material-ui/RaisedButton'
 import Delete from 'material-ui/svg-icons/action/delete'
@@ -88,7 +87,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(editCartItem(itemIndex))
         },
         onPurchase: () => {
-            openPaymentModal()
+            dispatch(setPaymentModalOpen(true))
         }
     }
 }

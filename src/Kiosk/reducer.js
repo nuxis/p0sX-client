@@ -5,9 +5,9 @@ import axios from 'axios'
 
 // PURCHASE IN PROGRESS
 
-const inProgresInit = false
+const inProgressInit = false
 
-export function purchaseInProgress (state = inProgresInit, action) {
+export function purchaseInProgress (state = inProgressInit, action) {
     switch (action.type) {
     case actions.SET_PURCHASE_IN_PROGRESS:
         return action.value
@@ -21,13 +21,16 @@ export function purchaseInProgress (state = inProgresInit, action) {
 const creditInit = Map({
     used: 0,
     credit_limit: 0,
-    left: 0
+    left: 0,
+    modalOpen: false
 })
 
 export function creditCheck (state = creditInit, action) {
     switch (action.type) {
+    case actions.SET_CREDIT_MODAL_OPEN:
+        return state.set('modalOpen', action.open)
     case actions.SET_CREDIT:
-        return action.credit
+        return action.credit.set('modalOpen', state.get('modalOpen'))
     default:
         return state
     }
@@ -52,17 +55,21 @@ export function lastCart (state = cartInit, action) {
 
 const lastOrderInit = Map({
     lines: List(),
-    id: 0
+    id: 0,
+    open: false
 })
 
 export function lastOrder (state = lastOrderInit, action) {
     switch (action.type) {
+    case actions.SET_LAST_ORDER_MODAL_OPEN:
+        return state.set('open', action.open)
     case actions.SET_LAST_ORDER:
-        return action.cart
+        return action.cart.set('open', false)
     case actions.CLEAR_LAST_ORDER:
         return Map({
             lines: List(),
-            id: 0
+            id: 0,
+            open: false
         })
     default:
         return state
@@ -135,10 +142,15 @@ export function settings (state = settingsInit, action) {
         }
     case actions.UPDATE_SETTINGS:
         SettingsFile.setObject(action.settings)
-        // eslint-disable-next-line immutable/no-mutation
-        axios.defaults.headers.common['Authorization'] = `Token ${settings.api_auth_token}`
-        // eslint-disable-next-line immutable/no-mutation
-        axios.defaults.baseURL = settings.server_address
+        if (action.settings.api_auth_token) {
+            // eslint-disable-next-line immutable/no-mutation
+            axios.defaults.headers.common['Authorization'] = `Token ${action.settings.api_auth_token}`
+        }
+        if (action.settings.server_address) {
+            // eslint-disable-next-line immutable/no-mutation
+            axios.defaults.baseURL = action.settings.server_address
+        }
+
         return {
             ...state,
             ...action.settings
@@ -261,13 +273,19 @@ export function items (state = itemsInit, action) {
 // PAYMENT
 
 const paymentInit = new Map({
-    state: -1
+    stateIndex: 0,
+    paymentMethod: 0,
+    modalOpen: false
 })
 
 export function payment (state = paymentInit, action) {
     switch (action.type) {
+    case actions.SET_PAYMENT_MODAL_OPEN:
+        return state.set('modalOpen', action.open)
     case actions.SET_PAYMENT_STATE:
-        return state.set('state', action.state)
+        return state.set('stateIndex', action.state)
+    case actions.SET_PAYMENT_METHOD:
+        return state.set('paymentMethod', action.method)
     default:
         return state
     }
@@ -278,13 +296,15 @@ export function payment (state = paymentInit, action) {
 // CASHIER
 
 const cashierInit = new Map({
-    locked: true,
+    locked: false,
     card: '',
     name: ''
 })
 
 export function cashier (state = cashierInit, action) {
     switch (action.type) {
+    case actions.SET_LOCK_MODAL_OPEN:
+        return state.set('locked', action.open)
     case actions.CASHIER_CLEAR:
         return new Map({
             locked: true,
@@ -307,21 +327,24 @@ export function cashier (state = cashierInit, action) {
 // SHIFT
 
 const shiftInit = new Map({
-    'cash': 0,
-    'crew': 0,
-    'card': 0,
-    'vipps': 0,
-    'mcash': 0,
-    'mobilepay': 0,
-    'izettle': 0,
-    'undo': 0,
-    'start': '2016-01-01T00:00:00.000000Z'
+    cash: 0,
+    crew: 0,
+    card: 0,
+    vipps: 0,
+    mcash: 0,
+    mobilepay: 0,
+    izettle: 0,
+    undo: 0,
+    start: '2016-01-01T00:00:00.000000Z',
+    modalOpen: false
 })
 
 export function shift (state = shiftInit, action) {
     switch (action.type) {
+    case actions.SET_SHIFT_MODAL_OPEN:
+        return state.set('modalOpen', action.open)
     case actions.SET_CURRENT_SHIFT:
-        return action.shift
+        return action.shift.set('modalOpen', state.get('modalOpen'))
     default:
         return state
     }

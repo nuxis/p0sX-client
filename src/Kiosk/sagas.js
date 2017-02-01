@@ -5,7 +5,6 @@ import * as actions from './actions'
 import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { close as closeLockModal, open as openLockModal } from './components/LockModal'
 import { open as openShiftModal } from './components/ShiftModal'
 import { cashDraw } from '../common/receipt'
 import { kitchenReceipt, customerReceipt } from '../common/kitchen'
@@ -91,8 +90,8 @@ function * postPurchase (action) {
 
         if (options.total < 0) {
             NotificationManager.error('The cart has a negative total sum', '', 5000)
-            closePaymentModal()
-            yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPaymentModalOpen(false))
+            yield put(actions.setPaymentState(0))
             yield put(actions.setPurchaseInProgress(false))
             return
         }
@@ -104,8 +103,8 @@ function * postPurchase (action) {
                 return
             } else if (options.total > credit.get('left')) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
-                closePaymentModal()
-                yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+                yield put(actions.setPaymentModalOpen(false))
+                yield put(actions.setPaymentState(0))
                 yield put(actions.setPurchaseInProgress(false))
                 return
             }
@@ -115,11 +114,6 @@ function * postPurchase (action) {
         if (result) {
             yield put(actions.setLastOrder(result))
             yield put(actions.setLastCart(cart))
-            if (options.payment_method === api.PAYMENT_METHOD.CASH) {
-                NotificationManager.success(`Give ${options.amountReceived - options.total},- back`, 'Purchase complete', 9999999999999999)
-            } else {
-                NotificationManager.success('Purchase complete', '', 7000)
-            }
 
             var receiptItems = yield select(selectors.getRenderedCart)
             const receiptConfig = settings.get('receiptPrinter')
@@ -145,9 +139,8 @@ function * postPurchase (action) {
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 cashDraw(receiptConfig.type, receiptConfig.config)
             }
-            closePaymentModal()
             yield put(actions.emptyCart())
-            yield put(actions.setPaymentState(api.PAYMENT_METHOD.SELECT))
+            yield put(actions.setPaymentState(2))
             yield put(actions.setPurchaseInProgress(false))
         }
     } catch (error) {
@@ -231,7 +224,6 @@ function * cashierLogin (action) {
     try {
         const crew = yield call(api.getCrew, action.card)
         if (crew.size === 1) {
-            closeLockModal()
             yield put(actions.cashierSuccess(crew.get(0)))
         } else {
             NotificationManager.error('Login failed', 'Are you crew?!', 5000)
@@ -248,7 +240,6 @@ export function * watchCashierLogin () {
 
 function * cashierLogout () {
     try {
-        openLockModal()
         NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
         yield put(actions.cashierClear())
     } catch (error) {
@@ -265,7 +256,7 @@ function * openAndGetCurrentShift () {
         const currentShifts = yield call(api.getCurrentShift)
         if (currentShifts.size === 1) {
             const shift = currentShifts.get(0)
-            openShiftModal()
+            yield put(actions.setShiftModalOpen(true))
             yield put(actions.setCurrentShift(shift))
         } else if (currentShifts.size === 0) {
             const card = yield select(selectors.getLoggedInCashier)
@@ -300,7 +291,6 @@ export function * watchCreateNewShift () {
 
 function * editCartItem (action) {
     const item = yield select(selectors.getCartItemByIndex, action.itemIndex)
-    console.log(action, item)
     if (item.get('item').get('created_in_the_kitchen')) {
         yield put(actions.openIngredientModalForItem(item.get('item'), item.get('ingredients'), item.get('message'), true))
         yield put(actions.removeItemFromCart(action.itemIndex))

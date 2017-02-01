@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getSettings, getStrings } from '../../Kiosk/selectors'
-import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
@@ -34,19 +34,31 @@ class SettingsModal extends React.Component {
         toggleOpen()
     }
 
+    onClose = () => {
+        const {api_auth_token, server_address, language, name} = this.props.settings
+        this.setState({
+            api_auth_token,
+            server_address,
+            language,
+            name
+        })
+        this.props.toggleOpen()
+    }
+
     handleLanguageChange = (event, index, value) => this.setState({language: value})
     handleServerChange = (event, value) => this.setState({server_address: value})
     handleTokenChange = (event, value) => this.setState({api_auth_token: value})
     handleNameChange = (event, value) => this.setState({name: value})
 
     render () {
-        const { toggleOpen, settings, strings } = this.props
+        const { settings, strings, initial } = this.props
         const { api_auth_token, server_address, language, name } = this.state
         const actions = [
             <FlatButton
-                label={strings.cancel}
+                label={strings.close}
                 primary
-                onTouchTap={toggleOpen}
+                disabled={initial}
+                onTouchTap={this.onClose}
             />,
             <FlatButton
                 label={strings.save}
@@ -56,7 +68,7 @@ class SettingsModal extends React.Component {
         ]
 
         return (
-            <Dialog actions={actions} modal onRequestClose={toggleOpen} open={settings.open} title={strings.settings}>
+            <Dialog actions={actions} modal={initial} onRequestClose={this.onClose} open={settings.open} title={strings.settings}>
                 <TextField
                     id='name'
                     floatingLabelText={strings.name}
@@ -105,6 +117,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateSettings(settings))
             if (initial) {
                 dispatch(getAllKioskData())
+                dispatch(setLockModalOpen(true))
             }
         },
         openShiftModal: () => {
