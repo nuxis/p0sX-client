@@ -1,38 +1,46 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSearchString, addItemToCart, openIngredientModalForItem } from '../actions'
-import { getItemsByCategory } from '../selectors'
+import { getItemsByCategory, getSearch } from '../selectors'
 import TextField from 'material-ui/TextField'
-import SearchIcon from 'material-ui/svg-icons/action/search'
 
 class SearchBox extends React.Component {
     static propTypes = {
-        setSearchValue: React.PropTypes.func.isRequired,
-        shownItems: React.PropTypes.object.isRequired,
-        addItemToCart: React.PropTypes.func.isRequired
+        setSearchValue: React.PropTypes.func,
+        shownItems: React.PropTypes.object,
+        addItemToCart: React.PropTypes.func,
+        searchValue: React.PropTypes.string
     }
 
     render () {
+        const { searchValue } = this.props
+
         return (
             <TextField
-                hintText={<SearchIcon style={{width: '32px', height: '32px', opacity: '.5'}} />}
-                hintStyle={{bottom: '2px'}}
+                hintText='Search...'
                 onKeyUp={this.keyPress}
                 id='search'
+                ref='search'
                 underlineShow={false}
+                style={{backgroundColor: '#FFF'}}
+                value={searchValue}
+                onChange={this.onChange}
             />
         )
     }
 
+    onChange = (e) => {
+        const { setSearchValue } = this.props
+        setSearchValue(e.target.value)
+    }
+
     keyPress = (e) => {
         const { setSearchValue, shownItems, addItemToCart } = this.props
-        setSearchValue(e.target.value)
         if (e.keyCode === 13) {
             const items = shownItems
             if (items.size === 1) {
                 addItemToCart(items.get(0))
                 setSearchValue('')
-                $('#search').val('')
             }
         }
     }
@@ -40,7 +48,8 @@ class SearchBox extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        shownItems: getItemsByCategory(state)
+        shownItems: getItemsByCategory(state),
+        searchValue: getSearch(state)
     }
 }
 

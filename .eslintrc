@@ -1,33 +1,31 @@
 {
-    "plugins": [
-        "react",
-        "immutable"
-    ],
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "sourceType": "module",
-        "allowImportExportEverywhere": false,
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "extends": [
-        "standard",
-        "standard-jsx",
-        "standard-react"
-    ],
-    "rules": {
-        "indent": ["error", 4],
-        "camelcase": 2,
-        "immutable/no-let": 2,
-        "immutable/no-mutation": 2,
-
-        "jsx-quotes": [2, "prefer-single"],
-        "react/jsx-indent": [2, 4],
-        "react/jsx-indent-props": [2, 4]
-    },
-    "env": {
-        "jquery": true,
-        "browser": true
+  "plugins": [
+    "react",
+    "immutable"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "ecmaFeatures": {
+      "jsx": true
     }
+  },
+  "extends": [
+    "standard",
+    "standard-jsx",
+    "standard-react"
+  ],
+  "rules": {
+    "indent": ["error", 4],
+    "camelcase": 2,
+    "immutable/no-let": 2,
+    "immutable/no-mutation": 2,
+    "jsx-quotes": [2, "prefer-single"],
+    "react/jsx-indent": [2, 4],
+    "react/jsx-indent-props": [2, 4]
+  },
+  "env": {
+    "browser": true
+  }
 }

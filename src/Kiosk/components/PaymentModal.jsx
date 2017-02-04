@@ -173,7 +173,7 @@ class PaymentModal extends React.Component {
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
         if (parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
-        } else if (value.length > 0 && parseInt(value)) {
+        } else if (value.length > 0 && parseInt(value) >= total) {
             this.setState({total: total})
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
@@ -204,8 +204,6 @@ class PaymentModal extends React.Component {
             } else if (paymentMethod === PAYMENT_METHOD.CASH) {
                 setTimeout(() => this.refs.amount.focus(), 250)
             }
-        } else if (stateIndex === 2) {
-            setTimeout(() => this.onClose(), 10000)
         }
     }
 
@@ -246,8 +244,8 @@ class PaymentModal extends React.Component {
         ]
 
         return (
-            <Dialog open={paymentState.get('modalOpen')} actions={actions} title={strings.complete_order}>
-                <Stepper activeStep={paymentState.get('stateIndex')} linear={false}>
+            <Dialog open={paymentState.get('modalOpen')} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={strings.complete_order}>
+                <Stepper activeStep={stateIndex} linear={false}>
                     <Step>
                         <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>
                     </Step>

@@ -31,6 +31,7 @@ class PreviousOrderModal extends React.Component {
 
         if (e.keyCode === 13) {
             checkCredit(value)
+            // eslint-disable-next-line immutable/no-mutation
             this.refs.creditBadge.input.value = ''
         }
     }
@@ -85,15 +86,6 @@ const mapDispatchToProps = (dispatch) => {
         checkCredit: (badge) => dispatch(getCreditForCrew(badge)),
         closeModal: () => dispatch(setCreditModalOpen(false))
     }
-}
-
-export function open () {
-    $('#credit-check-modal').openModal()
-    $('#credit-badge').focus()
-}
-
-export function close () {
-    $('#credit-check-modal').closeModal()
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviousOrderModal)

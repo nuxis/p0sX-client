@@ -28,7 +28,7 @@ class ItemList extends React.Component {
                             key={item.get('id')}
                             name={item.get('name')}
                             price={item.get('price') + ' ' + strings.price_text}
-                            image={item.get('image') || require('../../images/planet.png')}
+                            image={item.get('image') || './images/planet.png'}
                             id={item.get('id')}
                             onClick={this.onItemClick}
                         />

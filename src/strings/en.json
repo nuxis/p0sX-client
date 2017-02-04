@@ -40,5 +40,16 @@
   "scan_badge_to_check_credit": "Scan badge to check credit",
   "manage_shifts": "Manage shifts",
   "new_shift": "New shift",
-  "started": "Started"
+  "started": "Started",
+  "general": "General",
+  "printing": "Printing",
+  "address": "Address",
+  "port": "Port",
+  "printer_type": "Printer type",
+  "baud_rate": "Baud rate",
+  "network": "Network",
+  "serial": "Serial",
+  "console": "Console (debug)",
+  "receipt_printer": "Receipt printer",
+  "kitchen_printer": "Kitchen printer"
 }

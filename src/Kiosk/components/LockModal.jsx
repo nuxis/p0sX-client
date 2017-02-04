@@ -17,12 +17,13 @@ class LockModal extends React.Component {
         if (e.keyCode === 13) {
             const card = this.refs.unlock.getValue()
             authenticateCrew(card)
+            // eslint-disable-next-line immutable/no-mutation
             this.refs.unlock.input.value = ''
         }
     }
 
     componentDidMount () {
-        if(this.props.open) {
+        if (this.props.open) {
             this.focusTextField()
         }
     }

@@ -65,6 +65,9 @@ export const SET_PURCHASE_IN_PROGRESS = 'SET_PURCHASE_IN_PROGRESS'
 export const TOGGLE_SETTINGS_MODAL = 'TOGGLE_SETTINGS_MODAL'
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS'
 
+export const DISPLAY_NOTIFICATION = 'DISPLAY_NOTIFICATION'
+export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION'
+
 // Action creators
 export const toggleSettingsModal = () => action(TOGGLE_SETTINGS_MODAL, {})
 export const updateSettings = (settings) => action(UPDATE_SETTINGS, {settings})
@@ -131,3 +134,6 @@ export const setShiftModalOpen = (open) => action(SET_SHIFT_MODAL_OPEN, {open})
 export const setLastCart = (cart) => action(SET_LAST_CART, { cart })
 
 export const setPurchaseInProgress = (value) => action(SET_PURCHASE_IN_PROGRESS, {value})
+
+export const displayNotification = (message, timeout = 3000) => action(DISPLAY_NOTIFICATION, {message, timeout})
+export const hideNotification = () => action(HIDE_NOTIFICATION, {})

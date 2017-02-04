@@ -44,6 +44,7 @@ class CartEntry extends React.Component {
                 onTouchTap={this.editItem}
                 leftAvatar={<Avatar src={image} />}
                 primaryText={<div style={textStyle}>{name}</div>}
+                // eslint-disable-next-line camelcase
                 secondaryText={(!ingredients.isEmpty() ? '+ingredients ' : '') + price + price_text}
                 secondaryTextLines={1}
                 disabled={!editable}

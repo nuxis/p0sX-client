@@ -5,9 +5,9 @@ import CreditCheckModal from './Kiosk/components/CreditCheckModal.jsx'
 import PreviousOrderModal from './Kiosk/components/PreviousOrderModal.jsx'
 import PaymentModal from './Kiosk/components/PaymentModal.jsx'
 import IngredientModal from './Kiosk/components/IngredientModal.jsx'
-import SearchBar from './Kiosk/components/SearchBox.jsx'
+import SearchBox from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
-import { getAllKioskData, cashierLogout, toggleSettingsModal, toggleIngredientModal, setLastOrderModalOpen, setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen } from './Kiosk/actions'
+import { getAllKioskData, cashierLogout, toggleSettingsModal, toggleIngredientModal, setLastOrderModalOpen, setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen, displayNotification, hideNotification } from './Kiosk/actions'
 import { loadStrings } from './actions'
 import LockModal from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
@@ -27,6 +27,7 @@ import ShiftIcon from 'material-ui/svg-icons/maps/local-atm'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+import Snackbar from 'material-ui/Snackbar'
 
 const Wrapper = React.createClass({
     propTypes: {
@@ -47,7 +48,10 @@ const Wrapper = React.createClass({
         openShiftModal: React.PropTypes.func.isRequired,
         loadStrings: React.PropTypes.func,
         strings: React.PropTypes.object,
-        language: React.PropTypes.string
+        language: React.PropTypes.string,
+        notification: React.PropTypes.object,
+        displayNotification: React.PropTypes.func,
+        hideNotification: React.PropTypes.func
     },
 
     componentDidUpdate: function (prevProps) {
@@ -69,7 +73,7 @@ const Wrapper = React.createClass({
         }
     },
     render: function () {
-        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings, openLastOrderModal, openCreditModal, openShiftModal} = this.props
+        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings, openLastOrderModal, openCreditModal, openShiftModal, hideNotification, notification} = this.props
 
         const style = {
             backgroundColor: cyan500
@@ -77,7 +81,8 @@ const Wrapper = React.createClass({
 
         const titleStyle = {
             color: white,
-            marginLeft: '10px'
+            marginLeft: '10px',
+            fontSize: '25px'
         }
 
         const buttonStyle = {
@@ -87,11 +92,11 @@ const Wrapper = React.createClass({
         }
 
         return (
-            <div>
+            <div style={{marginTop: '-19px'}}>
                 <Toolbar style={style}>
                     <ToolbarGroup firstChild>
                         <ToolbarTitle style={titleStyle} text='p0sX' />
-                        <SearchBar />
+                        <SearchBox />
                     </ToolbarGroup>
                     <ToolbarGroup lastChild>
                         <FlatButton style={buttonStyle} label={cashierName} disabled icon={<CashierIcon />} />
@@ -111,6 +116,14 @@ const Wrapper = React.createClass({
                 </Toolbar>
                 {children}
                 <NotificationContainer />
+                <Snackbar
+                    open={notification.open}
+                    message={notification.message}
+                    autoHideDuration={notification.timeout}
+                    onRequestClose={hideNotification}
+                    onActionTouchTap={hideNotification}
+                    action='hide'
+                />
                 <SettingsModal toggleOpen={toggleSettingsModal} />
                 <IngredientModal toggleOpen={toggleIngredientModal} />
                 <PreviousOrderModal />
@@ -129,6 +142,7 @@ const mapStateToProps = (state) => {
         language: selectors.getSettings(state).language,
         strings: selectors.getStrings(state),
         settingsEmpty: Object.getOwnPropertyNames(selectors.getSettings(state)).length === 1,
+        notification: selectors.getNotification(state),
         printReceipt: () => {
             // var receiptItems = selectors.getLastCart(state)
             // const total = selectors.getTotalPriceOfLastCart(state)
@@ -155,7 +169,9 @@ const mapDispatchToProps = (dispatch) => {
         openLastOrderModal: () => dispatch(setLastOrderModalOpen(true)),
         openCreditModal: () => dispatch(setCreditModalOpen(true)),
         openShiftModal: () => dispatch(openAndGetCurrentShift()),
-        openLockModal: () => dispatch(setLockModalOpen(true))
+        openLockModal: () => dispatch(setLockModalOpen(true)),
+        hideNotification: () => dispatch(hideNotification()),
+        displayNotification: (message, timeout) => dispatch(displayNotification(message, timeout))
     }
 }
 

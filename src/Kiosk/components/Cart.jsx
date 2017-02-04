@@ -22,7 +22,7 @@ class Cart extends React.Component {
 
     render () {
         const { items, onEmptyCart, onRemoveItem, onEditItem, onPurchase, total, strings } = this.props
-        const placeholderImage = require('../../images/planet.png')
+        // const placeholderImage = require('../../images/planet.png')
         return (
             <div style={{height: '100%'}} className='col col-xs-3 col-sm-3 col-md-3 col-lg-3'>
                 <div className='row' style={{overflowY: 'auto', height: 'calc(100% - 45px)', paddingTop: '8px'}}>
@@ -33,7 +33,7 @@ class Cart extends React.Component {
                                     key={index}
                                     price={entry.get('item').get('price')}
                                     name={entry.get('item').get('name')}
-                                    image={entry.get('item').get('image') || placeholderImage}
+                                    image={entry.get('item').get('image') || './images/planet.png'}
                                     ingredients={entry.get('ingredients')}
                                     index={(items.size - 1) - index}
                                     onRemoveItem={onRemoveItem}
@@ -53,12 +53,12 @@ class Cart extends React.Component {
                             label={strings.total + ' ' + total + strings.price_short}
                         />
                     </div>
-                    <div className='col-xs-4 xs-last'>
+                    <div className='col-xs-4'>
                         <RaisedButton disabled={items.isEmpty()}
                             onClick={onEmptyCart}
                             fullWidth
                             backgroundColor={red500}
-                            icon={<Delete color={white} />}
+                            icon={<Delete style={{marginTop: '6px'}} color={white} />}
                         />
                     </div>
                 </div>

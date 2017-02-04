@@ -3,6 +3,30 @@ import * as actions from './actions'
 import SettingsFile from '../common/settings'
 import axios from 'axios'
 
+// NOTFICATIONS
+
+const notificationInit = {
+    open: false,
+    message: '',
+    timeout: 3000
+}
+
+export function notifications (state = notificationInit, action) {
+    switch (action.type) {
+    case actions.DISPLAY_NOTIFICATION:
+        return {
+            ...state,
+            message: action.message,
+            open: true,
+            timeout: action.timeout
+        }
+    case actions.HIDE_NOTIFICATION:
+        return notificationInit
+    default:
+        return state
+    }
+}
+
 // PURCHASE IN PROGRESS
 
 const inProgressInit = false

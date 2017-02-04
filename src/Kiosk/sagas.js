@@ -2,10 +2,8 @@ import { call, put, take, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
-import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { open as openShiftModal } from './components/ShiftModal'
 import { cashDraw } from '../common/receipt'
 import { kitchenReceipt, customerReceipt } from '../common/kitchen'
 import settings from '../common/settings'
@@ -240,7 +238,7 @@ export function * watchCashierLogin () {
 
 function * cashierLogout () {
     try {
-        NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
+        NotificationManager.success('You are now logged out of the system', 'Logout successful', 5000)
         yield put(actions.cashierClear())
     } catch (error) {
         console.error(error)

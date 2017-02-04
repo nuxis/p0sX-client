@@ -52,7 +52,8 @@ class IngredientModal extends React.Component {
 
     close = () => {
         const { onClose, currentItem } = this.props
-        onClose(currentItem)
+        const message = this.refs.message.getValue()
+        onClose(currentItem, message)
     }
 
     render () {
@@ -100,6 +101,7 @@ class IngredientModal extends React.Component {
                 </List>
                 <TextField
                     id='item-message'
+                    ref='message'
                     hintText={strings.message}
                     defaultValue={currentItem.get('message')}
                     fullWidth
@@ -120,9 +122,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClose: (currentItem) => {
-            const message = $('#item-message')
-            dispatch(addCurrentItemToCart(currentItem, message.val()))
+        onClose: (currentItem, message) => {
+            dispatch(addCurrentItemToCart(currentItem, message))
         },
         onIngredientClick: (ingredient) => {
             dispatch(toggleIngredient(ingredient))

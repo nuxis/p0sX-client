@@ -33,5 +33,12 @@
   "scan_badge_to_check_credit": "Skann badge for å sjekke kreditt",
   "manage_shifts": "Skifthåndtering",
   "new_shift": "Nytt skift",
-  "started": "Startet"
+  "started": "Startet",
+  "general": "Generell",
+  "address": "Adresse",
+  "network": "Nettverk",
+  "serial": "Seriell",
+  "console": "Konsoll (debug)",
+  "receipt_printer": "Kviteringsskriver",
+  "kitchen_printer": "Kjøkkenskriver"
 }

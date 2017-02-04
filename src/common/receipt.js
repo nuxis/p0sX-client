@@ -1,73 +1,78 @@
-import escpos from 'escpos'
 import moment from 'moment'
+import { Printer } from 'escpos'
+import { Font, Justification, RasterMode, CodeTable } from 'escpos/dist/Commands'
+import { Network } from 'escpos/dist/adapters/Network'
+import Image from 'escpos/dist/Image'
+
+const padSize = 25
+
+async function print (adapter, config, companyInfo, cart, total, openDrawer) {
+    const device = getDevice(adapter, config)
+    const printer = await new Printer(device, 'CP865').open()
+    const taxItem = {
+        name: 'MVA',
+        price: '0',
+        note: 'fritatt'
+    }
+    const totalItem = {
+        name: 'Total',
+        price: total
+    }
+
+    printer.font(Font.A)
+        .setCodeTable(CodeTable.PC865)
+        .setJustification(Justification.Center)
+
+    if (companyInfo.image) {
+        const image = await Image.load(companyInfo.image)
+        printer.raster(image, RasterMode.Normal)
+    }
+
+    printer.writeLine(companyInfo.shopName)
+        .feed()
+        .setJustification(Justification.Left)
+        .writeLine(companyInfo.companyName)
+        .writeLine(companyInfo.companyAddress)
+        .writeLine(companyInfo.orgNr)
+        .writeLine('Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
+        .feed()
+        .writeList(cart.map(itemToString))
+        .feed()
+        .writeLine(itemToString(taxItem))
+        .setBold()
+        .setUnderline()
+        .writeLine(itemToString(totalItem))
+        .setBold(false)
+        .resetToDefault()
+        .feed(6)
+        .cut(true)
+
+    if (openDrawer) {
+        printer.cashDraw()
+    }
+
+    await printer.close()
+}
 
 function getDevice (adapter, config) {
     switch (adapter) {
     case 'Network':
-        return new escpos.Network(config.address, config.port)
-    case 'USB':
-        return new escpos.USB(config.vid, config.pid)
-    case 'Serial':
-        return new escpos.Serial(config.path, config.options)
-    case 'Console':
-        return new escpos.Console(config.handler)
+        return new Network(config.address, config.port)
     default:
         return undefined
     }
 }
 
-const print = (adapter, config, cart, id, total, openDrawer) => {
+async function cashDraw (adapter, config) {
     const device = getDevice(adapter, config)
-    const printer = new escpos.Printer(device)
-    escpos.Image.load(require('../images/receipt.png'), (img) => {
-        device.open(() => {
-            printer.font('b')
-                .size(1, 1)
-                .align('CT')
-                .image(img, 'd24')
-                .text('Polar Party 25: Get Cyberpunk\'d')
-                .feed(1)
-                .align('LT')
-                .text('  Polar Interesseorganisasjon')
-                .text('  Adresse: Kolstadgata 1 0652 Oslo')
-                .text('  Org nr: 986 255 486')
-                .text('  Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
-                .text('')
-            for (const entry of cart) {
-                printer.text(itemToString(entry))
-            }
-            printer
-                .feed(1)
-                .text('  MVA                      : 0,- (fritatt)')
-                .style('BU')
-                .text('  Total                    : ' + total + ',-')
-                .style('NORMAL')
-            if (openDrawer) {
-                printer.cashdraw()
-            }
-            printer.cut(true, 6)
-                .close()
-        })
-    })
-}
-
-const cashDraw = (adapter, config) => {
-    const device = getDevice(adapter, config)
-    const printer = new escpos.Printer(device)
-    device.open(() => {
-        printer.cashdraw()
-            .flush()
-            .close()
-    })
+    const printer = await new Printer(device).open()
+    await printer.openDrawer().close()
 }
 
 const itemToString = (item) => {
-    var outString = '  ' + item.name
-    while (outString.length < 27) {
-        outString = outString + ' '
-    }
-
-    return outString + ': ' + item.price + ',-'
+    const pad = new Array(padSize - item.name.length).join(' ')
+    const note = item.note ? ` (${item.note})` : ''
+    return `${item.name}${pad}: ${item.price},-${note}`
 }
 
 export default print
