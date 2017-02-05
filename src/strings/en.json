@@ -51,5 +51,10 @@
   "serial": "Serial",
   "console": "Console (debug)",
   "receipt_printer": "Receipt printer",
-  "kitchen_printer": "Kitchen printer"
+  "kitchen_printer": "Kitchen printer",
+  "image": "Image",
+  "header": "Header",
+  "organization_name": "Organization name",
+  "organization_address": "Organization address",
+  "organization_number": "Organization number"
 }

@@ -13,9 +13,8 @@ const createWindow = async () => {
         height: 768
     })
 
-    // and load the index.html of the app.
+    // and load the app.html of the app.
     mainWindow.loadURL(`file://${__dirname}/app.html`)
-
     // Open the DevTools.
     if (isDevMode) {
         await installExtension(REACT_DEVELOPER_TOOLS)
@@ -45,11 +44,11 @@ app.on('window-all-closed', () => {
     }
 })
 
-app.on('activate', () => {
+app.on('activate', async () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
-        createWindow()
+        await createWindow()
     }
 })
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getSettings, getStrings } from '../../Kiosk/selectors'
-import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
+import { getAllKioskData, openAndGetCurrentShift, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
@@ -21,14 +21,15 @@ class SettingsModal extends React.Component {
     }
 
     componentWillMount = () => {
-        const {api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter} = this.props.settings
+        const {api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt} = this.props.settings
         this.setState({
             api_auth_token,
             server_address,
-            language,
+            language: language || 'en',
             name,
             receiptPrinter: receiptPrinter || {},
-            kitchenPrinter: kitchenPrinter || {}
+            kitchenPrinter: kitchenPrinter || {},
+            receipt: receipt || {}
         })
     }
 
@@ -40,15 +41,28 @@ class SettingsModal extends React.Component {
 
     onClose = () => this.props.toggleOpen()
     handleLanguageChange = (event, index, value) => this.setState({language: value})
-    handleServerChange = (event, value) => this.setState({server_address: value})
-    handleTokenChange = (event, value) => this.setState({api_auth_token: value})
-    handleNameChange = (event, value) => this.setState({name: value})
+    handleReceiptSettingChange = (event) => {
+        this.setState({
+            receipt: {
+                ...this.state.receipt,
+                [event.target.id.substring(8)]: event.target.value
+            }
+        })
+    }
+    handleSettingChange = (event) => {
+        this.setState({
+            [event.target.id]: event.target.value
+        })
+    }
 
     handleReceiptPrinterConfigChange = (type, config) => {
         this.setState({
             receiptPrinter: {
                 type,
-                config
+                config: {
+                    ...this.state.receiptPrinter.config,
+                    ...config
+                }
             }
         })
     }
@@ -57,14 +71,17 @@ class SettingsModal extends React.Component {
         this.setState({
             kitchenPrinter: {
                 type,
-                config
+                config: {
+                    ...this.state.kitchenPrinter.config,
+                    ...config
+                }
             }
         })
     }
 
     render () {
         const { settings, strings, initial } = this.props
-        const { api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter } = this.state
+        const { api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt } = this.state
         const actions = [
             <FlatButton
                 label={strings.close}
@@ -87,7 +104,7 @@ class SettingsModal extends React.Component {
                             id='name'
                             floatingLabelText={strings.name}
                             defaultValue={name}
-                            onChange={this.handleNameChange}
+                            onChange={this.handleSettingChange}
                             fullWidth
                         /><br />
                         <SelectField
@@ -99,19 +116,19 @@ class SettingsModal extends React.Component {
                             <MenuItem value='no' primaryText='Norsk' />
                         </SelectField><br />
                         <TextField
-                            id='server'
+                            id='server_address'
                             floatingLabelText={strings.server}
                             // eslint-disable-next-line camelcase
                             defaultValue={server_address}
-                            onChange={this.handleServerChange}
+                            onChange={this.handleSettingChange}
                             fullWidth
                         /><br />
                         <TextField
-                            id='token'
+                            id='api_auth_token'
                             floatingLabelText={strings.token}
                             // eslint-disable-next-line camelcase
                             defaultValue={api_auth_token}
-                            onChange={this.handleTokenChange}
+                            onChange={this.handleSettingChange}
                             fullWidth
                         />
                     </Tab>
@@ -125,6 +142,43 @@ class SettingsModal extends React.Component {
                             </div>
                         </div>
                     </Tab>
+                    <Tab label={strings.receipt}>
+                        <TextField
+                            id='receipt-image'
+                            floatingLabelText={strings.image}
+                            defaultValue={receipt.image}
+                            onChange={this.handleReceiptSettingChange}
+                            fullWidth
+                        /><br />
+                        <TextField
+                            id='receipt-header'
+                            floatingLabelText={strings.header}
+                            defaultValue={receipt.header}
+                            onChange={this.handleReceiptSettingChange}
+                            fullWidth
+                        /><br />
+                        <TextField
+                            id='receipt-name'
+                            floatingLabelText={strings.organization_name}
+                            defaultValue={receipt.name}
+                            onChange={this.handleReceiptSettingChange}
+                            fullWidth
+                        /><br />
+                        <TextField
+                            id='receipt-address'
+                            floatingLabelText={strings.organization_address}
+                            defaultValue={receipt.address}
+                            onChange={this.handleReceiptSettingChange}
+                            fullWidth
+                        /><br />
+                        <TextField
+                            id='receipt-orgnr'
+                            floatingLabelText={strings.organization_number}
+                            defaultValue={receipt.orgnr}
+                            onChange={this.handleReceiptSettingChange}
+                            fullWidth
+                        />
+                    </Tab>
                 </Tabs>
             </Dialog>
         )
@@ -133,7 +187,7 @@ class SettingsModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        initial: Object.getOwnPropertyNames(getSettings(state)).length === 1,
+        initial: getSettings(state).server_address.length === 0,
         settings: getSettings(state),
         strings: getStrings(state)
     }
@@ -150,10 +204,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         openShiftModal: () => {
             dispatch(openAndGetCurrentShift())
-        },
-        fetchData: () => {
-            dispatch(getAllKioskData())
-            dispatch(emptyCart())
         }
     }
 }

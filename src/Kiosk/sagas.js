@@ -4,8 +4,7 @@ import * as api from '../common/api'
 import * as actions from './actions'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { cashDraw } from '../common/receipt'
-import { kitchenReceipt, customerReceipt } from '../common/kitchen'
+import { cashDraw, kitchenReceipt, customerOrderReceipt } from '../common/print'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -129,13 +128,13 @@ function * postPurchase (action) {
                 }).toJS()
 
                 // Print receipt for the customer
-                customerReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH)
+                customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
                 // Print separate notes for the kitchen
                 for (const entry of receiptItems) {
-                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id')).then(() => {})
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
-                cashDraw(receiptConfig.type, receiptConfig.config)
+                cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
             }
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(2))

@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createNewShift, setShiftModalOpen } from '../actions'
-import { getShift, getLoggedInCashier, getStrings } from '../selectors'
+import { getShift, getLoggedInCashier, getStrings, getSettings } from '../selectors'
 import { Map } from 'immutable'
-// import printShift from '../../common/print-shift'
-// import settings from '../../common/settings'
+import { printShift } from '../../common/print'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table'
@@ -15,15 +14,14 @@ class ShiftModal extends React.Component {
         dispatchCreateNewShift: React.PropTypes.func,
         card: React.PropTypes.string,
         closeModal: React.PropTypes.func,
-        strings: React.PropTypes.object
+        strings: React.PropTypes.object,
+        printShift: React.PropTypes.func
     }
 
     newShift = () => {
-        // const { shift } = this.props
-        // const printerSettings = settings.get('receiptPrinter')
-        // printShift(printerSettings.type, printerSettings.config, shift, settings.get('name'))
-        const {dispatchCreateNewShift, card} = this.props
+        const {dispatchCreateNewShift, card, printShift, shift} = this.props
         dispatchCreateNewShift({card: card})
+        printShift(shift)
     }
 
     render () {
@@ -72,7 +70,11 @@ const mapStateToProps = (state) => {
     return {
         shift: getShift(state),
         card: getLoggedInCashier(state).get('card'),
-        strings: getStrings(state)
+        strings: getStrings(state),
+        printShift: (shift) => {
+            const { receiptPrinter, name } = getSettings(state)
+            printShift(receiptPrinter.type, receiptPrinter.config, shift, name).then(() => {})
+        }
     }
 }
 

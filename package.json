@@ -12,13 +12,13 @@
   },
   "keywords": [],
   "author": {
-        "name" : "Nuxis",
-        "email" : "kradalby@kradalby.no"
+    "name": "Nuxis",
+    "email": "kradalby@kradalby.no"
   },
   "repository": {
-        "type": "git",
-        "url": "https://github.com/nuxis/p0sX-client.git"
-    },
+    "type": "git",
+    "url": "https://github.com/nuxis/p0sX-client.git"
+  },
   "license": "MIT",
   "build": {
     "appId": "org.nuxis.p0sX"
@@ -28,11 +28,21 @@
       "electronPackagerConfig": {
         "asar": true,
         "icon": "./build/icon.ico",
-        "ignore": [".idea", ".gitignore", ".eslintrc", ".github", ".webpack", ".vscode", "^/dist$"]
+        "ignore": [
+          ".idea",
+          ".gitignore",
+          ".eslintrc",
+          ".github",
+          ".webpack",
+          ".vscode",
+          "^/dist$"
+        ]
       }
     }
   },
   "devDependencies": {
+    "@types/electron": "^1.4.31",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
     "babel-plugin-transform-class-properties": "*",
     "babel-plugin-transform-object-rest-spread": "*",
@@ -54,7 +64,7 @@
     "electron-devtools-installer": "^2.1.0",
     "electron-react-devtools": "^0.4.0",
     "electron-settings": "^2.2.1",
-    "escpos": "git+https://github.com/haavardlian/escpos.git",
+    "escpos-print": "^1.0.3",
     "flexboxgrid": "^6.3.1",
     "font-awesome": "^4.6.3",
     "history": "^4.2.0",
@@ -72,7 +82,6 @@
     "redux": "^3.5.2",
     "redux-saga": "^0.11.0",
     "reselect": "^2.5.3",
-    "roboto-fontface": "^0.7.0",
-    "serialport": "*"
+    "roboto-fontface": "^0.7.0"
   }
 }

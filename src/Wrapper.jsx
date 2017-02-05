@@ -12,7 +12,7 @@ import { loadStrings } from './actions'
 import LockModal from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
 import * as selectors from './Kiosk/selectors'
-
+import { printReceipt } from './common/print'
 import {Toolbar, ToolbarTitle, ToolbarGroup} from 'material-ui/Toolbar'
 import {cyan500, white} from 'material-ui/styles/colors'
 import FlatButton from 'material-ui/FlatButton'
@@ -141,20 +141,19 @@ const mapStateToProps = (state) => {
         cashierName: selectors.getLoggedInCashier(state).get('name'),
         language: selectors.getSettings(state).language,
         strings: selectors.getStrings(state),
-        settingsEmpty: Object.getOwnPropertyNames(selectors.getSettings(state)).length === 1,
+        settingsEmpty: selectors.getSettings(state).server_address.length === 0,
         notification: selectors.getNotification(state),
         printReceipt: () => {
-            // var receiptItems = selectors.getLastCart(state)
-            // const total = selectors.getTotalPriceOfLastCart(state)
-            // const id = selectors.getLastOrder(state).get('id')
-            // receiptItems = receiptItems.map(entry => {
-            //     return {
-            //         name: entry.get('item').get('name'),
-            //         price: entry.get('item').get('price')
-            //     }
-            // }).toJS()
-            // const receiptConfig = settings.get('receiptPrinter')
-            // receipt(receiptConfig.type, receiptConfig.config, receiptItems, id, total)
+            const total = selectors.getTotalPriceOfLastCart(state)
+            const settings = selectors.getSettings(state)
+            const receiptItems = selectors.getLastCart(state).map(entry => {
+                return {
+                    name: entry.get('item').get('name'),
+                    price: entry.get('item').get('price')
+                }
+            }).toJS()
+            const {receiptPrinter, receipt} = settings
+            printReceipt(receiptPrinter.type, receiptPrinter.config, receipt, receiptItems, total, false).then(() => {})
         }
     }
 }
