@@ -20,16 +20,16 @@ class SettingsModal extends React.Component {
         strings: React.PropTypes.object
     }
 
-    componentWillMount = () => {
+    componentWillMount () {
         const {api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt} = this.props.settings
         this.setState({
             api_auth_token,
             server_address,
-            language: language || 'en',
+            language: language,
             name,
-            receiptPrinter: receiptPrinter || {},
-            kitchenPrinter: kitchenPrinter || {},
-            receipt: receipt || {}
+            receiptPrinter: receiptPrinter,
+            kitchenPrinter: kitchenPrinter,
+            receipt: receipt
         })
     }
 
@@ -55,24 +55,26 @@ class SettingsModal extends React.Component {
         })
     }
 
-    handleReceiptPrinterConfigChange = (type, config) => {
+    handleReceiptPrinterConfigChange = (type, config, clear = false) => {
+        const oldConfig = clear ? {} : {...this.state.receiptPrinter.config}
         this.setState({
             receiptPrinter: {
                 type,
                 config: {
-                    ...this.state.receiptPrinter.config,
+                    ...oldConfig,
                     ...config
                 }
             }
         })
     }
 
-    handleKitchenPrinterConfigChange = (type, config) => {
+    handleKitchenPrinterConfigChange = (type, config, clear = false) => {
+        const oldConfig = clear ? {} : {...this.state.kitchenPrinter.config}
         this.setState({
             kitchenPrinter: {
                 type,
                 config: {
-                    ...this.state.kitchenPrinter.config,
+                    ...oldConfig,
                     ...config
                 }
             }

@@ -6,7 +6,7 @@ import Cart from './components/Cart'
 const Kiosk = React.createClass({
     render: function () {
         return (
-            <div id='content' className='row pos-container' style={{height: 'calc(100% - 56px)'}}>
+            <div id='content' className='row pos-container'>
                 <CategoryList />
                 <ItemList />
                 <Cart />

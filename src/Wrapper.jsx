@@ -92,7 +92,7 @@ const Wrapper = React.createClass({
         }
 
         return (
-            <div style={{marginTop: '-19px'}}>
+            <div>
                 <Toolbar style={style}>
                     <ToolbarGroup firstChild>
                         <ToolbarTitle style={titleStyle} text='p0sX' />

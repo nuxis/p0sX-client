@@ -1,12 +1,12 @@
 import moment from 'moment'
 import Printer from 'escpos-print/Printer'
 import { Font, Justification, RasterMode, CodeTable, Underline, TextMode } from 'escpos-print/Commands'
-import { Network, Console } from 'escpos-print/Adapters'
+import { Network, Console, Serial } from 'escpos-print/Adapters'
 import Image from 'escpos-print/Image'
 
 const PAD_SIZE = 25
 // TODO: Make print functions sagas so they can be dispatched?
-export const printReceipt = async (adapter, config, companyInfo, cart, total, openDrawer) => {
+export const printReceipt = async (adapter, config, companyInfo, cart, total) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
     const taxItem = {
@@ -19,16 +19,16 @@ export const printReceipt = async (adapter, config, companyInfo, cart, total, op
         price: total
     }
 
-    printer.setFont(Font.A)
-        .setCodeTable(CodeTable.PC865)
-        .setJustification(Justification.Center)
-
     if (companyInfo.image && companyInfo.image.length > 0) {
         const image = await Image.load(companyInfo.image)
-        printer.raster(image, RasterMode.Normal)
+        printer.setJustification(Justification.Center)
+            .raster(image, RasterMode.Normal)
     }
 
-    printer.writeLine(companyInfo.header)
+    await printer.setJustification(Justification.Center)
+        .setFont(Font.A)
+        .setCodeTable(CodeTable.PC865)
+        .writeLine(companyInfo.header)
         .feed()
         .setJustification(Justification.Left)
         .writeLine(companyInfo.name)
@@ -45,12 +45,7 @@ export const printReceipt = async (adapter, config, companyInfo, cart, total, op
         .resetToDefault()
         .feed(5)
         .cut(true)
-
-    if (openDrawer) {
-        printer.openDrawer()
-    }
-
-    await printer.close()
+        .close()
 }
 
 export const kitchenReceipt = async (adapter, config, entry, id) => {
@@ -67,10 +62,13 @@ export const kitchenReceipt = async (adapter, config, entry, id) => {
         .writeLine('Dato: ' + moment(new Date()).format('DD.MM.YYYY HH:mm:ss'))
         .feed(1)
         .writeLine(entry.name)
-        .writeList(entry.ingredients.map(i => i.name))
+        .writeList(entry.ingredients.map(i => '  ' + i.name))
         .feed(1)
-        .writeLine(entry.message)
-        .feed(5)
+    if (entry.message.length > 0) {
+        printer.writeLine(entry.message)
+            .feed(1)
+    }
+    printer.feed(4)
         .cut(true)
         .close()
 }
@@ -90,16 +88,17 @@ export const customerOrderReceipt = async (adapter, config, entries, id, openDra
         .feed(1)
     entries.forEach(entry => {
         printer.writeLine(entry.name)
-        printer.writeList(entry.ingredients.map(i => '  ' + i.name))
+            .writeList(entry.ingredients.map(i => '  ' + i.name))
+            .feed(1)
         if (entry.message.length > 0) {
             printer.writeLine(entry.message)
+                .feed(1)
         }
-        printer.feed(1)
     })
     if (openDrawer) {
         printer.openDrawer()
     }
-    await printer.feed(5)
+    await printer.feed(4)
         .cut(true)
         .close()
 }
@@ -133,6 +132,8 @@ const getDevice = (adapter, config) => {
         return new Network(config.address, config.port)
     case 'Console':
         return new Console()
+    case 'Serial':
+        return new Serial(config.port, { baudRate: config.baud_rate })
     default:
         return undefined
     }

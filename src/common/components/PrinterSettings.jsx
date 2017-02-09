@@ -18,7 +18,8 @@ class PrinterSettings extends React.Component {
     }
 
     serialConfig = {
-        baud_rate: 9600
+        baud_rate: 9600,
+        port: ''
     }
 
     handlePrinterTypeChange = (event, index, value) => {
@@ -26,7 +27,7 @@ class PrinterSettings extends React.Component {
         if (value === 'Network') config = {...this.networkConfig}
         if (value === 'Serial') config = {...this.serialConfig}
 
-        this.props.updateSettings(value, config)
+        this.props.updateSettings(value, config, true)
     }
 
     handlePrinterConfigChange = (settings) => this.props.updateSettings(this.props.printer.type, settings)

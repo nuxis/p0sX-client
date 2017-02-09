@@ -7,6 +7,7 @@ import { printShift } from '../../common/print'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table'
+import moment from 'moment'
 
 class ShiftModal extends React.Component {
     static propTypes = {
@@ -48,7 +49,7 @@ class ShiftModal extends React.Component {
                 open={shift.get('modalOpen')}
                 onRequestClose={closeModal}
             >
-                <h4>{strings.started}: {new Date(shift.get('start')).toString()}</h4>
+                <h4>{strings.started}: {moment(new Date(shift.get('start'))).format('DD.MM.YYYY HH:mm:ss')}</h4>
                 <Table>
                     <TableBody displayRowCheckbox={false} showRowHover={false} >
                         <TableRow selectable={false}>

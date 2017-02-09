@@ -17,10 +17,6 @@ class IngredientCheckbox extends React.Component {
         onClick: React.PropTypes.func.isRequired
     }
 
-    static noop (e) {
-        e.stopPropagation()
-    }
-
     click = (e) => {
         const { onClick, ingredient } = this.props
         e.stopPropagation()
@@ -32,9 +28,8 @@ class IngredientCheckbox extends React.Component {
 
         return (
             <ListItem
-                onClick={this.click}
                 primaryText={ingredient.get('name') + ' ' + ingredient.get('price') + ',-'}
-                leftCheckbox={<Checkbox onClick={IngredientCheckbox.noop} checked={checked} />}
+                leftCheckbox={<Checkbox onClick={this.click} checked={checked} />}
             />
         )
     }
