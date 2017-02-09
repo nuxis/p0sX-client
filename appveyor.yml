@@ -1,0 +1,12 @@
+version: 0.0.{build}
+image: Visual Studio 2013
+platform:
+  - x64
+environment:
+  nodejs_version: "7"
+install:
+  - ps: Install-Product node $env:nodejs_version x64
+  - npm install -g electron-forge
+  - npm install -g electron-builder
+  - npm install
+build_script: npm run dist:win64

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "dist:win64": "npm run package && build --win --x64 --pd ./out/p0sX-win32-x64",
+    "dist:win64": "npm run package --arch=x64 && build --win --x64 --pd ./out/p0sX-win32-x64",
     "lint": "eslint --ext .js --ext .jsx src"
   },
   "keywords": [],
