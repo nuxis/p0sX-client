@@ -1,53 +1,19 @@
-build:
-    bundle:
-        image: kradalby/ci-node-electron:latest
-        pull: true
-        commands:
-          - gem update fpm
-          - npm set progress=false
-          - npm prune
-          - npm install
-          - npm install 7zip-bin-linux
-          - cd app && npm install && cd ..
-          - npm run lint
-          - npm run build
-          # - npm run dist:darwin
-          - npm run dist:win32
-          - npm run dist:linux
-        when:
-            branch: master
-    builder:
-        image: kradalby/ci-node-electron:latest
-        pull: true
-        commands:
-          - npm set progress=false
-          - npm install
-          - npm run lint
-          - npm run build
-        when:
-            branch: "!master"
 
-cache:
-    mount:
-        - node_modules
-notify:
-    slack:
-        webhook_url: https://hooks.slack.com/services/T03UG586F/$$SLACK_TOKEN_1/$$SLACK_TOKEN_2
+pipeline:
+    pack:
+        image: node:latest
+        pull: true
+        commands:
+            - npm install -g electron-forge
+            - npm install -g electron-builder
+            - npm install
+            - npm run lint
+            - electron-forge package
+        when:
+            event: [push, pull_request, deployment]
+
+    notify:
+        image: plugins/slack
         channel: teknisk-dev
         username: drone
-        when:
-            branch: master
-
-deploy:
-  rsync:
-    user: www
-    host: seel.fap.no
-    port: 22
-    source: dist/
-    target: /usr/local/www/p0sx.kradalby.no/
-    delete: true
-    recursive: true
-    when:
-        branch: master
-    commands:
-      - echo "Done"
+        event: [push, pull_request, deployment, tag]
