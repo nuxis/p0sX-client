@@ -6,6 +6,7 @@ import Image from 'escpos-print/Image'
 
 const PAD_SIZE = 25
 // TODO: Make print functions sagas so they can be dispatched?
+//       And have access to store for strings.
 export const printReceipt = async (adapter, config, companyInfo, cart, total) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
@@ -131,7 +132,7 @@ const getDevice = (adapter, config) => {
     case 'Network':
         return new Network(config.address, config.port)
     case 'Console':
-        return new Console()
+        return new Console(console.log, 32)
     case 'Serial':
         return new Serial(config.port, { baudRate: config.baud_rate })
     default:

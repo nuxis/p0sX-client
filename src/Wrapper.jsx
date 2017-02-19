@@ -7,7 +7,8 @@ import PaymentModal from './Kiosk/components/PaymentModal.jsx'
 import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBox from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
-import { getAllKioskData, cashierLogout, toggleSettingsModal, toggleIngredientModal, setLastOrderModalOpen, setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen, displayNotification, hideNotification } from './Kiosk/actions'
+import { getAllKioskData, cashierLogout, toggleSettingsModal, toggleIngredientModal, setLastOrderModalOpen,
+    setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen, displayNotification, hideNotification } from './Kiosk/actions'
 import { loadStrings } from './actions'
 import LockModal from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
@@ -73,7 +74,8 @@ const Wrapper = React.createClass({
         }
     },
     render: function () {
-        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings, openLastOrderModal, openCreditModal, openShiftModal, hideNotification, notification} = this.props
+        const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings,
+            openLastOrderModal, openCreditModal, openShiftModal, hideNotification, notification} = this.props
 
         const style = {
             backgroundColor: cyan500
