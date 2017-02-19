@@ -8,6 +8,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "dist:win64": "npm run package --arch=x64 && build --win --x64 --pd ./out/p0sX-win32-x64",
+    "dist:linux64": "electron-forge make",
     "lint": "eslint --ext .js --ext .jsx src"
   },
   "keywords": [],

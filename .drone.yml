@@ -12,6 +12,18 @@ pipeline:
         when:
             event: [push, pull_request, deployment]
 
+    pack:
+        image: node:latest
+        pull: true
+        commands:
+            - npm install -q -g electron-forge
+            - npm install -q -g electron-builder
+            - npm install -q
+            - npm run lint -q
+            - npm run dist:linux64
+        when:
+            event: tag
+
     notify:
         image: plugins/slack
         channel: teknisk-dev
