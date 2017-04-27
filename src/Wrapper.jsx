@@ -51,7 +51,6 @@ class Wrapper extends React.Component {
         strings: React.PropTypes.object,
         language: React.PropTypes.string,
         notification: React.PropTypes.object,
-        displayNotification: React.PropTypes.func,
         hideNotification: React.PropTypes.func
     }
 

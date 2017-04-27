@@ -15,7 +15,6 @@ class SettingsModal extends React.Component {
         toggleOpen: React.PropTypes.any.isRequired,
         onSave: React.PropTypes.func,
         settings: React.PropTypes.object,
-        updateSettings: React.PropTypes.func,
         initial: React.PropTypes.bool,
         strings: React.PropTypes.object
     }
