@@ -55,6 +55,8 @@ export function creditCheck (state = creditInit, action) {
         return state.set('modalOpen', action.open)
     case actions.SET_CREDIT:
         return action.credit.set('modalOpen', state.get('modalOpen'))
+    case actions.CLEAR_CREDIT_INFO:
+        return creditInit.set('modalOpen', state.get('modalOpen'))
     default:
         return state
     }

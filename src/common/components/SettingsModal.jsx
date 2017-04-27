@@ -4,6 +4,7 @@ import { getSettings, getStrings } from '../../Kiosk/selectors'
 import { getAllKioskData, openAndGetCurrentShift, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
@@ -16,7 +17,8 @@ class SettingsModal extends React.Component {
         onSave: React.PropTypes.func,
         settings: React.PropTypes.object,
         initial: React.PropTypes.bool,
-        strings: React.PropTypes.object
+        strings: React.PropTypes.object,
+        refreshData: React.PropTypes.func
     }
 
     componentWillMount () {
@@ -81,7 +83,7 @@ class SettingsModal extends React.Component {
     }
 
     render () {
-        const { settings, strings, initial } = this.props
+        const { settings, strings, initial, refreshData } = this.props
         const { api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt } = this.state
         const actions = [
             <FlatButton
@@ -131,7 +133,8 @@ class SettingsModal extends React.Component {
                             defaultValue={api_auth_token}
                             onChange={this.handleSettingChange}
                             fullWidth
-                        />
+                        /><br /><br />
+                        <RaisedButton label='Refresh data' onClick={refreshData} primary />
                     </Tab>
                     <Tab label={strings.printing}>
                         <div className='row'>
@@ -205,7 +208,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         openShiftModal: () => {
             dispatch(openAndGetCurrentShift())
-        }
+        },
+        refreshData: () => dispatch(getAllKioskData())
     }
 }
 

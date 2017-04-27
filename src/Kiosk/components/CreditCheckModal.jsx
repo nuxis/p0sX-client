@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCreditForCrew, setCreditModalOpen } from '../actions'
+import { getCreditForCrew, setCreditModalOpen, clearCreditInfo } from '../actions'
 import { getStrings } from '../selectors'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
@@ -85,7 +85,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         checkCredit: (badge) => dispatch(getCreditForCrew(badge)),
-        closeModal: () => dispatch(setCreditModalOpen(false))
+        closeModal: () => {
+            dispatch(clearCreditInfo())
+            dispatch(setCreditModalOpen(false))
+        }
     }
 }
 

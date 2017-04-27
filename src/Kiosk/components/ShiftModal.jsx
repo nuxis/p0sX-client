@@ -15,14 +15,14 @@ class ShiftModal extends React.Component {
         dispatchCreateNewShift: React.PropTypes.func,
         card: React.PropTypes.string,
         closeModal: React.PropTypes.func,
-        strings: React.PropTypes.object,
-        printShift: React.PropTypes.func
+        strings: React.PropTypes.object
     }
 
     newShift = () => {
-        const {dispatchCreateNewShift, card, printShift, shift} = this.props
-        dispatchCreateNewShift({card: card})
-        printShift(shift)
+        const {dispatchCreateNewShift, card, strings} = this.props
+        if (confirm(strings.confirm_new_shift)) {
+            dispatchCreateNewShift({card: card})
+        }
     }
 
     render () {
@@ -71,21 +71,13 @@ const mapStateToProps = (state) => {
     return {
         shift: getShift(state),
         card: getLoggedInCashier(state).get('card'),
-        strings: getStrings(state),
-        printShift: (shift) => {
-            const { receiptPrinter, name } = getSettings(state)
-            printShift(receiptPrinter.type, receiptPrinter.config, shift, name).then(() => {})
-        }
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        dispatchCreateNewShift: (payload) => {
-            if (confirm('Are you sure you want to create a new shift?')) {
-                dispatch(createNewShift(payload))
-            }
-        },
+        dispatchCreateNewShift: (payload) => dispatch(createNewShift(payload)),
         closeModal: () => dispatch(setShiftModalOpen(false))
     }
 }

@@ -55,5 +55,6 @@
   "header": "Header",
   "organization_name": "Organization name",
   "organization_address": "Organization address",
-  "organization_number": "Organization number"
+  "organization_number": "Organization number",
+  "confirm_new_shift": "Are you sure you want to create a new shift?"
 }

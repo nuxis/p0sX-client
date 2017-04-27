@@ -102,7 +102,8 @@ class Wrapper extends React.Component {
                     </ToolbarGroup>
                     <ToolbarGroup lastChild>
                         <FlatButton style={buttonStyle} label={cashierName} disabled icon={<CashierIcon />} />
-                        <IconButton tooltip={strings.settings} iconStyle={buttonStyle} onClick={toggleSettingsModal} ><SettingsIcon /></IconButton>
+                        <IconButton tooltip={strings.receipt} iconStyle={buttonStyle} onClick={printReceipt} ><ReceiptIcon /></IconButton>
+                        <IconButton tooltip={strings.credit_check} iconStyle={buttonStyle} onClick={openCreditModal} ><CreditIcon /></IconButton>
                         <IconButton tooltip={strings.logout} iconStyle={buttonStyle} onClick={logout} ><LogoutIcon /></IconButton>
                         <IconMenu
                             iconButtonElement={<IconButton iconStyle={buttonStyle}><MoreVertIcon /></IconButton>}
@@ -110,9 +111,8 @@ class Wrapper extends React.Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                         >
                             <MenuItem leftIcon={<LastIcon />} onClick={openLastOrderModal} primaryText={strings.previous_order} />
-                            <MenuItem leftIcon={<CreditIcon />} onClick={openCreditModal} primaryText={strings.credit_check} />
-                            <MenuItem leftIcon={<ReceiptIcon />} onClick={printReceipt} primaryText={strings.receipt} />
                             <MenuItem leftIcon={<ShiftIcon />} onClick={openShiftModal} primaryText={strings.manage_shifts} />
+                            <MenuItem leftIcon={<SettingsIcon />} onClick={toggleSettingsModal} primaryText={strings.settings} />
                         </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>

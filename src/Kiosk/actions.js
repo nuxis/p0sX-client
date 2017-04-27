@@ -48,6 +48,7 @@ export const SET_LAST_CART = 'SET_LAST_CART'
 export const GET_CREDIT_FOR_CREW = 'GET_CREDIT_FOR_CREW'
 export const SET_CREDIT = 'SET_CREDIT'
 export const SET_CREDIT_MODAL_OPEN = 'SET_CREDIT_MODAL_OPEN'
+export const CLEAR_CREDIT_INFO = 'CLEAR_CREDIT_INFO'
 
 export const CASHIER_LOGIN = 'CASHIER_LOGIN'
 export const CASHIER_LOGOUT = 'CASHIER_LOGOUT'
@@ -119,6 +120,7 @@ export const undoOrder = () => action(UNDO_ORDER, {})
 export const getCreditForCrew = (badge) => action(GET_CREDIT_FOR_CREW, {badge})
 export const setCredit = (credit) => action(SET_CREDIT, {credit})
 export const setCreditModalOpen = (open) => action(SET_CREDIT_MODAL_OPEN, {open})
+export const clearCreditInfo = () => action(CLEAR_CREDIT_INFO)
 
 export const cashierLogin = (card) => action(CASHIER_LOGIN, { card })
 export const cashierLogout = () => action(CASHIER_LOGOUT, {})

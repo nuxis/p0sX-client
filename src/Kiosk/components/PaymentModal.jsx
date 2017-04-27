@@ -61,21 +61,25 @@ class PaymentModal extends React.Component {
         return (
             <div className='row'>
                 <div className='col-xs-6'>
-                    <div className='bill-pad col-xs-12'>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>5</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>10</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>20</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>50</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>100</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>200</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>500</div>
-                        <div onClick={this.billClick} className='col-xs-4 bill'>1000</div>
+                    <div className='row' style={{height: '266px'}}>
+                        <div className='bill-pad col-xs-12'>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>5</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>10</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>20</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>50</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>100</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>200</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>500</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>1000</div>
+                        </div>
                     </div>
-                    <div className='col-xs-12'>
-                        <TextField ref='amount' id='amount' type='number' fullWidth value={this.state.amount} onChange={this.handleAmountChange} onKeyUp={this.onEnter} hintText={strings.amount_received} />
-                    </div>
-                    <div className='col-xs-12 last-xs'>
-                        <RaisedButton onClick={this.purchaseCash} primary label={strings.purchase} disabled={purchaseInProgress} />
+                    <div className='row'>
+                        <div className='col-xs-12'>
+                            <TextField ref='amount' id='amount' type='number' fullWidth value={this.state.amount} onChange={this.handleAmountChange} onKeyUp={this.onEnter} hintText={strings.amount_received} />
+                        </div>
+                        <div className='col-xs-12'>
+                            <RaisedButton onClick={this.purchaseCash} primary label={strings.purchase} disabled={purchaseInProgress} />
+                        </div>
                     </div>
                 </div>
                 <div className='numpad col-xs-6'>

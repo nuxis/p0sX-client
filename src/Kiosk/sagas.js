@@ -4,7 +4,7 @@ import * as api from '../common/api'
 import * as actions from './actions'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { cashDraw, kitchenReceipt, customerOrderReceipt } from '../common/print'
+import { cashDraw, kitchenReceipt, customerOrderReceipt, printShift } from '../common/print'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -275,6 +275,10 @@ function * createNewShift (action) {
         const create = yield call(api.createShift, action.card)
         if (create) {
             NotificationManager.success('New shift successfully created!', '', 5000)
+            const shift = yield select(selectors.getShift)
+            const receiptConfig = settings.get('receiptPrinter')
+            const name = settings.get('name')
+            yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
             yield put(actions.openAndGetCurrentShift())
         }
     } catch (error) {

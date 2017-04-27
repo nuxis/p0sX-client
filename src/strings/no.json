@@ -38,5 +38,6 @@
   "serial": "Seriell",
   "console": "Konsoll (debug)",
   "receipt_printer": "Kviteringsskriver",
-  "kitchen_printer": "Kjøkkenskriver"
+  "kitchen_printer": "Kjøkkenskriver",
+  "confirm_new_shift": "Er du sikker på at du vil starte et nytt skift?"
 }
