@@ -1,97 +1,126 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import settings from '../settings'
-import axios from 'axios'
-import { getAllKioskData, openAndGetCurrentShift, emptyCart } from '../../Kiosk/actions'
+import { getSettings, getStrings } from '../../Kiosk/selectors'
+import { getAllKioskData, openAndGetCurrentShift, emptyCart, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 class SettingsModal extends React.Component {
     static propTypes = {
-        onSave: React.PropTypes.func.isRequired,
-        initial: React.PropTypes.bool.isRequired,
-        openShiftModal: React.PropTypes.func.isRequired,
-        fetchData: React.PropTypes.func.isRequired
+        toggleOpen: React.PropTypes.any.isRequired,
+        onSave: React.PropTypes.func,
+        settings: React.PropTypes.object,
+        updateSettings: React.PropTypes.func,
+        initial: React.PropTypes.bool,
+        strings: React.PropTypes.object
     }
 
-    onClick = () => {
-        const { onSave, initial } = this.props
-        onSave(initial)
+    componentWillMount = () => {
+        const {api_auth_token, server_address, language, name} = this.props.settings
+        this.setState({
+            api_auth_token,
+            server_address,
+            language,
+            name
+        })
     }
+
+    onSave = () => {
+        const { onSave, toggleOpen, initial } = this.props
+        onSave(this.state, initial)
+        toggleOpen()
+    }
+
+    onClose = () => {
+        const {api_auth_token, server_address, language, name} = this.props.settings
+        this.setState({
+            api_auth_token,
+            server_address,
+            language,
+            name
+        })
+        this.props.toggleOpen()
+    }
+
+    handleLanguageChange = (event, index, value) => this.setState({language: value})
+    handleServerChange = (event, value) => this.setState({server_address: value})
+    handleTokenChange = (event, value) => this.setState({api_auth_token: value})
+    handleNameChange = (event, value) => this.setState({name: value})
 
     render () {
-        const { openShiftModal, fetchData } = this.props
+        const { settings, strings, initial } = this.props
+        const { api_auth_token, server_address, language, name } = this.state
+        const actions = [
+            <FlatButton
+                label={strings.close}
+                primary
+                disabled={initial}
+                onTouchTap={this.onClose}
+            />,
+            <FlatButton
+                label={strings.save}
+                primary
+                onTouchTap={this.onSave}
+            />
+        ]
+
         return (
-            <div id='settings-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4>Change settings</h4>
-                    <ul className='collapsible' data-collapsible='accordion'>
-                        <li className='active'>
-                            <div className='collapsible-header active'><i className='material-icons'>list</i>General</div>
-                            <div className='collapsible-body'>
-                                <div className='row'>
-                                    <div className='input-field col s12'>
-                                        <a onClick={openShiftModal} className='waves-effect waves-light btn'>Shift info</a>
-                                        &nbsp;
-                                        <a onClick={fetchData} className='waves-effect waves-light btn'>Update data</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className='collapsible-header red-text'><i className='material-icons black-text'>vpn_key</i>Here be dragons</div>
-                            <div className='collapsible-body'>
-                                <div className='row'>
-                                    <div className='input-field col s12'>
-                                        <input id='name' type='text' className='validate' />
-                                        <label className='active' htmlFor='name'>Name</label>
-                                    </div>
-                                    <div className='input-field col s12'>
-                                        <input id='server' type='url' className='validate' />
-                                        <label className='active' htmlFor='server'>Server</label>
-                                    </div>
-                                    <div className='input-field col s12'>
-                                        <input id='token' type='text' className='validate' />
-                                        <label className='active' htmlFor='token'>Token</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div className='modal-footer'>
-                    <a href='#!' onClick={this.onClick} className='modal-action modal-close waves-effect waves-green btn-flat'>Save</a>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Cancel</a>
-                </div>
-            </div>
+            <Dialog actions={actions} modal={initial} onRequestClose={this.onClose} open={settings.open} title={strings.settings}>
+                <TextField
+                    id='name'
+                    floatingLabelText={strings.name}
+                    defaultValue={name}
+                    onChange={this.handleNameChange}
+                    fullWidth
+                /><br />
+                <SelectField
+                    floatingLabelText={strings.language}
+                    value={language}
+                    onChange={this.handleLanguageChange}
+                >
+                    <MenuItem value='en' primaryText='English' />
+                    <MenuItem value='no' primaryText='Norsk' />
+                </SelectField><br />
+                <TextField
+                    id='server'
+                    floatingLabelText={strings.server}
+                    defaultValue={server_address}
+                    onChange={this.handleServerChange}
+                    fullWidth
+                /><br />
+                <TextField
+                    id='token'
+                    floatingLabelText={strings.token}
+                    defaultValue={api_auth_token}
+                    onChange={this.handleTokenChange}
+                    fullWidth
+                />
+            </Dialog>
         )
     }
 }
 
-const mapStateToProps = () => {
-    var allSettings = settings.get()
+const mapStateToProps = (state) => {
     return {
-        initial: Object.getOwnPropertyNames(allSettings).length === 0
+        initial: Object.getOwnPropertyNames(getSettings(state)).length === 1,
+        settings: getSettings(state),
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSave: (initial) => {
-            var server = $('#server').val()
-            var token = $('#token').val()
-            var name = $('#name').val()
-            settings.set('name', name)
-            settings.set('server_address', server)
-            settings.set('api_auth_token', token)
-            // eslint-disable-next-line immutable/no-mutation
-            axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
-            // eslint-disable-next-line immutable/no-mutation
-            axios.defaults.baseURL = settings.get('server_address')
+        onSave: (settings, initial) => {
+            dispatch(updateSettings(settings))
             if (initial) {
                 dispatch(getAllKioskData())
+                dispatch(setLockModalOpen(true))
             }
         },
         openShiftModal: () => {
-            $('#settings-modal').closeModal()
             dispatch(openAndGetCurrentShift())
         },
         fetchData: () => {
@@ -101,22 +130,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const open = () => {
-    if (Object.getOwnPropertyNames(settings.get()).length !== 0) {
-        $('#server').val(settings.get('server_address'))
-        $('#token').val(settings.get('api_auth_token'))
-        $('#name').val(settings.get('name'))
-        // eslint-disable-next-line no-undef
-        Materialize.updateTextFields()
-    }
-    $('#settings-modal').openModal()
-}
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(SettingsModal)
-
-export {
-    open
-}

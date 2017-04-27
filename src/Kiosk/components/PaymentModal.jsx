@@ -1,124 +1,141 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setPaymentState, postPurchase, applyDiscounts, removeDiscounts } from '../actions'
-import { getTotalPriceOfCart, getLoggedInCashier } from '../selectors'
+import { setPaymentState, setPaymentMethod, postPurchase, applyDiscounts, removeDiscounts, setPaymentModalOpen } from '../actions'
+import { getTotalPriceOfCart, getLoggedInCashier, getStrings, getPurchaseInProgress } from '../selectors'
 import { PAYMENT_METHOD } from '../../common/api'
 import { NotificationManager } from 'react-notifications'
+import { Step, Stepper, StepLabel, StepButton } from 'material-ui/Stepper'
+import Dialog from 'material-ui/Dialog'
+import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
+import Paper from 'material-ui/Paper'
+import TextField from 'material-ui/TextField'
+import DoneIcon from 'material-ui/svg-icons/action/done'
+import { green500 } from 'material-ui/styles/colors'
 
 class PaymentModal extends React.Component {
     static propTypes = {
-        onPurchase: React.PropTypes.func.isRequired,
-        paymentState: React.PropTypes.number.isRequired,
-        selectMethod: React.PropTypes.func.isRequired,
-        onBack: React.PropTypes.func.isRequired,
-        onClose: React.PropTypes.func.isRequired,
-        total: React.PropTypes.number.isRequired,
-        cashierCard: React.PropTypes.string.isRequired
+        onPurchase: React.PropTypes.func,
+        paymentState: React.PropTypes.object,
+        selectMethod: React.PropTypes.func,
+        onBack: React.PropTypes.func,
+        onClose: React.PropTypes.func,
+        total: React.PropTypes.number,
+        cashierCard: React.PropTypes.string,
+        strings: React.PropTypes.object,
+        purchaseInProgress: React.PropTypes.bool
     }
 
-    renderPaymentSelect () {
-        const { selectMethod } = this.props
+    componentDidMount () {
+        this.setState({amount: ''})
+    }
+
+    getPaymentSelect () {
+        const { selectMethod, strings } = this.props
         return (
-            <div className='modal-content'>
-                <h4>Choose payment option</h4>
-                <div onClick={selectMethod} data-method={PAYMENT_METHOD.CASH} className='item-card z-depth-1 hoverable waves-effect'>
-                    <h5>Cash</h5>
+            <div>
+                <Paper onClick={selectMethod} data-method={PAYMENT_METHOD.CASH} zDepth={2} className='item-card'>
+                    <h5>{strings.cash}</h5>
                     <i className='fa fa-money payment-glyph' aria-hidden='true' />
-                </div>
-                <div onClick={selectMethod} data-method={PAYMENT_METHOD.CREW} className='item-card z-depth-1 hoverable waves-effect'>
-                    <h5>Crew</h5>
+                </Paper>
+                <Paper onClick={selectMethod} data-method={PAYMENT_METHOD.CREW} zDepth={2} className='item-card'>
+                    <h5>{strings.crew}</h5>
                     <i className='fa fa-credit-card payment-glyph' aria-hidden='true' />
+                </Paper>
+            </div>
+        )
+    }
+
+    getCrew () {
+        const { total, strings, purchaseInProgress } = this.props
+        return (
+            <div>
+                <h3>{strings.scan_to_pay} {total}{strings.price_text}</h3>
+                <TextField ref='rfid' id='rfid' type='password' fullWidth hintText={strings.badge_number} onKeyUp={this.onEnter} />
+                <RaisedButton onClick={this.purchaseCrew} primary label={strings.purchase} disabled={purchaseInProgress} />
+            </div>
+        )
+    }
+
+    getCash () {
+        const { total, strings, purchaseInProgress } = this.props
+        return (
+            <div>
+                <div className='row'>
+                    <div className='col-xs-6'>
+                        <div className='col-xs-12'>
+                            <h3>{strings.please_pay} {total}{strings.price_text}</h3>
+                            <TextField ref='amount' id='amount' type='number' fullWidth value={this.state.amount} onChange={this.handleAmountChange} onKeyUp={this.onEnter} hintText={strings.amount_received} />
+                        </div>
+                        <div className='col-xs-12 last-xs'>
+                            <RaisedButton onClick={this.purchaseCash} primary label={strings.purchase} disabled={purchaseInProgress} />
+                        </div>
+                    </div>
+                    <div className='numpad col-xs-6'>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>1</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>2</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>3</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>4</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>5</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>6</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>7</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>8</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>9</div>
+                        <div onClick={this.numpadClick} className='col-xs-8 button'>0</div>
+                        <div onClick={this.numpadClick} className='col-xs-4 button'>{strings.back}</div>
+                    </div>
                 </div>
             </div>
         )
     }
 
-    renderCrew () {
-        const { total, onBack } = this.props
-        return (
-            <div className='modal-content'>
-                <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Scan badge to pay {total}Kr.</h4>
-                <div className='row'>
-                    <div className='input-field col s12'>
-                        <input onKeyUp={this.onEnter} ref='rfid' id='rfid' type='password' required className='validate' />
-                        <label className='active' htmlFor='rfid'>Badge number</label>
-                    </div>
-                    <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCrew}>
-                        Purchase
-                    </button>
-                </div>
-            </div>
-        )
-    }
+    getOrderComplete () {
+        const { paymentState, strings } = this.props
+        const total = this.state.total
+        const amount = parseInt(this.state.amount)
+        var completeString = ''
 
-    renderCash () {
-        const { total, onBack } = this.props
+        if (paymentState.get('paymentMethod') === PAYMENT_METHOD.CASH) {
+            completeString = `${strings.return} ${amount - total} ${strings.price_text}`
+        } else if (paymentState.get('paymentMethod') === PAYMENT_METHOD.CREW) {
+            completeString = 'YAY!'
+        }
+
         return (
-            <div className='modal-content'>
-                <h4><i onClick={onBack} className='link fa fa-arrow-circle-o-left' aria-hidden='true' /> Please pay {total}Kr.</h4>
-                <div className='row'>
-                    <div className='col s6'>
-                        <div className='input-field col s12'>
-                            <input onKeyUp={this.onEnter} ref='amount' id='amount' type='number' min={total} className='validate' />
-                            <label className='active' htmlFor='amount'>Amount received</label>
-                        </div>
-                    </div>
-                    <div className='numpad col s6'>
-                        <div onClick={this.numpadClick} className='button'>1</div>
-                        <div onClick={this.numpadClick} className='button'>2</div>
-                        <div onClick={this.numpadClick} className='button'>3</div>
-                        <div onClick={this.numpadClick} className='button'>4</div>
-                        <div onClick={this.numpadClick} className='button'>5</div>
-                        <div onClick={this.numpadClick} className='button'>6</div>
-                        <div onClick={this.numpadClick} className='button'>7</div>
-                        <div onClick={this.numpadClick} className='button'>8</div>
-                        <div onClick={this.numpadClick} className='button'>9</div>
-                        <div onClick={this.numpadClick} className='button'>0</div>
-                        <div onClick={this.numpadClick} className='button'>Back</div>
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col s6'>
-                        <div className='col s12'>
-                            <button className='btn btn-large waves-effect waves-light' onClick={this.purchaseCash}>
-                                Purchase
-                            </button>
-                        </div>
-                    </div>
+            <div className='row center-xs'>
+                <div className='col-xs-6'>
+                    <DoneIcon style={{height: '150px', width: '150px', color: green500}} />
+                    <h2>{completeString}</h2>
                 </div>
             </div>
         )
     }
 
     clear = () => {
-        var amount = $('#amount')
-        amount.val('')
-        // eslint-disable-next-line no-undef
-        Materialize.updateTextFields()
+        this.refs.amount.value('')
+    }
+
+    handleAmountChange = (event) => {
+        this.setState({amount: event.target.value})
     }
 
     numpadClick = (e) => {
-        var amount = $('#amount')
-        if (e.target.innerHTML === 'Back') {
-            amount.val(amount.val().slice(0, -1))
+        const { strings } = this.props
+        if (e.target.innerHTML === strings.back) {
+            this.setState({amount: this.state.amount.slice(0, -1)})
         } else {
-            amount.val(amount.val() + e.target.innerHTML)
+            this.setState({amount: this.state.amount + e.target.innerHTML})
         }
-        // eslint-disable-next-line no-undef
-        Materialize.updateTextFields()
     }
 
     billClick = (e) => {
-        var amount = $('#amount')
-        amount.val(e.target.innerHTML)
-        // eslint-disable-next-line no-undef
-        Materialize.updateTextFields()
+        this.setState({amount: e.target.innerHTML})
     }
 
     onEnter = (e) => {
         if (e.keyCode === 13) {
             const { paymentState } = this.props
-            switch (paymentState) {
+            switch (paymentState.get('paymentMethod')) {
             case PAYMENT_METHOD.CREW:
                 this.purchaseCrew()
                 break
@@ -133,9 +150,9 @@ class PaymentModal extends React.Component {
 
     purchaseCrew = () => {
         const { onPurchase, total, cashierCard } = this.props
-        const { value, validity } = this.refs.rfid
+        const value = this.refs.rfid.getValue()
 
-        if (validity.valid) {
+        if (value.length > 0) {
             const purchase = {
                 payment_method: PAYMENT_METHOD.CREW,
                 total: total,
@@ -151,13 +168,13 @@ class PaymentModal extends React.Component {
 
     purchaseCash = () => {
         const { onPurchase, total, cashierCard } = this.props
-        const { validity, value } = this.refs.amount
+        const value = this.refs.amount.getValue()
 
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
-        if (validity.valid && parseInt(value) > 1000000) {
+        if (parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
-            $('#amount').val('')
-        } else if (validity.valid) {
+        } else if (value.length > 0 && parseInt(value)) {
+            this.setState({total: total})
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
                 total: total,
@@ -171,46 +188,90 @@ class PaymentModal extends React.Component {
         }
     }
 
-    componentDidUpdate () {
+    componentDidUpdate (prevProps) {
         const { paymentState } = this.props
-        if (paymentState === PAYMENT_METHOD.CREW) {
-            this.refs.rfid.focus()
-        } else if (paymentState === PAYMENT_METHOD.CASH) {
-            this.refs.amount.focus()
+        const paymentMethod = paymentState.get('paymentMethod')
+        const stateIndex = paymentState.get('stateIndex')
+        const prevStateIndex = prevProps.paymentState.get('stateIndex')
+
+        if (prevStateIndex === stateIndex) {
+            return
+        }
+
+        if (stateIndex === 1) {
+            if (paymentMethod === PAYMENT_METHOD.CREW) {
+                setTimeout(() => this.refs.rfid.focus(), 250)
+            } else if (paymentMethod === PAYMENT_METHOD.CASH) {
+                setTimeout(() => this.refs.amount.focus(), 250)
+            }
+        } else if (stateIndex === 2) {
+            setTimeout(() => this.onClose(), 10000)
         }
     }
 
-    renderContent (state) {
-        switch (state) {
-        case PAYMENT_METHOD.SELECT:
-            return this.renderPaymentSelect()
-        case PAYMENT_METHOD.CREW:
-            return this.renderCrew()
-        case PAYMENT_METHOD.CASH:
-            return this.renderCash()
+    getStepContent (stepIndex, paymentMethod) {
+        switch (stepIndex) {
+        case 0:
+            return this.getPaymentSelect()
+        case 1:
+            if (paymentMethod === PAYMENT_METHOD.CREW) {
+                return this.getCrew()
+            } else if (paymentMethod === PAYMENT_METHOD.CASH) {
+                return this.getCash()
+            }
+            return this.getPaymentSelect()
+        case 2:
+            return this.getOrderComplete()
         default:
-            return this.renderPaymentSelect()
+            return this.getPaymentSelect()
         }
+    }
+
+    onClose = () => {
+        this.setState({amount: ''})
+        this.props.onClose()
     }
 
     render () {
-        const { paymentState, onClose } = this.props
+        const { paymentState, onBack, strings } = this.props
+        const paymentMethod = paymentState.get('paymentMethod')
+        const stateIndex = paymentState.get('stateIndex')
+
+        const actions = [
+            <FlatButton
+                label={strings.close}
+                primary
+                onTouchTap={this.onClose}
+            />
+        ]
+
         return (
-            <div id='payment-modal' className='modal modal-fixed-footer'>
-                {this.renderContent(paymentState)}
-                <div className='modal-footer'>
-                    <a href='#!' onClick={onClose} className='waves-effect waves-red btn-flat'>Cancel</a>
-                </div>
-            </div>
+            <Dialog open={paymentState.get('modalOpen')} actions={actions} title={strings.complete_order}>
+                <Stepper activeStep={paymentState.get('stateIndex')} linear={false}>
+                    <Step>
+                        <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>
+                    </Step>
+                    <Step>
+                        <StepLabel completed={stateIndex === 2} disabled={stateIndex !== 1}>{strings.get_money}</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel completed={stateIndex === 2} disabled={stateIndex !== 2}>{strings.order_complete}</StepLabel>
+                    </Step>
+                </Stepper>
+                <br />
+                {this.getStepContent(stateIndex, paymentMethod)}
+            </Dialog>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        paymentState: state.payment.get('state'),
+        paymentState: state.payment,
         total: getTotalPriceOfCart(state),
-        cashierCard: getLoggedInCashier(state).get('card')
+        cashierCard: getLoggedInCashier(state).get('card'),
+        strings: getStrings(state),
+        purchaseInProgress: getPurchaseInProgress(state)
     }
 }
 
@@ -221,35 +282,23 @@ const mapDispatchToProps = (dispatch) => {
         },
         selectMethod: (e) => {
             const method = parseInt(e.target.dataset.method)
-            dispatch(setPaymentState(method))
+            dispatch(setPaymentMethod(method))
+            dispatch(setPaymentState(1))
             dispatch(applyDiscounts(method))
         },
         onBack: () => {
-            dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
+            dispatch(setPaymentState(0))
             dispatch(removeDiscounts())
         },
         onClose: () => {
-            dispatch(setPaymentState(PAYMENT_METHOD.SELECT))
+            dispatch(setPaymentModalOpen(false))
+            dispatch(setPaymentState(0))
             dispatch(removeDiscounts())
-            close()
         }
     }
-}
-
-const open = () => {
-    $('#payment-modal').openModal({dismissible: false})
-}
-
-const close = () => {
-    $('#payment-modal').closeModal()
 }
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(PaymentModal)
-
-export {
-    open,
-    close
-}

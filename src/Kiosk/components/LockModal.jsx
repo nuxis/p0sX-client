@@ -1,61 +1,73 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { cashierLogin } from '../actions'
+import { getLoggedInCashier, getStrings } from '../selectors'
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
 
 class LockModal extends React.Component {
     static propTypes = {
-        authenticateCrew: React.PropTypes.func.isRequired
+        authenticateCrew: React.PropTypes.func,
+        open: React.PropTypes.bool,
+        strings: React.PropTypes.object
     }
 
     keyPress = (e) => {
         const { authenticateCrew } = this.props
         if (e.keyCode === 13) {
-            const card = $('#cardid').val()
-            $('#cardid').val('')
+            const card = this.refs.unlock.getValue()
             authenticateCrew(card)
+            this.refs.unlock.input.value = ''
         }
     }
 
-    focus = () => {
-        $('#cardid').focus()
+    componentDidMount () {
+        if(this.props.open) {
+            this.focusTextField()
+        }
+    }
+
+    focusTextField = () => this.refs.unlock.focus()
+
+    componentDidUpdate (prevProps) {
+        if (this.props.open && prevProps.open !== this.props.open) {
+            setTimeout(() => this.refs.unlock.focus(), 250)
+        }
     }
 
     render () {
+        const { open, strings } = this.props
+
         return (
-            <div id='lock-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4>Scan card to unlock</h4>
-                    <div className='input-field col s12'>
-                        <input id='cardid' type='password' className='validate' onBlur={this.focus} onKeyUp={this.keyPress} />
-                    </div>
-                </div>
-            </div>
+            <Dialog
+                title={strings.scan_card}
+                modal
+                open={open}
+            >
+                <TextField
+                    onKeyUp={this.keyPress}
+                    onBlur={this.focusTextField}
+                    type='password'
+                    ref='unlock'
+                    id='unlock'
+                    fullWidth
+                />
+            </Dialog>
         )
     }
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
     return {
+        open: getLoggedInCashier(state).get('locked'),
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        authenticateCrew: (card) => {
-            dispatch(cashierLogin(card))
-        }
+        authenticateCrew: (card) => dispatch(cashierLogin(card))
     }
-}
-
-const open = () => {
-    // eslint-disable-next-line no-undef
-    $('#lock-modal').openModal({dismissible: false})
-    $('#cardid').focus()
-}
-
-const close = () => {
-    // eslint-disable-next-line no-undef
-    $('#lock-modal').closeModal()
 }
 
 export default connect(

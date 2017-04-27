@@ -1,20 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCreditForCrew } from '../actions'
+import { getCreditForCrew, setCreditModalOpen } from '../actions'
+import { getStrings } from '../selectors'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
 
 class PreviousOrderModal extends React.Component {
     static propTypes = {
-        credit: React.PropTypes.object.isRequired,
-        checkCredit: React.PropTypes.func.isRequired
+        credit: React.PropTypes.object,
+        checkCredit: React.PropTypes.func,
+        strings: React.PropTypes.object,
+        closeModal: React.PropTypes.func
+    }
+
+    focusTextField = () => this.refs.creditBadge.focus()
+
+    componentDidUpdate (prevProps) {
+        const open = this.props.credit.get('modalOpen')
+        const prevOpen = prevProps.credit.get('modalOpen')
+
+        if (open && open !== prevOpen) {
+            setTimeout(() => this.focusTextField(), 250)
+        }
     }
 
     onEnter = (e) => {
         const { checkCredit } = this.props
-        const { value } = this.refs.creditBadge
+        const value = this.refs.creditBadge.getValue()
+
         if (e.keyCode === 13) {
             checkCredit(value)
-            // eslint-disable-next-line immutable/no-mutation
-            this.refs.creditBadge.value = ''
+            this.refs.creditBadge.input.value = ''
         }
     }
 
@@ -23,41 +40,50 @@ class PreviousOrderModal extends React.Component {
     }
 
     render () {
-        const { credit } = this.props
+        const { credit, strings, closeModal } = this.props
+
+        const actions = [
+            <FlatButton
+                label={strings.close}
+                primary
+                onTouchTap={closeModal}
+            />
+        ]
+
         return (
-            <div id='credit-check-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h4>Scan badge to check credit</h4>
-                    <div className='row'>
-                        <div className='col s12'>
-                            <h5>This person has <b>{credit.get('left')},-</b> of {credit.get('credit_limit')},- left</h5>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='input-field col s12' style={{opacity: '0'}}>
-                            <input onKeyUp={this.onEnter} onBlur={this.onBlur} ref='creditBadge' type='text' id='credit-badge' required className='validate' />
-                        </div>
+            <Dialog
+                title={strings.scan_badge_to_check_credit}
+                actions={actions}
+                modal={false}
+                open={credit.get('modalOpen')}
+                onRequestClose={closeModal}
+            >
+                <div className='row'>
+                    <div className='col-xs-12'>
+                        <h4>{strings.this_person_has} <b>{credit.get('left')}{strings.price_short}</b> {strings.of} {credit.get('credit_limit')}{strings.price_short} {strings.remaining}</h4>
                     </div>
                 </div>
-                <div className='modal-footer'>
-                    <a href='#!' className='modal-action modal-close waves-effect waves-red btn-flat'>Close</a>
+                <div className='row'>
+                    <div className='col-xs-12'>
+                        <TextField onKeyUp={this.onEnter} type='password' fullWidth onBlur={this.onBlur} ref='creditBadge' id='credit-badge' />
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        credit: state.creditCheck
+        credit: state.creditCheck,
+        strings: getStrings(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        checkCredit: (badge) => {
-            dispatch(getCreditForCrew(badge))
-        }
+        checkCredit: (badge) => dispatch(getCreditForCrew(badge)),
+        closeModal: () => dispatch(setCreditModalOpen(false))
     }
 }
 

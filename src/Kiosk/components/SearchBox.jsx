@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setSearchString, addItemToCart, openIngredientModalForItem } from '../actions'
 import { getItemsByCategory } from '../selectors'
+import TextField from 'material-ui/TextField'
+import SearchIcon from 'material-ui/svg-icons/action/search'
 
 class SearchBox extends React.Component {
     static propTypes = {
@@ -12,10 +14,13 @@ class SearchBox extends React.Component {
 
     render () {
         return (
-            <div className='input-field'>
-                <input onKeyUp={this.keyPress} id='search' type='search' />
-                <label htmlFor='search'><i className='material-icons'>search</i></label>
-            </div>
+            <TextField
+                hintText={<SearchIcon style={{width: '32px', height: '32px', opacity: '.5'}} />}
+                hintStyle={{bottom: '2px'}}
+                onKeyUp={this.keyPress}
+                id='search'
+                underlineShow={false}
+            />
         )
     }
 
@@ -45,8 +50,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setSearchString(value))
         },
         addItemToCart: (item) => {
-            if (item.get('can_have_ingredients')) {
-                $('#ingredient-modal').openModal()
+            if (item.get('created_in_the_kitchen')) {
                 dispatch(openIngredientModalForItem(item))
             } else {
                 dispatch(addItemToCart(item))

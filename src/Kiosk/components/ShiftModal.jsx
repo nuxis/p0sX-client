@@ -1,55 +1,69 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { createNewShift } from '../actions'
-import { getShift, getLoggedInCashier } from '../selectors'
+import { createNewShift, setShiftModalOpen } from '../actions'
+import { getShift, getLoggedInCashier, getStrings } from '../selectors'
 import { Map } from 'immutable'
 import printShift from '../../common/print-shift'
 import settings from '../../common/settings'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table'
 
 class ShiftModal extends React.Component {
     static propTypes = {
-        shift: React.PropTypes.instanceOf(Map).isRequired,
-        dispatchCreateNewShift: React.PropTypes.func.isRequired,
-        card: React.PropTypes.string.isRequired
+        shift: React.PropTypes.instanceOf(Map),
+        dispatchCreateNewShift: React.PropTypes.func,
+        card: React.PropTypes.string,
+        closeModal: React.PropTypes.func,
+        strings: React.PropTypes.object
     }
 
     newShift = () => {
         const { shift } = this.props
         const printerSettings = settings.get('receiptPrinter')
-        printShift(printerSettings.type, printerSettings.config, shift, settings.get('name'))
+        //printShift(printerSettings.type, printerSettings.config, shift, settings.get('name'))
         const {dispatchCreateNewShift, card} = this.props
         dispatchCreateNewShift({card: card})
     }
 
     render () {
-        const {shift} = this.props
+        const { shift, strings, closeModal } = this.props
+
+        const actions = [
+            <FlatButton
+                label={strings.new_shift}
+                primary
+                onTouchTap={this.newShift}
+            />,
+            <FlatButton
+                label={strings.close}
+                primary
+                onTouchTap={closeModal}
+            />
+        ]
+
         return (
-            <div id='shift-modal' className='modal modal-fixed-footer'>
-                <div className='modal-content'>
-                    <h3>Shift</h3>
-                    <h6>Started: {new Date(shift.get('start')).toString()}</h6>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Cash</td>
-                                <td>{shift.get('cash')}</td>
-                            </tr>
-                            <tr>
-                                <td>Crew</td>
-                                <td>{shift.get('crew')}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className='modal-footer'>
-                    <a className='btn-flat waves-effect waves-light left' onClick={this.newShift}>
-                        New Shift
-                    </a>
-                    <a className='btn-flat waves-effect waves-light' onClick={close}>
-                        Close
-                    </a>
-                </div>
-            </div>
+            <Dialog
+                title={strings.manage_shifts}
+                actions={actions}
+                modal={false}
+                open={shift.get('modalOpen')}
+                onRequestClose={closeModal}
+            >
+                <h4>{strings.started}: {new Date(shift.get('start')).toString()}</h4>
+                <Table>
+                    <TableBody displayRowCheckbox={false} showRowHover={false} >
+                        <TableRow selectable={false}>
+                            <TableRowColumn>{strings.cash}</TableRowColumn>
+                            <TableRowColumn>{shift.get('cash')}</TableRowColumn>
+                        </TableRow>
+                        <TableRow selectable={false}>
+                            <TableRowColumn>{strings.crew}</TableRowColumn>
+                            <TableRowColumn>{shift.get('crew')}</TableRowColumn>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Dialog>
         )
     }
 }
@@ -57,7 +71,8 @@ class ShiftModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         shift: getShift(state),
-        card: getLoggedInCashier(state).get('card')
+        card: getLoggedInCashier(state).get('card'),
+        strings: getStrings(state)
     }
 }
 
@@ -67,18 +82,9 @@ const mapDispatchToProps = (dispatch) => {
             if (confirm('Are you sure you want to create a new shift?')) {
                 dispatch(createNewShift(payload))
             }
-        }
+        },
+        closeModal: () => dispatch(setShiftModalOpen(false))
     }
-}
-
-const open = () => {
-    // eslint-disable-next-line no-undef
-    $('#shift-modal').openModal()
-}
-
-const close = () => {
-    // eslint-disable-next-line no-undef
-    $('#shift-modal').closeModal()
 }
 
 export default connect(

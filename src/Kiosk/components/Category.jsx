@@ -1,12 +1,12 @@
 import React from 'react'
-import classNames from 'classnames'
+import {ListItem} from 'material-ui/List'
 
 class Category extends React.Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired,
         name: React.PropTypes.string.isRequired,
-        active: React.PropTypes.bool.isRequired,
-        category: React.PropTypes.object.isRequired
+        category: React.PropTypes.object.isRequired,
+        value: React.PropTypes.any
     }
 
     click = () => {
@@ -15,11 +15,9 @@ class Category extends React.Component {
     }
 
     render () {
-        const { name, active } = this.props
+        const { name, value } = this.props
         return (
-            <a className={classNames({'collection-item': true, 'active': active})} onClick={this.click}>
-                {name}
-            </a>
+            <ListItem value={value} primaryText={name} onClick={this.click} />
         )
     }
 }

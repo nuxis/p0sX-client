@@ -1,5 +1,6 @@
 body {
-    background-color: white;
+    font-family: Roboto, sans-serif;
+    margin: 0;
 }
 
 * {
@@ -8,6 +9,10 @@ body {
     -moz-user-select:none;
     -ms-user-select:none;
     user-select:none;
+}
+
+#search:focus {
+    background-color: white !important;
 }
 
 .modal.modal-fixed-footer {
@@ -27,7 +32,7 @@ body {
 .notification-error {
     background-color: #f44336 !important;
 }
-
+/*
 .notification {
     box-shadow: none !important;
     font-size: 1.5em !important;
@@ -37,7 +42,7 @@ body {
     min-width: 320px !important;
     max-width: 500px !important;
 }
-
+*/
 input[type="search"] {
     height: 64px !important;
 }
@@ -63,8 +68,6 @@ ul.search-list {
     margin-right: 10px;
     margin-left: 10px;
     width: 120px;
-    border-radius: 3px;
-    border: 1px solid lightgray;
     cursor: pointer;
     display: inline-block;
 }
@@ -77,11 +80,13 @@ ul.search-list {
 
 .item-card h5 {
     text-align: center;
+    font-size: 20px;
+    margin: 5px 0 0 0;
 }
 
 .item-card img {
-    width: 120px;
-    height: 120px;
+    width: 118px;
+    height: 118px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -116,7 +121,6 @@ ul.search-list {
 .checkout{
     width: 100%;
     padding-top: 10px;
-    background-color: white;
     padding-bottom: 10px;
 }
 
@@ -161,7 +165,7 @@ ul.search-list {
 }
 
 .numpad {
-    height: 390px;
+    height: 350px;
     display: flex;
     flex-flow: row wrap;
 }
@@ -174,11 +178,9 @@ ul.search-list {
 }
 
 .button {
-    display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1 0 33.3333%;
-
+    display: flex;
     background-color: #26a69a;
     color: white;
     border: 1px solid rgba(255, 255, 255, .25);
