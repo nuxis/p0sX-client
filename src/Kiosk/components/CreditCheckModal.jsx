@@ -5,6 +5,7 @@ import { getStrings } from '../selectors'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
+import { sprintf } from 'printj'
 
 class PreviousOrderModal extends React.Component {
     static propTypes = {
@@ -61,7 +62,7 @@ class PreviousOrderModal extends React.Component {
             >
                 <div className='row'>
                     <div className='col-xs-12'>
-                        <h4>{strings.this_person_has} <b>{credit.get('left')}{strings.price_short}</b> {strings.of} {credit.get('credit_limit')}{strings.price_short} {strings.remaining}</h4>
+                        <h4>{sprintf(strings.credit_check_result, credit.get('left'), strings.price_short, credit.get('credit_limit'), strings.price_short)}</h4>
                     </div>
                 </div>
                 <div className='row'>

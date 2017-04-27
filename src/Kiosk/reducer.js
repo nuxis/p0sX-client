@@ -154,7 +154,7 @@ export function categories (state = categoriesInit, action) {
 
 const settingsInit = {
     open: false,
-    ...SettingsFile.get()
+    ...SettingsFile.getAll()
 }
 
 export function settings (state = settingsInit, action) {
@@ -230,6 +230,8 @@ export function currentItem (state = currentItemInit, action) {
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
             return state.set('ingredients', state.get('ingredients').filter(i => i.get('id') !== action.ingredient.get('id')))
+        } else if (action.ingredient.get('exclusive')) {
+            return state.set('ingredients', state.get('ingredients').clear().push(action.ingredient))
         } else {
             return state.set('ingredients', state.get('ingredients').push(action.ingredient))
         }

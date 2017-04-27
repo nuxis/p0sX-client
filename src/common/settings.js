@@ -1,34 +1,13 @@
 import settings from 'electron-settings'
 
-settings.configure({prettify: true})
-settings.defaults({
-    'api_auth_token': '',
-    'server_address': '',
-    'language': 'en',
-    'name': '',
-    'receiptPrinter': {
-        'type': 'Console',
-        'config': {}
-    },
-    'kitchenPrinter': {
-        'type': 'Console',
-        'config': {}
-    },
-    'receipt': {
-        'header': '',
-        'name': '',
-        'address': '',
-        'orgnr': ''
-    }
-})
-
 export default {
-    set: (key, value) => settings.setSync(key, value),
+    set: (key, value) => settings.set(key, value, {prettify: true}),
     setObject: (values) => {
         Object.keys(values).forEach(function (key) {
             const value = values[key]
-            settings.setSync(key, value)
+            settings.set(key, value, {prettify: true})
         })
     },
-    get: (key) => settings.getSync(key)
+    get: (key) => settings.get(key),
+    getAll: () => settings.getAll()
 }

@@ -30,8 +30,8 @@ import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Snackbar from 'material-ui/Snackbar'
 
-const Wrapper = React.createClass({
-    propTypes: {
+class Wrapper extends React.Component {
+    static propTypes = {
         children: React.PropTypes.oneOfType([
             React.PropTypes.arrayOf(React.PropTypes.node),
             React.PropTypes.node
@@ -53,16 +53,16 @@ const Wrapper = React.createClass({
         notification: React.PropTypes.object,
         displayNotification: React.PropTypes.func,
         hideNotification: React.PropTypes.func
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate (prevProps) {
         const {language, loadStrings} = this.props
         if (prevProps.language !== language) {
             loadStrings(language)
         }
-    },
+    }
 
-    componentWillMount: function () {
+    componentWillMount () {
         const { getInitialData, toggleSettingsModal, loadStrings, language, settingsEmpty, openLockModal } = this.props
         if (settingsEmpty) {
             loadStrings(language)
@@ -72,8 +72,9 @@ const Wrapper = React.createClass({
             openLockModal()
             getInitialData()
         }
-    },
-    render: function () {
+    }
+
+    render () {
         const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings,
             openLastOrderModal, openCreditModal, openShiftModal, hideNotification, notification} = this.props
 
@@ -136,7 +137,7 @@ const Wrapper = React.createClass({
             </div>
         )
     }
-})
+}
 
 const mapStateToProps = (state) => {
     return {

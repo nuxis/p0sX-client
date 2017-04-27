@@ -5,16 +5,15 @@ import { toggleIngredient, addCurrentItemToCart } from '../actions'
 import { getCurrentItem, getIngredientModalOpen, getStrings } from '../selectors'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import Checkbox from 'material-ui/Checkbox'
 import TextField from 'material-ui/TextField'
-import {List, ListItem} from 'material-ui/List'
-import Divider from 'material-ui/Divider'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
-        ingredient: React.PropTypes.object,
+        ingredient: React.PropTypes.object.isRequired,
         checked: React.PropTypes.bool.isRequired,
-        onClick: React.PropTypes.func.isRequired
+        onClick: React.PropTypes.func.isRequired,
+        strings: React.PropTypes.object.isRequired
     }
 
     click = (e) => {
@@ -24,12 +23,14 @@ class IngredientCheckbox extends React.Component {
     }
 
     render () {
-        const { ingredient, checked } = this.props
+        const { ingredient, checked, strings } = this.props
 
         return (
-            <ListItem
-                primaryText={ingredient.get('name') + ' ' + ingredient.get('price') + ',-'}
-                leftCheckbox={<Checkbox onClick={this.click} checked={checked} />}
+            <RaisedButton
+                style={{margin: '5px'}}
+                primary={checked}
+                onTouchTap={this.click}
+                label={ingredient.get('name') + ' ' + ingredient.get('price') + ' ' + strings.price_text}
             />
         )
     }
@@ -76,31 +77,31 @@ class IngredientModal extends React.Component {
             />
         ]
 
-        const title = strings.select_ingredients + ' ' + currentItem.get('item').get('name')
+        const price = currentItem.get('item').get('price') + currentItem.get('ingredients').reduce((sum, ingredient) => sum + ingredient.get('price'), 0)
+        const title = `${strings.select_ingredients} ${currentItem.get('item').get('name')} - ${price} ${strings.price_text}`
 
         return (
             <Dialog autoScrollBodyContent actions={currentItem.get('edit') ? editActions : addActions} modal onRequestClose={toggleOpen} open={open} title={title}>
-                <List>
+                <div style={{display: 'flex', width: '100%', flexWrap: 'wrap', marginTop: '5px'}}>
                     {currentItem.get('item').get('ingredients').map(ingredient =>
-                        [
-                            <Divider />,
-                            <IngredientCheckbox
-                                onClick={onIngredientClick}
-                                ingredient={ingredient}
-                                checked={currentItem.get('ingredients').includes(ingredient)}
-                                key={ingredient.get('id')}
-                            />
-                        ]
+                        <IngredientCheckbox
+                            onClick={onIngredientClick}
+                            ingredient={ingredient}
+                            checked={currentItem.get('ingredients').includes(ingredient)}
+                            key={ingredient.get('id')}
+                            strings={strings}
+                        />
                     )}
-                    <Divider />
-                </List>
+                </div>
                 <TextField
                     id='item-message'
                     ref='message'
                     hintText={strings.message}
                     defaultValue={currentItem.get('message')}
                     fullWidth
-                    inputStyle={{marginTop: '0px'}}
+                    style={{marginTop: '15px'}}
+                    multiLine
+                    rowsMax={5}
                 />
             </Dialog>
         )
