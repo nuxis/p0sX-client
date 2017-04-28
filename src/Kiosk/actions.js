@@ -48,6 +48,7 @@ export const SET_LAST_CART = 'SET_LAST_CART'
 export const GET_CREDIT_FOR_CREW = 'GET_CREDIT_FOR_CREW'
 export const SET_CREDIT = 'SET_CREDIT'
 export const SET_CREDIT_MODAL_OPEN = 'SET_CREDIT_MODAL_OPEN'
+export const CLEAR_CREDIT_INFO = 'CLEAR_CREDIT_INFO'
 
 export const CASHIER_LOGIN = 'CASHIER_LOGIN'
 export const CASHIER_LOGOUT = 'CASHIER_LOGOUT'
@@ -64,6 +65,9 @@ export const SET_PURCHASE_IN_PROGRESS = 'SET_PURCHASE_IN_PROGRESS'
 
 export const TOGGLE_SETTINGS_MODAL = 'TOGGLE_SETTINGS_MODAL'
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS'
+
+export const DISPLAY_NOTIFICATION = 'DISPLAY_NOTIFICATION'
+export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION'
 
 // Action creators
 export const toggleSettingsModal = () => action(TOGGLE_SETTINGS_MODAL, {})
@@ -116,6 +120,7 @@ export const undoOrder = () => action(UNDO_ORDER, {})
 export const getCreditForCrew = (badge) => action(GET_CREDIT_FOR_CREW, {badge})
 export const setCredit = (credit) => action(SET_CREDIT, {credit})
 export const setCreditModalOpen = (open) => action(SET_CREDIT_MODAL_OPEN, {open})
+export const clearCreditInfo = () => action(CLEAR_CREDIT_INFO)
 
 export const cashierLogin = (card) => action(CASHIER_LOGIN, { card })
 export const cashierLogout = () => action(CASHIER_LOGOUT, {})
@@ -131,3 +136,6 @@ export const setShiftModalOpen = (open) => action(SET_SHIFT_MODAL_OPEN, {open})
 export const setLastCart = (cart) => action(SET_LAST_CART, { cart })
 
 export const setPurchaseInProgress = (value) => action(SET_PURCHASE_IN_PROGRESS, {value})
+
+export const displayNotification = (message, timeout = 3000) => action(DISPLAY_NOTIFICATION, {message, timeout})
+export const hideNotification = () => action(HIDE_NOTIFICATION, {})

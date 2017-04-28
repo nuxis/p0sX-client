@@ -27,11 +27,17 @@
   "close": "Lukk",
   "return": "Gi tilbake",
   "order": "Ordre",
-  "this_person_has": "Denne personen har",
-  "of": "av",
-  "remaining": "igjen",
+  "credit_check_result": "Denne personen har %d%s av %d%s igjen",
   "scan_badge_to_check_credit": "Skann badge for å sjekke kreditt",
   "manage_shifts": "Skifthåndtering",
   "new_shift": "Nytt skift",
-  "started": "Startet"
+  "started": "Startet",
+  "general": "Generelt",
+  "address": "Adresse",
+  "network": "Nettverk",
+  "serial": "Seriell",
+  "console": "Konsoll (debug)",
+  "receipt_printer": "Kviteringsskriver",
+  "kitchen_printer": "Kjøkkenskriver",
+  "confirm_new_shift": "Er du sikker på at du vil starte et nytt skift?"
 }

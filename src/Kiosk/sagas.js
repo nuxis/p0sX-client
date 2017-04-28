@@ -2,12 +2,9 @@ import { call, put, take, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
-import { close as closePaymentModal } from './components/PaymentModal'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { open as openShiftModal } from './components/ShiftModal'
-import { cashDraw } from '../common/receipt'
-import { kitchenReceipt, customerReceipt } from '../common/kitchen'
+import { cashDraw, kitchenReceipt, customerOrderReceipt, printShift } from '../common/print'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -131,13 +128,13 @@ function * postPurchase (action) {
                 }).toJS()
 
                 // Print receipt for the customer
-                customerReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH)
+                customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
                 // Print separate notes for the kitchen
                 for (const entry of receiptItems) {
-                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id'))
+                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id')).then(() => {})
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
-                cashDraw(receiptConfig.type, receiptConfig.config)
+                cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
             }
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(2))
@@ -240,7 +237,7 @@ export function * watchCashierLogin () {
 
 function * cashierLogout () {
     try {
-        NotificationManager.success('Logout successful', 'You are now logged out of the system', 5000)
+        NotificationManager.success('You are now logged out of the system', 'Logout successful', 5000)
         yield put(actions.cashierClear())
     } catch (error) {
         console.error(error)
@@ -278,6 +275,10 @@ function * createNewShift (action) {
         const create = yield call(api.createShift, action.card)
         if (create) {
             NotificationManager.success('New shift successfully created!', '', 5000)
+            const shift = yield select(selectors.getShift)
+            const receiptConfig = settings.get('receiptPrinter')
+            const name = settings.get('name')
+            yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
             yield put(actions.openAndGetCurrentShift())
         }
     } catch (error) {

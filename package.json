@@ -1,121 +1,92 @@
 {
-  "name": "p0sX",
+  "name": "p0sx-client",
+  "productName": "p0sX",
   "version": "0.0.1",
+  "description": "p0sX is a Point of Sales application",
+  "main": "src/main.js",
   "scripts": {
-    "postinstall": "install-app-deps",
-    "dist": "build",
-    "dist:all": "build --platform all --arch all",
-    "dist:darwin": "build --platform darwin --arch x64",
-    "dist:win": "npm run dist:win32 && npm run dist:win64",
-    "dist:win32": "build --platform win32 --arch ia32",
-    "dist:win64": "build --platform win32 --arch x64",
-    "dist:linux": "npm run dist:linux32 && npm run dist:linux64",
-    "dist:linux32": "build --platform linux --arch ia32",
-    "dist:linux64": "build --platform linux --arch x64",
-    "lint:js": "node ./node_modules/eslint/bin/eslint.js src/**/**.js",
-    "lint:jsx": "node ./node_modules/eslint/bin/eslint.js src/**/**.jsx",
-    "lint": "npm run lint:js && npm run lint:jsx",
-    "electron": "electron ./app",
-    "build": "npm run build:main && npm run build:renderer",
-    "build:main": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/electron.js --progress --profile --colors",
-    "build:renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors",
-    "watch:renderer": "node -r babel-register ./node_modules/webpack/bin/webpack.js --config .webpack/production.js --progress --profile --colors --watch",
-    "start": "npm run build && npm run electron"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "dist:win64": "npm run package --arch=x64 && build --win --x64 --pd ./out/p0sX-win32-x64",
+    "dist:linux64": "electron-forge make",
+    "lint": "eslint --ext .js --ext .jsx src"
   },
-  "bin": {
-    "electron": "./node_modules/.bin/electron"
+  "keywords": [],
+  "author": {
+    "name": "Nuxis",
+    "email": "kradalby@kradalby.no"
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nuxis/p0sX-client.git"
+  },
+  "license": "MIT",
+  "build": {
+    "appId": "org.nuxis.p0sX"
+  },
+  "config": {
+    "forge": {
+      "electronPackagerConfig": {
+        "asar": true,
+        "icon": "./build/icon.ico",
+        "ignore": [
+          ".idea",
+          ".gitignore",
+          ".eslintrc",
+          ".github",
+          ".webpack",
+          ".vscode",
+          "^/dist$"
+        ]
+      }
+    }
   },
   "devDependencies": {
-    "@types/immutable": "^3.8.4",
-    "@types/react": "^0.14.37",
-    "@types/react-dom": "^0.14.17",
-    "@types/redux": "^3.5.30",
-    "@types/redux-saga": "^0.9.30",
-    "axios": "^0.14.0",
-    "babel-core": "^6.10.4",
-    "babel-eslint": "^7.0.0",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-es2015-native-modules": "^6.9.0",
-    "babel-preset-react": "^6.11.1",
-    "babel-preset-stage-0": "^6.5.0 ",
-    "babel-register": "^6.9.0",
-    "babel-runtime": "^6.9.2",
-    "classnames": "^2.2.5",
-    "css-loader": "^0.25.0",
-    "electron-builder": "^7.9.0",
-    "electron-prebuilt": "1.4.1",
-    "electron-rebuild": "^1.2.1",
-    "electron-settings": "^2.2.1",
-    "electron-squirrel-startup": "^1.0.0",
-    "empty-string-loader": "^0.1.1",
-    "escpos": "git+https://github.com/nuxis/node-escpos.git",
-    "eslint": "^3.1.0",
-    "eslint-config-standard": "^6.1.0",
-    "eslint-config-standard-jsx": "^3.1.0",
-    "eslint-config-standard-react": "^4.1.0",
+    "@types/electron": "^1.4.37",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "electron-prebuilt-compile": "1.6.2",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-jsx": "^4.0.1",
+    "eslint-config-standard-react": "^5.0.0",
     "eslint-plugin-immutable": "^1.0.0",
-    "eslint-plugin-promise": "^2.0.0",
-    "eslint-plugin-react": "^6.3.0",
-    "eslint-plugin-standard": "^2.0.0",
-    "file-loader": "^0.9.0",
-    "font-awesome": "^4.6.3",
-    "history": "^4.2.0",
-    "immutable": "^3.8.1",
-    "json-loader": "^0.5.4",
-    "material-design-icons-iconfont": "^3.0.0",
-    "materialize-css": "^0.97.6",
-    "material-ui": "^0.16.7",
-    "moment": "^2.15.1",
-    "react": "^15.4.2",
-    "react-addons-css-transition-group": "^15.3.2",
-    "react-dom": "^15.4.2",
-    "react-materialize": "^0.17.0",
-    "react-notifications": "^1.3.0",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.8.1",
-    "react-router-redux": "^4.0.4",
-    "react-tap-event-plugin": "^2.0.1",
-    "redux": "^3.5.2",
-    "redux-saga": "^0.11.0",
-    "reselect": "^2.5.3",
-    "style-loader": "^0.13.1",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.13.1",
-    "flexboxgrid": "^6.3.1",
-    "react-flexbox-grid": "^0.10.2",
-    "roboto-fontface": "^0.7.0"
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^6.10.3",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2"
   },
-  "build": {
-    "appId": "org.nuxis.p0sX",
-    "productName": "p0sX",
-    "win": {
-      "iconUrl": "https://github.com/nuxis/p0sX-client/raw/drone/build/icon.ico"
-    },
-    "osx": {
-      "target": [
-        "zip"
-      ],
-      "icon-size": 64,
-      "contents": [
-        {
-          "x": 425,
-          "y": 200,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 120,
-          "y": 200,
-          "type": "file",
-          "path": "computed path to artifact, do not specify it - will be overwritten"
-        }
-      ]
-    }
+  "dependencies": {
+    "axios": "^0.16.1",
+    "electron-compile": "^6.4.0",
+    "electron-devtools-installer": "^2.2.0",
+    "electron-react-devtools": "^0.4.0",
+    "electron-settings": "^3.0.14",
+    "escpos-print": "^1.1.1",
+    "flexboxgrid": "^6.3.1",
+    "font-awesome": "^4.7.0",
+    "history": "^4.6.1",
+    "immutable": "^3.8.1",
+    "material-ui": "^0.17.4",
+    "moment": "^2.18.1",
+    "react": "^15.5.4",
+    "react-transition-group": "^1.1.2",
+    "react-addons-css-transition-group": "^15.5.2",
+    "react-dom": "^15.5.4",
+    "react-notifications": "^1.3.0",
+    "react-redux": "^5.0.4",
+    "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.8",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-saga": "^0.14.8",
+    "reselect": "^3.0.0",
+    "roboto-fontface": "^0.7.0",
+    "printj": "^1.0.0"
   }
 }

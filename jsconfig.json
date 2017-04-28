@@ -5,6 +5,7 @@
     "exclude": [
         "app",
         "build",
-        "dist"
+        "dist",
+        "node_modules"
     ]
 }

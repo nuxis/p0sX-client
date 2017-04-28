@@ -11,6 +11,7 @@ export const getCart = (state) => state.cart
 export const getCartItemByIndex = (state, index) => state.cart.get(index)
 
 export const getSearch = (state) => state.search
+export const getNotification = (state) => state.notifications
 
 // This method should possibly be renamed and used when
 // when retrieveing the cart for checkout?

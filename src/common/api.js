@@ -20,19 +20,19 @@ const PAYMENT_METHOD = {
 }
 
 const getCategories = () => {
-    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showPurchaseError())
+    return axios.get('/categories/?format=json').then(res => res.data).catch(() => showFetchDataError())
 }
 
 const getDiscounts = () => {
-    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showPurchaseError())
+    return axios.get('/discounts/?format=json').then(res => res.data).catch(() => showFetchDataError())
 }
 
 const getIngredients = () => {
-    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showPurchaseError())
+    return axios.get('/ingredients/?format=json').then(res => res.data).catch(() => showFetchDataError())
 }
 
 const getItems = () => {
-    return axios.get('/items/?format=json').then(res => res.data).catch(() => showPurchaseError())
+    return axios.get('/items/?format=json').then(res => res.data).catch(() => showFetchDataError())
 }
 
 const postPurchase = (purchase) => {
@@ -40,7 +40,7 @@ const postPurchase = (purchase) => {
 }
 
 const getOrders = () => {
-    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showPurchaseError())
+    return axios.get('/orders/?format=json').then(res => res.data).catch(() => showFetchDataError())
 }
 
 const getCreditForCrew = (badge) => {
@@ -61,6 +61,10 @@ const createShift = (data) => {
 
 const getCurrentShift = () => {
     return axios.get('/current_shift').then(res => res.data).catch(() => showPurchaseError())
+}
+
+const showFetchDataError = () => {
+    NotificationManager.error('Failed to get data from the server', '', 5000)
 }
 
 const showPurchaseError = () => {

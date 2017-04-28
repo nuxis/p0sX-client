@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { createNewShift, setShiftModalOpen } from '../actions'
 import { getShift, getLoggedInCashier, getStrings } from '../selectors'
 import { Map } from 'immutable'
-import printShift from '../../common/print-shift'
-import settings from '../../common/settings'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table'
+import moment from 'moment'
 
 class ShiftModal extends React.Component {
     static propTypes = {
@@ -19,11 +18,10 @@ class ShiftModal extends React.Component {
     }
 
     newShift = () => {
-        const { shift } = this.props
-        const printerSettings = settings.get('receiptPrinter')
-        //printShift(printerSettings.type, printerSettings.config, shift, settings.get('name'))
-        const {dispatchCreateNewShift, card} = this.props
-        dispatchCreateNewShift({card: card})
+        const {dispatchCreateNewShift, card, strings} = this.props
+        if (confirm(strings.confirm_new_shift)) {
+            dispatchCreateNewShift({card: card})
+        }
     }
 
     render () {
@@ -50,7 +48,7 @@ class ShiftModal extends React.Component {
                 open={shift.get('modalOpen')}
                 onRequestClose={closeModal}
             >
-                <h4>{strings.started}: {new Date(shift.get('start')).toString()}</h4>
+                <h4>{strings.started}: {moment(new Date(shift.get('start'))).format('DD.MM.YYYY HH:mm:ss')}</h4>
                 <Table>
                     <TableBody displayRowCheckbox={false} showRowHover={false} >
                         <TableRow selectable={false}>
@@ -78,11 +76,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        dispatchCreateNewShift: (payload) => {
-            if (confirm('Are you sure you want to create a new shift?')) {
-                dispatch(createNewShift(payload))
-            }
-        },
+        dispatchCreateNewShift: (payload) => dispatch(createNewShift(payload)),
         closeModal: () => dispatch(setShiftModalOpen(false))
     }
 }

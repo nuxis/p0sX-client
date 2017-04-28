@@ -47,10 +47,9 @@ class PaymentModal extends React.Component {
     }
 
     getCrew () {
-        const { total, strings, purchaseInProgress } = this.props
+        const { strings, purchaseInProgress } = this.props
         return (
             <div>
-                <h3>{strings.scan_to_pay} {total}{strings.price_text}</h3>
                 <TextField ref='rfid' id='rfid' type='password' fullWidth hintText={strings.badge_number} onKeyUp={this.onEnter} />
                 <RaisedButton onClick={this.purchaseCrew} primary label={strings.purchase} disabled={purchaseInProgress} />
             </div>
@@ -58,32 +57,43 @@ class PaymentModal extends React.Component {
     }
 
     getCash () {
-        const { total, strings, purchaseInProgress } = this.props
+        const { strings, purchaseInProgress } = this.props
         return (
-            <div>
-                <div className='row'>
-                    <div className='col-xs-6'>
+            <div className='row'>
+                <div className='col-xs-6'>
+                    <div className='row' style={{height: '266px'}}>
+                        <div className='bill-pad col-xs-12'>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>5</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>10</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>20</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>50</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>100</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>200</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>500</div>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>1000</div>
+                        </div>
+                    </div>
+                    <div className='row'>
                         <div className='col-xs-12'>
-                            <h3>{strings.please_pay} {total}{strings.price_text}</h3>
                             <TextField ref='amount' id='amount' type='number' fullWidth value={this.state.amount} onChange={this.handleAmountChange} onKeyUp={this.onEnter} hintText={strings.amount_received} />
                         </div>
-                        <div className='col-xs-12 last-xs'>
+                        <div className='col-xs-12'>
                             <RaisedButton onClick={this.purchaseCash} primary label={strings.purchase} disabled={purchaseInProgress} />
                         </div>
                     </div>
-                    <div className='numpad col-xs-6'>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>1</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>2</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>3</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>4</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>5</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>6</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>7</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>8</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>9</div>
-                        <div onClick={this.numpadClick} className='col-xs-8 button'>0</div>
-                        <div onClick={this.numpadClick} className='col-xs-4 button'>{strings.back}</div>
-                    </div>
+                </div>
+                <div className='numpad col-xs-6'>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>1</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>2</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>3</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>4</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>5</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>6</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>7</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>8</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>9</div>
+                    <div onClick={this.numpadClick} className='col-xs-8 button'>0</div>
+                    <div onClick={this.numpadClick} className='col-xs-4 button'>{strings.back}</div>
                 </div>
             </div>
         )
@@ -111,10 +121,6 @@ class PaymentModal extends React.Component {
         )
     }
 
-    clear = () => {
-        this.refs.amount.value('')
-    }
-
     handleAmountChange = (event) => {
         this.setState({amount: event.target.value})
     }
@@ -129,7 +135,8 @@ class PaymentModal extends React.Component {
     }
 
     billClick = (e) => {
-        this.setState({amount: e.target.innerHTML})
+        const amount = parseInt(this.state.amount || 0) + parseInt(e.target.innerHTML)
+        this.setState({amount: `${amount}`})
     }
 
     onEnter = (e) => {
@@ -173,7 +180,7 @@ class PaymentModal extends React.Component {
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
         if (parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
-        } else if (value.length > 0 && parseInt(value)) {
+        } else if (value.length > 0 && parseInt(value) >= total) {
             this.setState({total: total})
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
@@ -204,8 +211,6 @@ class PaymentModal extends React.Component {
             } else if (paymentMethod === PAYMENT_METHOD.CASH) {
                 setTimeout(() => this.refs.amount.focus(), 250)
             }
-        } else if (stateIndex === 2) {
-            setTimeout(() => this.onClose(), 10000)
         }
     }
 
@@ -233,7 +238,7 @@ class PaymentModal extends React.Component {
     }
 
     render () {
-        const { paymentState, onBack, strings } = this.props
+        const { paymentState, onBack, strings, total } = this.props
         const paymentMethod = paymentState.get('paymentMethod')
         const stateIndex = paymentState.get('stateIndex')
 
@@ -246,8 +251,8 @@ class PaymentModal extends React.Component {
         ]
 
         return (
-            <Dialog open={paymentState.get('modalOpen')} actions={actions} title={strings.complete_order}>
-                <Stepper activeStep={paymentState.get('stateIndex')} linear={false}>
+            <Dialog open={paymentState.get('modalOpen')} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={`${strings.please_pay} ${total}${strings.price_text}`}>
+                <Stepper activeStep={stateIndex} linear={false}>
                     <Step>
                         <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>
                     </Step>

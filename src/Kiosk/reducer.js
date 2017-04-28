@@ -3,6 +3,30 @@ import * as actions from './actions'
 import SettingsFile from '../common/settings'
 import axios from 'axios'
 
+// NOTFICATIONS
+
+const notificationInit = {
+    open: false,
+    message: '',
+    timeout: 3000
+}
+
+export function notifications (state = notificationInit, action) {
+    switch (action.type) {
+    case actions.DISPLAY_NOTIFICATION:
+        return {
+            ...state,
+            message: action.message,
+            open: true,
+            timeout: action.timeout
+        }
+    case actions.HIDE_NOTIFICATION:
+        return notificationInit
+    default:
+        return state
+    }
+}
+
 // PURCHASE IN PROGRESS
 
 const inProgressInit = false
@@ -31,6 +55,8 @@ export function creditCheck (state = creditInit, action) {
         return state.set('modalOpen', action.open)
     case actions.SET_CREDIT:
         return action.credit.set('modalOpen', state.get('modalOpen'))
+    case actions.CLEAR_CREDIT_INFO:
+        return creditInit.set('modalOpen', state.get('modalOpen'))
     default:
         return state
     }
@@ -130,7 +156,7 @@ export function categories (state = categoriesInit, action) {
 
 const settingsInit = {
     open: false,
-    ...SettingsFile.get()
+    ...SettingsFile.getAll()
 }
 
 export function settings (state = settingsInit, action) {
@@ -206,6 +232,8 @@ export function currentItem (state = currentItemInit, action) {
     case actions.TOGGLE_INGREDIENT:
         if (state.get('ingredients').includes(action.ingredient)) {
             return state.set('ingredients', state.get('ingredients').filter(i => i.get('id') !== action.ingredient.get('id')))
+        } else if (action.ingredient.get('exclusive')) {
+            return state.set('ingredients', state.get('ingredients').clear().push(action.ingredient))
         } else {
             return state.set('ingredients', state.get('ingredients').push(action.ingredient))
         }

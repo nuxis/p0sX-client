@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCreditForCrew, setCreditModalOpen } from '../actions'
+import { getCreditForCrew, setCreditModalOpen, clearCreditInfo } from '../actions'
 import { getStrings } from '../selectors'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
+import { sprintf } from 'printj'
 
 class PreviousOrderModal extends React.Component {
     static propTypes = {
@@ -31,6 +32,7 @@ class PreviousOrderModal extends React.Component {
 
         if (e.keyCode === 13) {
             checkCredit(value)
+            // eslint-disable-next-line immutable/no-mutation
             this.refs.creditBadge.input.value = ''
         }
     }
@@ -60,7 +62,7 @@ class PreviousOrderModal extends React.Component {
             >
                 <div className='row'>
                     <div className='col-xs-12'>
-                        <h4>{strings.this_person_has} <b>{credit.get('left')}{strings.price_short}</b> {strings.of} {credit.get('credit_limit')}{strings.price_short} {strings.remaining}</h4>
+                        <h4>{sprintf(strings.credit_check_result, credit.get('left'), strings.price_short, credit.get('credit_limit'), strings.price_short)}</h4>
                     </div>
                 </div>
                 <div className='row'>
@@ -83,17 +85,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         checkCredit: (badge) => dispatch(getCreditForCrew(badge)),
-        closeModal: () => dispatch(setCreditModalOpen(false))
+        closeModal: () => {
+            dispatch(clearCreditInfo())
+            dispatch(setCreditModalOpen(false))
+        }
     }
-}
-
-export function open () {
-    $('#credit-check-modal').openModal()
-    $('#credit-badge').focus()
-}
-
-export function close () {
-    $('#credit-check-modal').closeModal()
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviousOrderModal)
