@@ -4,7 +4,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow
-const isDevMode = process.execPath.match(/[\\/]electron/)
+const isDevMode = true // process.execPath.match(/[\\/]electron/)
 
 const createWindow = async () => {
     // Create the browser window.
