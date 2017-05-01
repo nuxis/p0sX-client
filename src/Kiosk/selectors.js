@@ -5,10 +5,10 @@ export const getCategories = (state) => state.categories
 export const getSelectedCategory = (state) => state.selectedCategory
 
 export const getCurrentItem = (state) => state.currentItem
-export const getIngredientModalOpen = (state) => state.currentItem.get('modalOpen')
+export const getIngredientModalOpen = (state) => state.currentItem.modalOpen
 
 export const getCart = (state) => state.cart
-export const getCartItemByIndex = (state, index) => state.cart.get(index)
+export const getCartItemByIndex = (state, index) => state.cart[index]
 
 export const getSearch = (state) => state.search
 export const getNotification = (state) => state.notifications
@@ -19,11 +19,17 @@ export const getRenderedCart = createSelector(
     [getCart],
     (cart) => {
         return cart.map((entry) => {
-            const item = entry.get('item')
-            const priceWithIngredients = entry.get('ingredients').reduce((total, ingredient) => {
-                return total + parseInt(ingredient.get('price'))
-            }, item.get('price'))
-            return entry.set('item', item.set('price', priceWithIngredients))
+            const item = entry.item
+            const priceWithIngredients = entry.ingredients.reduce((total, ingredient) => {
+                return total + parseInt(ingredient.price)
+            }, item.price)
+            return {
+                ...entry,
+                item: {
+                    ...item,
+                    price: priceWithIngredients
+                }
+            }
         })
     }
 )
@@ -32,9 +38,9 @@ export const getTotalPriceOfCart = createSelector(
     [getCart],
     (cart) => {
         return cart.reduce((accumulator, entry) => {
-            accumulator += entry.get('item').get('price')
-            accumulator += entry.get('ingredients').reduce((accumulator, ingredient) => {
-                return accumulator + parseInt(ingredient.get('price'))
+            accumulator += entry.item.price
+            accumulator += entry.ingredients.reduce((accumulator, ingredient) => {
+                return accumulator + parseInt(ingredient.price)
             }, 0)
             return accumulator
         }, 0)
@@ -48,20 +54,20 @@ export const getItems = (state) => state.items
 export const getItemsByCategory = createSelector(
     [getItems, getSelectedCategory, getSearch],
     (items, categoryId, search) => {
-        items = items.filter(item => item.get('price') > 0)
+        items = items.filter(item => item.price > 0)
         if (search.length > 0) {
-            return items.filter(item => item.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.get('barcode') === search)
+            return items.filter(item => item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.barcode === search)
         } else if (categoryId > 0) {
-            return items.filter(item => item.get('category') === categoryId)
+            return items.filter(item => item.category === categoryId)
         } else {
             return items
         }
     }
 )
 
-export const getDiscounts = (state, paymentMethod) => state.discounts.filter(d => d.get('payment_method') === paymentMethod)
+export const getDiscounts = (state, paymentMethod) => state.discounts.filter(d => d.payment_method === paymentMethod)
 
-export const getItemById = (state, id) => state.items.find(item => item.get('id') === id)
+export const getItemById = (state, id) => state.items.find(item => item.id === id)
 
 export const getLastOrder = (state) => state.lastOrder
 
@@ -79,9 +85,9 @@ export const getTotalPriceOfLastCart = createSelector(
     [getLastCart],
     (cart) => {
         return cart.reduce((accumulator, entry) => {
-            accumulator += entry.get('item').get('price')
-            accumulator += entry.get('ingredients').reduce((accumulator, ingredient) => {
-                return accumulator + parseInt(ingredient.get('price'))
+            accumulator += entry.item.price
+            accumulator += entry.ingredients.reduce((accumulator, ingredient) => {
+                return accumulator + parseInt(ingredient.price)
             }, 0)
             return accumulator
         }, 0)

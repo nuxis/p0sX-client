@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField'
 class SearchBox extends React.Component {
     static propTypes = {
         setSearchValue: React.PropTypes.func,
-        shownItems: React.PropTypes.object,
+        shownItems: React.PropTypes.array,
         addItemToCart: React.PropTypes.func,
         searchValue: React.PropTypes.string
     }
@@ -39,7 +39,7 @@ class SearchBox extends React.Component {
         if (e.keyCode === 13) {
             const items = shownItems
             if (items.size === 1) {
-                addItemToCart(items.get(0))
+                addItemToCart(items[0])
                 setSearchValue('')
             }
         }
@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setSearchString(value))
         },
         addItemToCart: (item) => {
-            if (item.get('created_in_the_kitchen')) {
+            if (item.created_in_the_kitchen) {
                 dispatch(openIngredientModalForItem(item))
             } else {
                 dispatch(addItemToCart(item))

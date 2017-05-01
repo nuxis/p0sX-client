@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setActiveCategory } from '../actions'
 import { getCategories, getSelectedCategory } from '../selectors'
-import { List as ImmutableList } from 'immutable'
 import {List, ListItem, makeSelectable} from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
@@ -10,14 +9,14 @@ const SelectableList = makeSelectable(List)
 
 class CategoryList extends React.Component {
     static propTypes = {
-        categories: React.PropTypes.instanceOf(ImmutableList),
+        categories: React.PropTypes.array,
         onCategoryClick: React.PropTypes.func,
         selectedCategory: React.PropTypes.number
     }
 
     handleSelectionChange = (event, value) => {
         const {onCategoryClick, categories} = this.props
-        onCategoryClick(categories.find(c => c.get('id') === value))
+        onCategoryClick(categories.find(c => c.id === value))
     }
 
     render () {
@@ -28,9 +27,9 @@ class CategoryList extends React.Component {
                     {categories.map((category) =>
                         [
                             <ListItem
-                                key={category.get('id')}
-                                primaryText={category.get('name')}
-                                value={category.get('id')}
+                                key={category.id}
+                                primaryText={category.name}
+                                value={category.id}
                             />,
                             <Divider />
                         ]

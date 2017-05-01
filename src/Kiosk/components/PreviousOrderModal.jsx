@@ -21,7 +21,7 @@ class PreviousOrderModal extends React.Component {
             <FlatButton
                 label={strings.undo}
                 primary
-                disabled={order.get('id') === 0}
+                disabled={order.id === 0}
                 onTouchTap={undoOrder}
             />,
             <FlatButton
@@ -33,18 +33,18 @@ class PreviousOrderModal extends React.Component {
 
         return (
             <Dialog
-                title={order.get('id') === 0 ? strings.no_previous_order : `${strings.order} ${order.get('id')}`}
+                title={order.id === 0 ? strings.no_previous_order : `${strings.order} ${order.id}`}
                 actions={actions}
                 modal={false}
-                open={order.get('open')}
+                open={order.open}
                 onRequestClose={close}
             >
                 <List>
-                    {order.get('lines').map(line =>
-                        <ListItem key={line.get('id')}>
-                            <b>{line.get('id')}</b> - {line.get('item').get('name')}
-                            {!line.get('ingredients').isEmpty() ? ' with ' : ''}
-                            {line.get('ingredients').map(i => i.get('name')).join(', ')}
+                    {order.lines.map(line =>
+                        <ListItem key={line.id}>
+                            <b>{line.id}</b> - {line.item.name}
+                            {!line.ingredients.length === 0 ? ' with ' : ''}
+                            {line.ingredients.map(i => i.name).join(', ')}
                         </ListItem>
                     )}
                 </List>

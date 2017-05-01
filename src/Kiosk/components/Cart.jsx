@@ -3,7 +3,6 @@ import CartEntry from './CartEntry.jsx'
 import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart, editCartItem, setPaymentModalOpen } from '../actions'
 import { getRenderedCart, getTotalPriceOfCart, getStrings } from '../selectors'
-import { List as ImmutableList } from 'immutable'
 import {List} from 'material-ui/List'
 import RaisedButton from 'material-ui/RaisedButton'
 import Delete from 'material-ui/svg-icons/action/delete'
@@ -11,7 +10,7 @@ import {white, red500} from 'material-ui/styles/colors'
 
 class Cart extends React.Component {
     static propTypes = {
-        items: React.PropTypes.instanceOf(ImmutableList),
+        items: React.PropTypes.array,
         onEmptyCart: React.PropTypes.func,
         onRemoveItem: React.PropTypes.func,
         onEditItem: React.PropTypes.func,
@@ -31,14 +30,14 @@ class Cart extends React.Component {
                             {items.reverse().map((entry, index) =>
                                 <CartEntry
                                     key={index}
-                                    price={entry.get('item').get('price')}
-                                    name={entry.get('item').get('name')}
-                                    image={entry.get('item').get('image') || './images/planet.png'}
-                                    ingredients={entry.get('ingredients')}
-                                    index={(items.size - 1) - index}
+                                    price={entry.item.price}
+                                    name={entry.item.name}
+                                    image={entry.item.image || './images/planet.png'}
+                                    ingredients={entry.ingredients}
+                                    index={(items.length - 1) - index}
                                     onRemoveItem={onRemoveItem}
                                     onEditItem={onEditItem}
-                                    editable={entry.get('item').get('created_in_the_kitchen')}
+                                    editable={entry.item.created_in_the_kitchen}
                                     price_text={strings.price_short}
                                 />
                             )}
@@ -48,13 +47,14 @@ class Cart extends React.Component {
                 <div className='row' style={{paddingTop: '4px'}}>
                     <div className='col-xs-8'>
                         <RaisedButton onClick={onPurchase}
-                            disabled={items.isEmpty()}
-                            fullWidth primary
+                            disabled={items.length === 0}
+                            fullWidth
+                            primary
                             label={strings.total + ' ' + total + strings.price_short}
                         />
                     </div>
                     <div className='col-xs-4'>
-                        <RaisedButton disabled={items.isEmpty()}
+                        <RaisedButton disabled={items.length === 0}
                             onClick={onEmptyCart}
                             fullWidth
                             backgroundColor={red500}

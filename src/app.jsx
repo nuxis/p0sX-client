@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
 import axios from 'axios'
-import { fromJS } from 'immutable'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Provider } from 'react-redux'
@@ -21,7 +20,7 @@ axios.defaults.baseURL = settings.get('server_address')
 
 // For convenience, transforms the response to ImmutableJS
 // eslint-disable-next-line immutable/no-mutation
-axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data) => fromJS(data))
+axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data) => data)
 
 // Set auth_token
 // eslint-disable-next-line immutable/no-mutation

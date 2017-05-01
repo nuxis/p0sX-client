@@ -3,18 +3,17 @@ import Item from './Item.jsx'
 import { connect } from 'react-redux'
 import { addItemToCart, openIngredientModalForItem } from '../actions'
 import { getItemsByCategory, getStrings } from '../selectors'
-import { List } from 'immutable'
 
 class ItemList extends React.Component {
     static propTypes = {
-        items: React.PropTypes.instanceOf(List),
+        items: React.PropTypes.array,
         onItemClick: React.PropTypes.func,
         strings: React.PropTypes.object
     }
 
     onItemClick = (id) => {
         const {onItemClick, items} = this.props
-        onItemClick(items.find(i => i.get('id') === id))
+        onItemClick(items.find(i => i.id === id))
     }
 
     render () {
@@ -25,11 +24,11 @@ class ItemList extends React.Component {
                 <div className='item-list' style={{overflowY: 'auto', height: 'calc(100% - 2px)', paddingLeft: '10px'}}>
                     {items.map((item) =>
                         <Item
-                            key={item.get('id')}
-                            name={item.get('name')}
-                            price={item.get('price') + ' ' + strings.price_text}
-                            image={item.get('image') || './images/planet.png'}
-                            id={item.get('id')}
+                            key={item.id}
+                            name={item.name}
+                            price={item.price + ' ' + strings.price_text}
+                            image={item.image || './images/planet.png'}
+                            id={item.id}
                             onClick={this.onItemClick}
                         />
                     )}
@@ -50,7 +49,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
-            if (item.get('created_in_the_kitchen')) {
+            if (item.created_in_the_kitchen) {
                 dispatch(openIngredientModalForItem(item))
             } else {
                 dispatch(addItemToCart(item))

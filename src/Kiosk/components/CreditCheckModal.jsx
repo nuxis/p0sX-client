@@ -18,8 +18,8 @@ class PreviousOrderModal extends React.Component {
     focusTextField = () => this.refs.creditBadge.focus()
 
     componentDidUpdate (prevProps) {
-        const open = this.props.credit.get('modalOpen')
-        const prevOpen = prevProps.credit.get('modalOpen')
+        const open = this.props.credit.modalOpen
+        const prevOpen = prevProps.credit.modalOpen
 
         if (open && open !== prevOpen) {
             setTimeout(() => this.focusTextField(), 250)
@@ -57,12 +57,12 @@ class PreviousOrderModal extends React.Component {
                 title={strings.scan_badge_to_check_credit}
                 actions={actions}
                 modal={false}
-                open={credit.get('modalOpen')}
+                open={credit.modalOpen}
                 onRequestClose={closeModal}
             >
                 <div className='row'>
                     <div className='col-xs-12'>
-                        <h4>{sprintf(strings.credit_check_result, credit.get('left'), strings.price_short, credit.get('credit_limit'), strings.price_short)}</h4>
+                        <h4>{sprintf(strings.credit_check_result, credit.left, strings.price_short, credit.credit_limit, strings.price_short)}</h4>
                     </div>
                 </div>
                 <div className='row'>

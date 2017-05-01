@@ -105,9 +105,9 @@ class PaymentModal extends React.Component {
         const amount = parseInt(this.state.amount)
         var completeString = ''
 
-        if (paymentState.get('paymentMethod') === PAYMENT_METHOD.CASH) {
+        if (paymentState.paymentMethod === PAYMENT_METHOD.CASH) {
             completeString = `${strings.return} ${amount - total} ${strings.price_text}`
-        } else if (paymentState.get('paymentMethod') === PAYMENT_METHOD.CREW) {
+        } else if (paymentState.paymentMethod === PAYMENT_METHOD.CREW) {
             completeString = 'YAY!'
         }
 
@@ -142,7 +142,7 @@ class PaymentModal extends React.Component {
     onEnter = (e) => {
         if (e.keyCode === 13) {
             const { paymentState } = this.props
-            switch (paymentState.get('paymentMethod')) {
+            switch (paymentState.paymentMethod) {
             case PAYMENT_METHOD.CREW:
                 this.purchaseCrew()
                 break
@@ -197,9 +197,9 @@ class PaymentModal extends React.Component {
 
     componentDidUpdate (prevProps) {
         const { paymentState } = this.props
-        const paymentMethod = paymentState.get('paymentMethod')
-        const stateIndex = paymentState.get('stateIndex')
-        const prevStateIndex = prevProps.paymentState.get('stateIndex')
+        const paymentMethod = paymentState.paymentMethod
+        const stateIndex = paymentState.stateIndex
+        const prevStateIndex = prevProps.paymentState.stateIndex
 
         if (prevStateIndex === stateIndex) {
             return
@@ -239,8 +239,8 @@ class PaymentModal extends React.Component {
 
     render () {
         const { paymentState, onBack, strings, total } = this.props
-        const paymentMethod = paymentState.get('paymentMethod')
-        const stateIndex = paymentState.get('stateIndex')
+        const paymentMethod = paymentState.paymentMethod
+        const stateIndex = paymentState.stateIndex
 
         const actions = [
             <FlatButton
@@ -251,7 +251,7 @@ class PaymentModal extends React.Component {
         ]
 
         return (
-            <Dialog open={paymentState.get('modalOpen')} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={`${strings.please_pay} ${total}${strings.price_text}`}>
+            <Dialog open={paymentState.modalOpen} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={`${strings.please_pay} ${total}${strings.price_text}`}>
                 <Stepper activeStep={stateIndex} linear={false}>
                     <Step>
                         <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>
@@ -274,7 +274,7 @@ const mapStateToProps = (state) => {
     return {
         paymentState: state.payment,
         total: getTotalPriceOfCart(state),
-        cashierCard: getLoggedInCashier(state).get('card'),
+        cashierCard: getLoggedInCashier(state).card,
         strings: getStrings(state),
         purchaseInProgress: getPurchaseInProgress(state)
     }

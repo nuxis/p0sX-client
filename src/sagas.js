@@ -1,22 +1,19 @@
-import { fork } from 'redux-saga/effects'
-import { watchKioskData, watchItems, watchCategories, watchPostPurchase, watchApplyDiscounts, watchDiscounts,
-    watchUndoOrders, watchGetCreditForCrew, watchCashierLogin, watchCashierLogout, watchOpenAndGetCurrentShift,
-    watchCreateNewShift, watchEditCartItem } from './Kiosk/sagas'
+import * as kioskSagas from './Kiosk/sagas'
 
 export default function * root () {
     yield [
-        fork(watchKioskData),
-        watchItems(),
-        watchCategories(),
-        watchDiscounts(),
-        watchPostPurchase(),
-        watchApplyDiscounts(),
-        watchUndoOrders(),
-        watchGetCreditForCrew(),
-        watchCashierLogin(),
-        watchCashierLogout(),
-        watchOpenAndGetCurrentShift(),
-        watchCreateNewShift(),
-        watchEditCartItem()
+        kioskSagas.watchKioskData(),
+        kioskSagas.watchItems(),
+        kioskSagas.watchCategories(),
+        kioskSagas.watchDiscounts(),
+        kioskSagas.watchPostPurchase(),
+        kioskSagas.watchApplyDiscounts(),
+        kioskSagas.watchUndoOrders(),
+        kioskSagas.watchGetCreditForCrew(),
+        kioskSagas.watchCashierLogin(),
+        kioskSagas.watchCashierLogout(),
+        kioskSagas.watchOpenAndGetCurrentShift(),
+        kioskSagas.watchCreateNewShift(),
+        kioskSagas.watchEditCartItem()
     ]
 }

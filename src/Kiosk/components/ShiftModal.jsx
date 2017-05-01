@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { createNewShift, setShiftModalOpen } from '../actions'
 import { getShift, getLoggedInCashier, getStrings } from '../selectors'
-import { Map } from 'immutable'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table'
@@ -10,7 +9,7 @@ import moment from 'moment'
 
 class ShiftModal extends React.Component {
     static propTypes = {
-        shift: React.PropTypes.instanceOf(Map),
+        shift: React.PropTypes.object,
         dispatchCreateNewShift: React.PropTypes.func,
         card: React.PropTypes.string,
         closeModal: React.PropTypes.func,
@@ -45,19 +44,19 @@ class ShiftModal extends React.Component {
                 title={strings.manage_shifts}
                 actions={actions}
                 modal={false}
-                open={shift.get('modalOpen')}
+                open={shift.modalOpen}
                 onRequestClose={closeModal}
             >
-                <h4>{strings.started}: {moment(new Date(shift.get('start'))).format('DD.MM.YYYY HH:mm:ss')}</h4>
+                <h4>{strings.started}: {moment(new Date(shift.start)).format('DD.MM.YYYY HH:mm:ss')}</h4>
                 <Table>
                     <TableBody displayRowCheckbox={false} showRowHover={false} >
                         <TableRow selectable={false}>
                             <TableRowColumn>{strings.cash}</TableRowColumn>
-                            <TableRowColumn>{shift.get('cash')}</TableRowColumn>
+                            <TableRowColumn>{shift.cash}</TableRowColumn>
                         </TableRow>
                         <TableRow selectable={false}>
                             <TableRowColumn>{strings.crew}</TableRowColumn>
-                            <TableRowColumn>{shift.get('crew')}</TableRowColumn>
+                            <TableRowColumn>{shift.crew}</TableRowColumn>
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -69,7 +68,7 @@ class ShiftModal extends React.Component {
 const mapStateToProps = (state) => {
     return {
         shift: getShift(state),
-        card: getLoggedInCashier(state).get('card'),
+        card: getLoggedInCashier(state).card,
         strings: getStrings(state)
     }
 }

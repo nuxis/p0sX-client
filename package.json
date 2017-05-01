@@ -71,7 +71,6 @@
     "flexboxgrid": "^6.3.1",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
-    "immutable": "^3.8.1",
     "material-ui": "^0.17.4",
     "moment": "^2.18.1",
     "react": "^15.5.4",

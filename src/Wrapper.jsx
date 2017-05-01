@@ -8,7 +8,7 @@ import IngredientModal from './Kiosk/components/IngredientModal.jsx'
 import SearchBox from './Kiosk/components/SearchBox.jsx'
 import { NotificationContainer } from 'react-notifications'
 import { getAllKioskData, cashierLogout, toggleSettingsModal, toggleIngredientModal, setLastOrderModalOpen,
-    setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen, displayNotification, hideNotification } from './Kiosk/actions'
+    setCreditModalOpen, openAndGetCurrentShift, setLockModalOpen } from './Kiosk/actions'
 import { loadStrings } from './actions'
 import LockModal from './Kiosk/components/LockModal'
 import ShiftModal from './Kiosk/components/ShiftModal'
@@ -28,7 +28,6 @@ import ShiftIcon from 'material-ui/svg-icons/maps/local-atm'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import Snackbar from 'material-ui/Snackbar'
 
 class Wrapper extends React.Component {
     static propTypes = {
@@ -49,9 +48,7 @@ class Wrapper extends React.Component {
         openShiftModal: React.PropTypes.func.isRequired,
         loadStrings: React.PropTypes.func,
         strings: React.PropTypes.object,
-        language: React.PropTypes.string,
-        notification: React.PropTypes.object,
-        hideNotification: React.PropTypes.func
+        language: React.PropTypes.string
     }
 
     componentDidUpdate (prevProps) {
@@ -75,7 +72,7 @@ class Wrapper extends React.Component {
 
     render () {
         const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings,
-            openLastOrderModal, openCreditModal, openShiftModal, hideNotification, notification} = this.props
+            openLastOrderModal, openCreditModal, openShiftModal} = this.props
 
         const style = {
             backgroundColor: cyan500
@@ -118,14 +115,6 @@ class Wrapper extends React.Component {
                 </Toolbar>
                 {children}
                 <NotificationContainer />
-                <Snackbar
-                    open={notification.open}
-                    message={notification.message}
-                    autoHideDuration={notification.timeout}
-                    onRequestClose={hideNotification}
-                    onActionTouchTap={hideNotification}
-                    action='hide'
-                />
                 <SettingsModal toggleOpen={toggleSettingsModal} />
                 <IngredientModal toggleOpen={toggleIngredientModal} />
                 <PreviousOrderModal />
@@ -140,7 +129,7 @@ class Wrapper extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        cashierName: selectors.getLoggedInCashier(state).get('name'),
+        cashierName: selectors.getLoggedInCashier(state).name,
         language: selectors.getSettings(state).language,
         strings: selectors.getStrings(state),
         settingsEmpty: !selectors.getSettings(state).server_address,
@@ -150,8 +139,8 @@ const mapStateToProps = (state) => {
             const settings = selectors.getSettings(state)
             const receiptItems = selectors.getLastCart(state).map(entry => {
                 return {
-                    name: entry.get('item').get('name'),
-                    price: entry.get('item').get('price') + entry.get('ingredients').reduce((total, p) => total + p.get('price'), 0)
+                    name: entry.item.name,
+                    price: entry.item.price + entry.ingredients.reduce((total, p) => total + p.price, 0)
                 }
             }).toJS()
             const {receiptPrinter, receipt} = settings
@@ -170,9 +159,7 @@ const mapDispatchToProps = (dispatch) => {
         openLastOrderModal: () => dispatch(setLastOrderModalOpen(true)),
         openCreditModal: () => dispatch(setCreditModalOpen(true)),
         openShiftModal: () => dispatch(openAndGetCurrentShift()),
-        openLockModal: () => dispatch(setLockModalOpen(true)),
-        hideNotification: () => dispatch(hideNotification()),
-        displayNotification: (message, timeout) => dispatch(displayNotification(message, timeout))
+        openLockModal: () => dispatch(setLockModalOpen(true))
     }
 }
 

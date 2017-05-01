@@ -1,4 +1,3 @@
-import { List, Map } from 'immutable'
 import * as actions from './actions'
 import SettingsFile from '../common/settings'
 import axios from 'axios'
@@ -42,21 +41,30 @@ export function purchaseInProgress (state = inProgressInit, action) {
 
 // CREDIT
 
-const creditInit = Map({
+const creditInit = {
     used: 0,
     credit_limit: 0,
     left: 0,
     modalOpen: false
-})
+}
 
 export function creditCheck (state = creditInit, action) {
     switch (action.type) {
     case actions.SET_CREDIT_MODAL_OPEN:
-        return state.set('modalOpen', action.open)
+        return {
+            ...state,
+            modalOpen: action.open
+        }
     case actions.SET_CREDIT:
-        return action.credit.set('modalOpen', state.get('modalOpen'))
+        return {
+            ...action.credit,
+            modalOpen: state.modalOpen
+        }
     case actions.CLEAR_CREDIT_INFO:
-        return creditInit.set('modalOpen', state.get('modalOpen'))
+        return {
+            ...creditInit,
+            modalOpen: state.modalOpen
+        }
     default:
         return state
     }
@@ -79,24 +87,30 @@ export function lastCart (state = cartInit, action) {
 
 // LAST ORDER
 
-const lastOrderInit = Map({
-    lines: List(),
+const lastOrderInit = {
+    lines: [],
     id: 0,
     open: false
-})
+}
 
 export function lastOrder (state = lastOrderInit, action) {
     switch (action.type) {
     case actions.SET_LAST_ORDER_MODAL_OPEN:
-        return state.set('open', action.open)
+        return {
+            ...state,
+            open: action.open
+        }
     case actions.SET_LAST_ORDER:
-        return action.cart.set('open', false)
+        return {
+            ...action.cart,
+            open: false
+        }
     case actions.CLEAR_LAST_ORDER:
-        return Map({
-            lines: List(),
+        return {
+            lines: [],
             id: 0,
             open: false
-        })
+        }
     default:
         return state
     }
@@ -105,7 +119,7 @@ export function lastOrder (state = lastOrderInit, action) {
 // END LAST ORDER
 
 // DISCOUNTS
-const discountsInit = List()
+const discountsInit = []
 
 export function discounts (state = discountsInit, action) {
     switch (action.type) {
@@ -135,11 +149,11 @@ export function search (state = searchInit, action) {
 
 // CATEGORIES
 
-const mainCategory = new Map({
+const mainCategory = {
     id: 0,
     name: 'All'
-})
-const categoriesInit = List().push(mainCategory)
+}
+const categoriesInit = [mainCategory]
 
 export function categories (state = categoriesInit, action) {
     switch (action.type) {
@@ -195,7 +209,7 @@ const selectedCategoryInit = 0
 export function selectedCategory (state = selectedCategoryInit, action) {
     switch (action.type) {
     case actions.SET_ACTIVE_CATEGORY:
-        return action.category.get('id')
+        return action.category.id
     default:
         return state
     }
@@ -205,40 +219,52 @@ export function selectedCategory (state = selectedCategoryInit, action) {
 
 // CURRENTITEM
 
-const currentItemInit = new Map({
+const currentItemInit = {
     // TODO: CHANGE THIS
     // The Item is initiatet here because its needed since we render
     // IngredientModal at init, this behaviour should be changed.
-    item: Map({
+    item: {
         name: 'NOTHING',
-        ingredients: List()
-    }),
-    ingredients: List(),
+        ingredients: []
+    },
+    ingredients: [],
     message: '',
     modalOpen: false,
     edit: false
-})
+}
 
 export function currentItem (state = currentItemInit, action) {
     switch (action.type) {
     case actions.OPEN_INGREDIENT_MODAL_FOR_ITEM:
-        return new Map({
+        return {
             item: action.item,
-            ingredients: action.ingredients || action.item.get('ingredients').filter(i => i.get('default')),
+            ingredients: action.ingredients || action.item.ingredients.filter(i => i.default),
             message: action.message || '',
             modalOpen: true,
             edit: action.edit || false
-        })
+        }
     case actions.TOGGLE_INGREDIENT:
-        if (state.get('ingredients').includes(action.ingredient)) {
-            return state.set('ingredients', state.get('ingredients').filter(i => i.get('id') !== action.ingredient.get('id')))
-        } else if (action.ingredient.get('exclusive')) {
-            return state.set('ingredients', state.get('ingredients').clear().push(action.ingredient))
+        if (state.ingredients.includes(action.ingredient)) {
+            return {
+                ...state,
+                ingredients: state.ingredients.filter(i => i.id !== action.ingredient.id)
+            }
+        } else if (action.ingredient.exclusive) {
+            return {
+                ...state,
+                ingredients: state.ingredients.clear().push(action.ingredient)
+            }
         } else {
-            return state.set('ingredients', state.get('ingredients').push(action.ingredient))
+            return {
+                ...state,
+                ingredients: state.ingredients.push(action.ingredient)
+            }
         }
     case actions.TOGGLE_INGREDIENT_MODAL:
-        return state.set('modalOpen', !state.get('modalOpen'))
+        return {
+            ...state,
+            modalOpen: !state.modalOpen
+        }
     case actions.ADD_CURRENT_ITEM_TO_CART:
         return currentItemInit
     default:
@@ -250,32 +276,37 @@ export function currentItem (state = currentItemInit, action) {
 
 // CART
 
-const cartInit = new List()
+const cartInit = []
 
 export function cart (state = cartInit, action) {
     switch (action.type) {
     case actions.ADD_ITEM_TO_CART:
-        return state.push(
-            Map({
+        return [
+            ...state,
+            {
                 item: action.item,
-                ingredients: List(),
+                ingredients: [],
                 message: ''
-            })
-      )
+            }
+        ]
     case actions.ADD_CURRENT_ITEM_TO_CART:
-        return state.push(
-            Map({
-                item: action.currentItem.get('item'),
-                ingredients: action.currentItem.get('ingredients'),
+        return [
+            ...state,
+            {
+                item: action.currentItem.item,
+                ingredients: action.currentItem.ingredients,
                 message: action.message
-            })
-      )
+            }
+        ]
     case actions.REMOVE_ITEM_FROM_CART:
-        return state.remove(action.itemIndexInCart)
+        return [
+            ...state.slice(0, action.itemIndexInCart),
+            ...state.slice(action.itemIndexInCart + 1)
+        ]
     case actions.EMPTY_CART:
-        return new List()
+        return []
     case actions.REMOVE_DISCOUNTS:
-        return state.filter(line => line.get('item').get('price') > 0)
+        return state.filter(line => line.item.price > 0)
     default:
         return state
     }
@@ -285,7 +316,7 @@ export function cart (state = cartInit, action) {
 
 // ITEMS
 
-const itemsInit = new List()
+const itemsInit = []
 
 export function items (state = itemsInit, action) {
     switch (action.type) {
@@ -300,20 +331,29 @@ export function items (state = itemsInit, action) {
 
 // PAYMENT
 
-const paymentInit = new Map({
+const paymentInit = {
     stateIndex: 0,
     paymentMethod: 0,
     modalOpen: false
-})
+}
 
 export function payment (state = paymentInit, action) {
     switch (action.type) {
     case actions.SET_PAYMENT_MODAL_OPEN:
-        return state.set('modalOpen', action.open)
+        return {
+            ...state,
+            modalOpen: action.open
+        }
     case actions.SET_PAYMENT_STATE:
-        return state.set('stateIndex', action.state)
+        return {
+            ...state,
+            stateIndex: action.state
+        }
     case actions.SET_PAYMENT_METHOD:
-        return state.set('paymentMethod', action.method)
+        return {
+            ...state,
+            paymentMethod: action.method
+        }
     default:
         return state
     }
@@ -323,28 +363,31 @@ export function payment (state = paymentInit, action) {
 
 // CASHIER
 
-const cashierInit = new Map({
+const cashierInit = {
     locked: false,
     card: '',
     name: ''
-})
+}
 
 export function cashier (state = cashierInit, action) {
     switch (action.type) {
     case actions.SET_LOCK_MODAL_OPEN:
-        return state.set('locked', action.open)
+        return {
+            ...state,
+            locked: action.open
+        }
     case actions.CASHIER_CLEAR:
-        return new Map({
+        return {
             locked: true,
             card: '',
             name: ''
-        })
+        }
     case actions.CASHIER_SUCCESS:
-        return new Map({
+        return {
             locked: false,
-            card: action.crew.get('card'),
-            name: `${action.crew.get('first_name')} ${action.crew.get('last_name')}`
-        })
+            card: action.crew.card,
+            name: `${action.crew.first_name} ${action.crew.last_name}`
+        }
     default:
         return state
     }
@@ -354,7 +397,7 @@ export function cashier (state = cashierInit, action) {
 
 // SHIFT
 
-const shiftInit = new Map({
+const shiftInit = {
     cash: 0,
     crew: 0,
     card: 0,
@@ -365,14 +408,20 @@ const shiftInit = new Map({
     undo: 0,
     start: '2016-01-01T00:00:00.000000Z',
     modalOpen: false
-})
+}
 
 export function shift (state = shiftInit, action) {
     switch (action.type) {
     case actions.SET_SHIFT_MODAL_OPEN:
-        return state.set('modalOpen', action.open)
+        return {
+            ...state,
+            modalOpen: action.open
+        }
     case actions.SET_CURRENT_SHIFT:
-        return action.shift.set('modalOpen', state.get('modalOpen'))
+        return {
+            ...action.shift,
+            modalOpen: state.modalOpen
+        }
     default:
         return state
     }

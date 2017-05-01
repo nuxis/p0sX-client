@@ -1,5 +1,4 @@
 import React from 'react'
-import { List } from 'immutable'
 import {ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
@@ -10,7 +9,7 @@ class CartEntry extends React.Component {
     static propTypes = {
         name: React.PropTypes.string.isRequired,
         price: React.PropTypes.number.isRequired,
-        ingredients: React.PropTypes.instanceOf(List).isRequired,
+        ingredients: React.PropTypes.array.isRequired,
         onRemoveItem: React.PropTypes.func.isRequired,
         onEditItem: React.PropTypes.func.isRequired,
         image: React.PropTypes.string,
@@ -45,7 +44,7 @@ class CartEntry extends React.Component {
                 leftAvatar={<Avatar src={image} />}
                 primaryText={<div style={textStyle}>{name}</div>}
                 // eslint-disable-next-line camelcase
-                secondaryText={(!ingredients.isEmpty() ? '+ingredients ' : '') + price + price_text}
+                secondaryText={(!ingredients.length === 0 ? '+ingredients ' : '') + price + price_text}
                 secondaryTextLines={1}
                 disabled={!editable}
                 rightIconButton={<IconButton onClick={this.removeItem} disableTouchRipple><Delete color={red500} /></IconButton>}

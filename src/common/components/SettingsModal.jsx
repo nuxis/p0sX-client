@@ -191,7 +191,7 @@ class SettingsModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        initial: getSettings(state).server_address.length === 0,
+        initial: !getSettings(state).server_address,
         settings: getSettings(state),
         strings: getStrings(state)
     }

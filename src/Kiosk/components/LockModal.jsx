@@ -60,7 +60,7 @@ class LockModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        open: getLoggedInCashier(state).get('locked'),
+        open: getLoggedInCashier(state).locked,
         strings: getStrings(state)
     }
 }

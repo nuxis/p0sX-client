@@ -8,15 +8,13 @@ import { cashDraw, kitchenReceipt, customerOrderReceipt, printShift } from '../c
 import settings from '../common/settings'
 
 export function * watchKioskData () {
-    while (true) {
-        yield * takeEvery(actions.GET_ALL_KIOSK_DATA, function * () {
-            yield [
-                call(getItems),
-                call(getCategories),
-                call(getDiscounts)
-            ]
-        })
-    }
+    yield * takeEvery(actions.GET_ALL_KIOSK_DATA, function * () {
+        yield [
+            call(getItems),
+            call(getCategories),
+            call(getDiscounts)
+        ]
+    })
 }
 
 export function * watchItems () {
@@ -71,8 +69,8 @@ function * postPurchase (action) {
             undo: false,
             lines: cart.map(entry => {
                 return {
-                    item: entry.get('item').get('id'),
-                    ingredients: entry.get('ingredients').map(ingredient => ingredient.get('id'))
+                    item: entry.item.id,
+                    ingredients: entry.ingredients.map(ingredient => ingredient.id)
                 }
             })
         }
@@ -90,7 +88,7 @@ function * postPurchase (action) {
             if (!credit) {
                 yield put(actions.setPurchaseInProgress(false))
                 return
-            } else if (options.total > credit.get('left')) {
+            } else if (options.total > credit.left) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
                 yield put(actions.setPaymentModalOpen(false))
                 yield put(actions.setPaymentState(0))
@@ -108,22 +106,22 @@ function * postPurchase (action) {
             const receiptConfig = settings.get('receiptPrinter')
             const kitchenConfig = settings.get('kitchenPrinter')
 
-            receiptItems = receiptItems.filter(entry => entry.get('item').get('created_in_the_kitchen'))
-            if (receiptItems.size > 0) {
+            receiptItems = receiptItems.filter(entry => entry.item.created_in_the_kitchen)
+            if (receiptItems.length > 0) {
                 receiptItems = receiptItems.map(entry => {
                     return {
-                        name: entry.get('item').get('name'),
-                        ingredients: entry.get('ingredients').toJS(),
-                        price: entry.get('item').get('price'),
-                        message: entry.get('message')
+                        name: entry.item.name,
+                        ingredients: entry.ingredients,
+                        price: entry.item.price,
+                        message: entry.message
                     }
-                }).toJS()
+                })
 
                 // Print receipt for the customer
-                customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.get('id'), options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
+                customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.id, options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
                 // Print separate notes for the kitchen
                 for (const entry of receiptItems) {
-                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.get('id')).then(() => {})
+                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.id).then(() => {})
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
@@ -140,10 +138,10 @@ function * postPurchase (action) {
 function * undoOrder () {
     try {
         const lastOrder = yield select(selectors.getLastOrder)
-        if (lastOrder.get('lines').isEmpty()) {
+        if (lastOrder.lines.isEmpty()) {
             NotificationManager.error('There is nothing to undo', '', 5000)
         } else {
-            var options = lastOrder.toJS()
+            var options = lastOrder
             options = {
                 ...options,
                 undo: true,
@@ -172,20 +170,24 @@ export function * watchPostPurchase () {
 function * applyDiscounts (action) {
     var discounts = yield select(selectors.getDiscounts, action.paymentMethod)
     var items = yield select(selectors.getItems)
-    discounts = discounts.map(d => d.set('item', items.find(i => i.get('id') === d.get('item'))))
-    discounts = discounts.sortBy(d => d.get('item').get('price'))
+    discounts = discounts.map(d => Object.assign({}, d, {
+        item: items.find(i => i.id === d.item)
+    })).sort(d => d.item.price)
     var cart = yield select(selectors.getCart)
 
     for (const discount of discounts) {
         // eslint-disable-next-line no-eval
-        const evalFunc = eval(discount.get('expression'))
+        const evalFunc = eval(discount.expression)
         const result = evalFunc(cart)
         result.used.forEach(item => {
             var index = cart.indexOf(item)
-            cart = cart.remove(index)
+            cart = [
+                ...cart.slice(0, index),
+                ...cart.slice(index + 1)
+            ]
         })
         for (var i = 0; i < result.count; i++) {
-            yield put(actions.addItemToCart(discount.get('item')))
+            yield put(actions.addItemToCart(discount.item))
         }
     }
 }
@@ -212,8 +214,8 @@ export function * watchGetCreditForCrew () {
 function * cashierLogin (action) {
     try {
         const crew = yield call(api.getCrew, action.card)
-        if (crew.size === 1) {
-            yield put(actions.cashierSuccess(crew.get(0)))
+        if (crew.length === 1) {
+            yield put(actions.cashierSuccess(crew[0]))
         } else {
             NotificationManager.error('Login failed', 'Are you crew?!', 5000)
             yield put(actions.cashierClear())
@@ -243,11 +245,11 @@ export function * watchCashierLogout () {
 function * openAndGetCurrentShift () {
     try {
         const currentShifts = yield call(api.getCurrentShift)
-        if (currentShifts.size === 1) {
-            const shift = currentShifts.get(0)
+        if (currentShifts.length === 1) {
+            const shift = currentShifts[0]
             yield put(actions.setShiftModalOpen(true))
             yield put(actions.setCurrentShift(shift))
-        } else if (currentShifts.size === 0) {
+        } else if (currentShifts.length === 0) {
             const card = yield select(selectors.getLoggedInCashier)
             yield put(actions.createNewShift(card))
         } else {
@@ -268,8 +270,8 @@ function * createNewShift (action) {
         if (create) {
             NotificationManager.success('New shift successfully created!', '', 5000)
             const shift = yield select(selectors.getShift)
-            const receiptConfig = settings.get('receiptPrinter')
-            const name = settings.get('name')
+            const receiptConfig = settings.receiptPrinter
+            const name = settings.name
             yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
             yield put(actions.openAndGetCurrentShift())
         }
@@ -284,8 +286,8 @@ export function * watchCreateNewShift () {
 
 function * editCartItem (action) {
     const item = yield select(selectors.getCartItemByIndex, action.itemIndex)
-    if (item.get('item').get('created_in_the_kitchen')) {
-        yield put(actions.openIngredientModalForItem(item.get('item'), item.get('ingredients'), item.get('message'), true))
+    if (item.item.created_in_the_kitchen) {
+        yield put(actions.openIngredientModalForItem(item.item, item.ingredients, item.message, true))
         yield put(actions.removeItemFromCart(action.itemIndex))
     }
 }
