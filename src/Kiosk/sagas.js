@@ -1,4 +1,4 @@
-import { call, put, take, select } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 import * as api from '../common/api'
 import * as actions from './actions'
@@ -9,20 +9,18 @@ import settings from '../common/settings'
 
 export function * watchKioskData () {
     while (true) {
-        yield take(actions.GET_ALL_KIOSK_DATA)
-        yield [
-            call(getItems),
-            call(getCategories),
-            call(getDiscounts)
-        ]
+        yield * takeEvery(actions.GET_ALL_KIOSK_DATA, function * () {
+            yield [
+                call(getItems),
+                call(getCategories),
+                call(getDiscounts)
+            ]
+        })
     }
 }
 
 export function * watchItems () {
-    while (true) {
-        yield take(actions.GET_ITEMS)
-        yield call(getItems)
-    }
+    yield * takeEvery(actions.GET_ITEMS, getItems)
 }
 
 function * getItems () {
@@ -35,10 +33,7 @@ function * getItems () {
 }
 
 export function * watchCategories () {
-    while (true) {
-        yield take(actions.GET_CATEGORIES)
-        yield call(getCategories)
-    }
+    yield * takeEvery(actions.GET_CATEGORIES, getCategories)
 }
 
 function * getCategories () {
@@ -51,10 +46,7 @@ function * getCategories () {
 }
 
 export function * watchDiscounts () {
-    while (true) {
-        yield take(actions.GET_DISCOUNTS)
-        yield call(getDiscounts)
-    }
+    yield * takeEvery(actions.GET_DISCOUNTS, getDiscounts)
 }
 
 function * getDiscounts () {

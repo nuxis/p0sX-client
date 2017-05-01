@@ -143,7 +143,7 @@ const mapStateToProps = (state) => {
         cashierName: selectors.getLoggedInCashier(state).get('name'),
         language: selectors.getSettings(state).language,
         strings: selectors.getStrings(state),
-        settingsEmpty: selectors.getSettings(state).server_address.length === 0,
+        settingsEmpty: !selectors.getSettings(state).server_address,
         notification: selectors.getNotification(state),
         printReceipt: () => {
             const total = selectors.getTotalPriceOfLastCart(state)
@@ -151,7 +151,7 @@ const mapStateToProps = (state) => {
             const receiptItems = selectors.getLastCart(state).map(entry => {
                 return {
                     name: entry.get('item').get('name'),
-                    price: entry.get('item').get('price')
+                    price: entry.get('item').get('price') + entry.get('ingredients').reduce((total, p) => total + p.get('price'), 0)
                 }
             }).toJS()
             const {receiptPrinter, receipt} = settings

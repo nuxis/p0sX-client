@@ -6,9 +6,9 @@ import { watchKioskData, watchItems, watchCategories, watchPostPurchase, watchAp
 export default function * root () {
     yield [
         fork(watchKioskData),
-        fork(watchItems),
-        fork(watchCategories),
-        fork(watchDiscounts),
+        watchItems(),
+        watchCategories(),
+        watchDiscounts(),
         watchPostPurchase(),
         watchApplyDiscounts(),
         watchUndoOrders(),
