@@ -252,12 +252,15 @@ export function currentItem (state = currentItemInit, action) {
         } else if (action.ingredient.exclusive) {
             return {
                 ...state,
-                ingredients: state.ingredients.clear().push(action.ingredient)
+                ingredients: [action.ingredient]
             }
         } else {
             return {
                 ...state,
-                ingredients: state.ingredients.push(action.ingredient)
+                ingredients: [
+                    ...state.ingredients,
+                    action.ingredient
+                ]
             }
         }
     case actions.TOGGLE_INGREDIENT_MODAL:

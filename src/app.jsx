@@ -1,4 +1,5 @@
 import React from 'react'
+import electron from 'electron'
 import { render } from 'react-dom'
 import axios from 'axios'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -13,6 +14,9 @@ import configureStore from './configureStore'
 import Wrapper from './Wrapper'
 
 injectTapEventPlugin()
+
+// Disables zoom
+electron.webFrame.setZoomLevelLimits(1, 1)
 
 // Global axios defaults
 // eslint-disable-next-line immutable/no-mutation

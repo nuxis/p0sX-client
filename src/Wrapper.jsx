@@ -142,7 +142,7 @@ const mapStateToProps = (state) => {
                     name: entry.item.name,
                     price: entry.item.price + entry.ingredients.reduce((total, p) => total + p.price, 0)
                 }
-            }).toJS()
+            })
             const {receiptPrinter, receipt} = settings
             printReceipt(receiptPrinter.type, receiptPrinter.config, receipt, receiptItems, total, false).then(() => {})
         }

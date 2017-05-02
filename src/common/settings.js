@@ -1,5 +1,29 @@
 import settings from 'electron-settings'
 
+if (!settings.has('language')) {
+    settings.setAll({
+        api_auth_token: '',
+        server_address: '',
+        language: 'en',
+        name: '',
+        receiptPrinter: {
+            type: 'Console',
+            config: {}
+        },
+        kitchenPrinter: {
+            type: 'Console',
+            config: {}
+        },
+        receipt: {
+            header: '',
+            name: '',
+            address: '',
+            orgnr: '',
+            image: ''
+        }
+    }, {prettify: true})
+}
+
 export default {
     set: (key, value) => settings.set(key, value, {prettify: true}),
     setObject: (values) => {
@@ -9,5 +33,6 @@ export default {
         })
     },
     get: (key) => settings.get(key),
-    getAll: () => settings.getAll()
+    getAll: () => settings.getAll(),
+    isEmpty: () => !settings.has('language')
 }
