@@ -5,11 +5,15 @@ import { getAllKioskData, openAndGetCurrentShift, updateSettings, setLockModalOp
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import PrinterSettings from './PrinterSettings'
 import {Tabs, Tab} from 'material-ui/Tabs'
+import { remote } from 'electron'
+import { red500 } from 'material-ui/styles/colors'
+import DeleteIcon from 'material-ui/svg-icons/action/delete'
 
 class SettingsModal extends React.Component {
     static propTypes = {
@@ -49,6 +53,16 @@ class SettingsModal extends React.Component {
                 [event.target.id.substring(8)]: event.target.value
             }
         })
+    }
+    handleReceiptImageChange = (filenames) => {
+        if (filenames && filenames.length === 1) {
+            this.setState({
+                receipt: {
+                    ...this.state.receipt,
+                    image: filenames[0]
+                }
+            })
+        }
     }
     handleSettingChange = (event) => {
         this.setState({
@@ -98,10 +112,10 @@ class SettingsModal extends React.Component {
                 onTouchTap={this.onSave}
             />
         ]
-
+        const displayImageDelete = receipt.image.length > 0 ? 'inline' : 'none'
         return (
-            <Dialog actions={actions} modal={initial} onRequestClose={this.onClose} open={settings.open} title={strings.settings} autoScrollBodyContent>
-                <Tabs>
+            <Dialog actions={actions} modal={initial} onRequestClose={this.onClose} open={settings.open} title={strings.settings} autoScrollBodyContent bodyStyle={{padding: '0'}}>
+                <Tabs contentContainerStyle={{padding: '0 24px 24px 24px'}}>
                     <Tab label={strings.general}>
                         <TextField
                             id='name'
@@ -116,7 +130,7 @@ class SettingsModal extends React.Component {
                             onChange={this.handleLanguageChange}
                         >
                             <MenuItem value='en' primaryText='English' />
-                            <MenuItem value='no' primaryText='Norsk' />
+                            <MenuItem value='nb' primaryText='Norsk bokmål' />
                         </SelectField><br />
                         <TextField
                             id='server_address'
@@ -148,13 +162,6 @@ class SettingsModal extends React.Component {
                     </Tab>
                     <Tab label={strings.receipt}>
                         <TextField
-                            id='receipt-image'
-                            floatingLabelText={strings.image}
-                            defaultValue={receipt.image}
-                            onChange={this.handleReceiptSettingChange}
-                            fullWidth
-                        /><br />
-                        <TextField
                             id='receipt-header'
                             floatingLabelText={strings.header}
                             defaultValue={receipt.header}
@@ -181,7 +188,29 @@ class SettingsModal extends React.Component {
                             defaultValue={receipt.orgnr}
                             onChange={this.handleReceiptSettingChange}
                             fullWidth
+                        /><br /><br />
+                        <RaisedButton
+                            primary
+                            label={strings.select_image}
+                            onClick={() => {
+                                remote.dialog.showOpenDialog(
+                                    {
+                                        properties: ['openFile'],
+                                        buttonLabel: strings.select,
+                                        filters: [
+                                            {extensions: ['png'], name: strings.png_image}
+                                        ]
+                                    },
+                                    this.handleReceiptImageChange
+                                )
+                            }}
                         />
+                        <span style={{marginLeft: '10px', display: displayImageDelete}}>
+                            {receipt.image}
+                            <IconButton style={{marginTop: '-7px', marginLeft: '-10px', position: 'absolute'}} tooltip={strings.clear_image} tooltipPosition='top-center'>
+                                <DeleteIcon color={red500} onClick={() => this.handleReceiptImageChange([''])} />
+                            </IconButton>
+                        </span>
                     </Tab>
                 </Tabs>
             </Dialog>

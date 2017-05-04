@@ -17,7 +17,7 @@
   "complete_order": "Fullfør ordre",
   "please_pay": "Vennligst betal",
   "select_payment_method": "Velg betalingsmetode",
-  "get_money": "Få penger",
+  "get_money": "Motta penger",
   "order_complete": "Ordre fullført",
   "back": "Tilbake",
   "purchase": "Kjøp",
@@ -39,5 +39,9 @@
   "console": "Konsoll (debug)",
   "receipt_printer": "Kviteringsskriver",
   "kitchen_printer": "Kjøkkenskriver",
-  "confirm_new_shift": "Er du sikker på at du vil starte et nytt skift?"
+  "confirm_new_shift": "Er du sikker på at du vil starte et nytt skift?",
+  "png_image": "PNG bilde",
+  "clear_image": "Slett bilde",
+  "select_image": "Velg bilde",
+  "select": "Velg"
 }

@@ -24,7 +24,7 @@ class Cart extends React.Component {
         // const placeholderImage = require('../../images/planet.png')
         return (
             <div style={{height: '100%', paddingTop: '8px'}} className='col col-xs-3 col-sm-3 col-md-3 col-lg-3'>
-                <div className='row' style={{overflowY: 'auto', height: 'calc(100% - 42px)'}}>
+                <div className='row' style={{overflowY: 'auto', height: 'calc(100% - 46px)'}}>
                     <div className='col-xs-12'>
                         <List>
                             {items.reverse().map((entry, index) =>
@@ -45,7 +45,7 @@ class Cart extends React.Component {
                     </div>
                 </div>
                 <div className='row' style={{paddingTop: '4px'}}>
-                    <div className='col-xs-8'>
+                    <div className='col-xs-8' style={{paddingRight: '0'}}>
                         <RaisedButton onClick={onPurchase}
                             disabled={items.length === 0}
                             fullWidth
@@ -53,7 +53,7 @@ class Cart extends React.Component {
                             label={strings.total + ' ' + total + strings.price_short}
                         />
                     </div>
-                    <div className='col-xs-4'>
+                    <div className='col-xs-4' style={{paddingRight: '3px'}}>
                         <RaisedButton disabled={items.length === 0}
                             onClick={onEmptyCart}
                             fullWidth

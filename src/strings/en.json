@@ -56,5 +56,9 @@
   "organization_name": "Organization name",
   "organization_address": "Organization address",
   "organization_number": "Organization number",
-  "confirm_new_shift": "Are you sure you want to create a new shift?"
+  "confirm_new_shift": "Are you sure you want to create a new shift?",
+  "png_image": "PNG image",
+  "clear_image": "Clear image",
+  "select_image": "Select image",
+  "select": "Select"
 }

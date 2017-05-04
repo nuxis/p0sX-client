@@ -270,12 +270,14 @@ function * createNewShift (action) {
         if (create) {
             NotificationManager.success('New shift successfully created!', '', 5000)
             const shift = yield select(selectors.getShift)
+            const settings = yield select(selectors.getSettings)
             const receiptConfig = settings.receiptPrinter
             const name = settings.name
             yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
             yield put(actions.openAndGetCurrentShift())
         }
     } catch (error) {
+        NotificationManager.error('Error when printing shift info', '', 5000)
         console.error(error)
     }
 }

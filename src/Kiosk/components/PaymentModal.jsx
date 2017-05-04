@@ -237,6 +237,17 @@ class PaymentModal extends React.Component {
         this.props.onClose()
     }
 
+    title = (stateIndex, strings, total) => {
+        switch (stateIndex) {
+        case 0:
+            return strings.select_payment_method
+        case 1:
+            return `${strings.please_pay} ${total}${strings.price_text}`
+        case 2:
+            return strings.order_complete
+        }
+    }
+
     render () {
         const { paymentState, onBack, strings, total } = this.props
         const paymentMethod = paymentState.paymentMethod
@@ -251,7 +262,7 @@ class PaymentModal extends React.Component {
         ]
 
         return (
-            <Dialog open={paymentState.modalOpen} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={`${strings.please_pay} ${total}${strings.price_text}`}>
+            <Dialog open={paymentState.modalOpen} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={this.title(stateIndex, strings, total)}>
                 <Stepper activeStep={stateIndex} linear={false}>
                     <Step>
                         <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>

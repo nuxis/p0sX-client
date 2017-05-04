@@ -1,14 +1,14 @@
 import english from './en.json'
-import norwegian from './no.json'
+import bokmal from './nb.json'
 
 const getStrings = (language) => {
     switch (language) {
     case 'en':
         return english
-    case 'no':
+    case 'nb':
         return {
             ...english,
-            ...norwegian
+            ...bokmal
         }
     default:
         return english
