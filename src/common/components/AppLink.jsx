@@ -1,15 +1,16 @@
 import { Link } from 'react-router'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const root = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1)
 
 const AppLink = React.createClass({
     propTypes: {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.arrayOf(React.PropTypes.node),
-            React.PropTypes.node
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node
         ]),
-        to: React.PropTypes.string.isRequired
+        to: PropTypes.string.isRequired
     },
     render: function () {
         const {to, children} = this.props

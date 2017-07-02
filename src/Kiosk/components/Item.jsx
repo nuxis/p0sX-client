@@ -1,13 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 
 class Item extends React.Component {
     static propTypes = {
-        onClick: React.PropTypes.func.isRequired,
-        name: React.PropTypes.string.isRequired,
-        price: React.PropTypes.string.isRequired,
-        image: React.PropTypes.string.isRequired,
-        id: React.PropTypes.number.isRequired
+        onClick: PropTypes.func.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
     }
 
     componentWillMount = () => this.setState({zDepth: 2})

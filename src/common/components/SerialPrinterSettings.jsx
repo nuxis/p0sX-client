@@ -1,16 +1,41 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import SerialPort from 'serialport'
 
 class SerialPrinterSettings extends React.Component {
     static propTypes = {
-        settings: React.PropTypes.object.isRequired,
-        updateSettings: React.PropTypes.func.isRequired,
-        strings: React.PropTypes.object.isRequired
+        settings: PropTypes.object.isRequired,
+        updateSettings: PropTypes.func.isRequired,
+        strings: PropTypes.object.isRequired
     }
 
-    handleSettingChange = (event) => {
+    componentWillMount () {
+        this.setState({
+            serialPorts: []
+        })
+    }
+
+    componentDidMount () {
+        SerialPort.list((err, ports) => {
+            if (err) return
+            this.setState({
+                serialPorts: ports.map(p => p.comName)
+            })
+        })
+    }
+
+    handleBaudRateChange = (event, value) => {
         this.props.updateSettings({
-            [event.target.id]: event.target.value
+            'baud_rate': value
+        })
+    }
+
+    handleSerialPortChange = (event, index) => {
+        this.props.updateSettings({
+            port: this.state.serialPorts[index]
         })
     }
 
@@ -19,18 +44,18 @@ class SerialPrinterSettings extends React.Component {
 
         return (
             <div style={{marginLeft: '20px'}}>
-                <TextField
+                <SelectField
                     floatingLabelText={strings.serial_port}
-                    defaultValue={settings.port}
-                    id='port'
-                    onChange={this.handleSettingChange}
+                    value={settings.port}
+                    onChange={this.handleSerialPortChange}
                     fullWidth
-                />
+                >
+                    {this.state.serialPorts.map((port, i) => <MenuItem key={i} value={port} primaryText={port} />)}
+                </SelectField>
                 <TextField
                     floatingLabelText={strings.baud_rate}
                     defaultValue={settings.baud_rate}
-                    id='baud_rate'
-                    onChange={this.handleSettingChange}
+                    onChange={this.handleBaudRateChange}
                     type='number'
                     fullWidth
                 />

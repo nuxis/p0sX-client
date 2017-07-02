@@ -4,11 +4,9 @@ pipeline:
         image: node:latest
         pull: true
         commands:
-            - npm install -q -g electron-forge
-            - npm install -q -g electron-builder
             - npm install -q
             - npm run lint -q
-            - electron-forge package
+            - npm run dist:linux64
         when:
             event: [push, pull_request, deployment]
 
@@ -16,8 +14,6 @@ pipeline:
         image: node:latest
         pull: true
         commands:
-            - npm install -q -g electron-forge
-            - npm install -q -g electron-builder
             - npm install -q
             - npm run lint -q
             - npm run dist:linux64

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { undoOrder, setLastOrderModalOpen } from '../actions'
 import { getStrings } from '../selectors'
@@ -8,10 +9,10 @@ import {List, ListItem} from 'material-ui/List'
 
 class PreviousOrderModal extends React.Component {
     static propTypes = {
-        order: React.PropTypes.object,
-        undoOrder: React.PropTypes.func,
-        strings: React.PropTypes.object,
-        close: React.PropTypes.func
+        order: PropTypes.object,
+        undoOrder: PropTypes.func,
+        strings: PropTypes.object,
+        close: PropTypes.func
     }
 
     render () {

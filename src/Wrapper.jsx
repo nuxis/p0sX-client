@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import SettingsModal from './common/components/SettingsModal.jsx'
 import CreditCheckModal from './Kiosk/components/CreditCheckModal.jsx'
@@ -31,24 +32,24 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 
 class Wrapper extends React.Component {
     static propTypes = {
-        children: React.PropTypes.oneOfType([
-            React.PropTypes.arrayOf(React.PropTypes.node),
-            React.PropTypes.node
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node
         ]),
-        getInitialData: React.PropTypes.func.isRequired,
-        settingsEmpty: React.PropTypes.bool,
-        logout: React.PropTypes.func.isRequired,
-        cashierName: React.PropTypes.string,
-        printReceipt: React.PropTypes.func.isRequired,
-        toggleSettingsModal: React.PropTypes.func.isRequired,
-        toggleIngredientModal: React.PropTypes.func.isRequired,
-        openLastOrderModal: React.PropTypes.func.isRequired,
-        openCreditModal: React.PropTypes.func.isRequired,
-        openLockModal: React.PropTypes.func,
-        openShiftModal: React.PropTypes.func.isRequired,
-        loadStrings: React.PropTypes.func,
-        strings: React.PropTypes.object,
-        language: React.PropTypes.string
+        getInitialData: PropTypes.func.isRequired,
+        settingsEmpty: PropTypes.bool,
+        logout: PropTypes.func.isRequired,
+        cashierName: PropTypes.string,
+        printReceipt: PropTypes.func.isRequired,
+        toggleSettingsModal: PropTypes.func.isRequired,
+        toggleIngredientModal: PropTypes.func.isRequired,
+        openLastOrderModal: PropTypes.func.isRequired,
+        openCreditModal: PropTypes.func.isRequired,
+        openLockModal: PropTypes.func,
+        openShiftModal: PropTypes.func.isRequired,
+        loadStrings: PropTypes.func,
+        strings: PropTypes.object,
+        language: PropTypes.string
     }
 
     componentDidUpdate (prevProps) {

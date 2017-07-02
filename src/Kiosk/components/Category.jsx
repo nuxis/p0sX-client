@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {ListItem} from 'material-ui/List'
 
 class Category extends React.Component {
     static propTypes = {
-        onClick: React.PropTypes.func.isRequired,
-        name: React.PropTypes.string.isRequired,
-        category: React.PropTypes.object.isRequired,
-        value: React.PropTypes.any
+        onClick: PropTypes.func.isRequired,
+        name: PropTypes.string.isRequired,
+        category: PropTypes.object.isRequired,
+        value: PropTypes.any
     }
 
     click = () => {

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import NetworkPrinterSettings from './NetworkPrinterSettings'
 import SerialPrinterSettings from './SerialPrinterSettings'
 import SelectField from 'material-ui/SelectField'
@@ -6,10 +7,10 @@ import MenuItem from 'material-ui/MenuItem'
 
 class PrinterSettings extends React.Component {
     static propTypes = {
-        printer: React.PropTypes.object.isRequired,
-        updateSettings: React.PropTypes.func.isRequired,
-        strings: React.PropTypes.object.isRequired,
-        label: React.PropTypes.string.isRequired
+        printer: PropTypes.object.isRequired,
+        updateSettings: PropTypes.func.isRequired,
+        strings: PropTypes.object.isRequired,
+        label: PropTypes.string.isRequired
     }
 
     networkConfig = {

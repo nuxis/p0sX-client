@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { cashierLogin } from '../actions'
 import { getLoggedInCashier, getStrings } from '../selectors'
@@ -7,9 +8,9 @@ import TextField from 'material-ui/TextField'
 
 class LockModal extends React.Component {
     static propTypes = {
-        authenticateCrew: React.PropTypes.func,
-        open: React.PropTypes.bool,
-        strings: React.PropTypes.object
+        authenticateCrew: PropTypes.func,
+        open: PropTypes.bool,
+        strings: PropTypes.object
     }
 
     keyPress = (e) => {

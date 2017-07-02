@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Item from './Item.jsx'
 import { connect } from 'react-redux'
 import { addItemToCart, openIngredientModalForItem } from '../actions'
@@ -6,9 +7,9 @@ import { getItemsByCategory, getStrings } from '../selectors'
 
 class ItemList extends React.Component {
     static propTypes = {
-        items: React.PropTypes.array,
-        onItemClick: React.PropTypes.func,
-        strings: React.PropTypes.object
+        items: PropTypes.array,
+        onItemClick: PropTypes.func,
+        strings: PropTypes.object
     }
 
     onItemClick = (id) => {

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setPaymentState, setPaymentMethod, postPurchase, applyDiscounts, removeDiscounts, setPaymentModalOpen } from '../actions'
 import { getTotalPriceOfCart, getLoggedInCashier, getStrings, getPurchaseInProgress } from '../selectors'
@@ -15,19 +16,19 @@ import { green500 } from 'material-ui/styles/colors'
 
 class PaymentModal extends React.Component {
     static propTypes = {
-        onPurchase: React.PropTypes.func,
-        paymentState: React.PropTypes.object,
-        selectMethod: React.PropTypes.func,
-        onBack: React.PropTypes.func,
-        onClose: React.PropTypes.func,
-        total: React.PropTypes.number,
-        cashierCard: React.PropTypes.string,
-        strings: React.PropTypes.object,
-        purchaseInProgress: React.PropTypes.bool
+        onPurchase: PropTypes.func,
+        paymentState: PropTypes.object,
+        selectMethod: PropTypes.func,
+        onBack: PropTypes.func,
+        onClose: PropTypes.func,
+        total: PropTypes.number,
+        cashierCard: PropTypes.string,
+        strings: PropTypes.object,
+        purchaseInProgress: PropTypes.bool
     }
 
     componentDidMount () {
-        this.setState({amount: ''})
+        this.setState({amount: '0'})
     }
 
     getPaymentSelect () {
@@ -63,6 +64,7 @@ class PaymentModal extends React.Component {
                 <div className='col-xs-6'>
                     <div className='row' style={{height: '266px'}}>
                         <div className='bill-pad col-xs-12'>
+                            <div onClick={this.billClick} className='col-xs-4 bill'>1</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>5</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>10</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>20</div>
@@ -70,7 +72,6 @@ class PaymentModal extends React.Component {
                             <div onClick={this.billClick} className='col-xs-4 bill'>100</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>200</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>500</div>
-                            <div onClick={this.billClick} className='col-xs-4 bill'>1000</div>
                         </div>
                     </div>
                     <div className='row'>
@@ -102,7 +103,8 @@ class PaymentModal extends React.Component {
     getOrderComplete () {
         const { paymentState, strings } = this.props
         const total = this.state.total
-        const amount = parseInt(this.state.amount)
+        var amount = parseInt(this.state.amount)
+        amount = amount === 0 ? total : amount
         var completeString = ''
 
         if (paymentState.paymentMethod === PAYMENT_METHOD.CASH) {
@@ -128,9 +130,16 @@ class PaymentModal extends React.Component {
     numpadClick = (e) => {
         const { strings } = this.props
         if (e.target.innerHTML === strings.back) {
-            this.setState({amount: this.state.amount.slice(0, -1)})
+            if (this.state.amount !== '0') {
+                var next = this.state.amount.slice(0, -1)
+                if (!next.length) {
+                    next = '0'
+                }
+                this.setState({amount: next})
+            }
         } else {
-            this.setState({amount: this.state.amount + e.target.innerHTML})
+            const prev = this.state.amount === '0' ? '' : this.state.amount
+            this.setState({amount: prev + e.target.innerHTML})
         }
     }
 
@@ -175,17 +184,17 @@ class PaymentModal extends React.Component {
 
     purchaseCash = () => {
         const { onPurchase, total, cashierCard } = this.props
-        const value = this.refs.amount.getValue()
+        var value = this.refs.amount.getValue()
 
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
         if (parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
-        } else if (value.length > 0 && parseInt(value) >= total) {
+        } else if ((value.length > 0 && parseInt(value) >= total) || value === '0') {
             this.setState({total: total})
             const purchase = {
                 payment_method: PAYMENT_METHOD.CASH,
                 total: total,
-                amountReceived: value !== '' ? value : total.toString(),
+                amountReceived: value !== '0' ? value : total.toString(),
                 message: '',
                 cashier_card: cashierCard
             }

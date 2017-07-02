@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setActiveCategory } from '../actions'
 import { getCategories, getSelectedCategory } from '../selectors'
@@ -9,9 +10,9 @@ const SelectableList = makeSelectable(List)
 
 class CategoryList extends React.Component {
     static propTypes = {
-        categories: React.PropTypes.array,
-        onCategoryClick: React.PropTypes.func,
-        selectedCategory: React.PropTypes.number
+        categories: PropTypes.array,
+        onCategoryClick: PropTypes.func,
+        selectedCategory: PropTypes.number
     }
 
     handleSelectionChange = (event, value) => {

@@ -6,6 +6,10 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 var mainWindow
 const isDevMode = process.execPath.match(/[\\/]electron/)
 
+if (require('electron-squirrel-startup')) {
+    app.quit()
+}
+
 const createWindow = async () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -15,7 +19,6 @@ const createWindow = async () => {
 
     // and load the app.html of the app.
     mainWindow.loadURL(`file://${__dirname}/app.html`)
-    mainWindow.webContents.openDevTools()
     // Open the DevTools.
     if (isDevMode) {
         await installExtension(REACT_DEVELOPER_TOOLS)

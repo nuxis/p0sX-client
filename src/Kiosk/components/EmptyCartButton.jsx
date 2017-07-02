@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
 import Delete from 'material-ui/svg-icons/action/delete'
 import {white, red500} from 'material-ui/styles/colors'
 
 const CheckoutButton = React.createClass({
     propTypes: {
-        onClick: React.PropTypes.func.isRequired,
-        active: React.PropTypes.bool.isRequired
+        onClick: PropTypes.func.isRequired,
+        active: PropTypes.bool.isRequired
     },
     render: function () {
         const {onClick, active} = this.props

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import CartEntry from './CartEntry.jsx'
 import { connect } from 'react-redux'
 import { emptyCart, removeItemFromCart, editCartItem, setPaymentModalOpen } from '../actions'
@@ -10,13 +11,13 @@ import {white, red500} from 'material-ui/styles/colors'
 
 class Cart extends React.Component {
     static propTypes = {
-        items: React.PropTypes.array,
-        onEmptyCart: React.PropTypes.func,
-        onRemoveItem: React.PropTypes.func,
-        onEditItem: React.PropTypes.func,
-        onPurchase: React.PropTypes.func,
-        total: React.PropTypes.number,
-        strings: React.PropTypes.object
+        items: PropTypes.array,
+        onEmptyCart: PropTypes.func,
+        onRemoveItem: PropTypes.func,
+        onEditItem: PropTypes.func,
+        onPurchase: PropTypes.func,
+        total: PropTypes.number,
+        strings: PropTypes.object
     }
 
     render () {

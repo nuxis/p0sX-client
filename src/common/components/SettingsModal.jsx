@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getSettings, getStrings } from '../../Kiosk/selectors'
 import { getAllKioskData, openAndGetCurrentShift, updateSettings, setLockModalOpen } from '../../Kiosk/actions'
@@ -17,12 +18,12 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete'
 
 class SettingsModal extends React.Component {
     static propTypes = {
-        toggleOpen: React.PropTypes.any.isRequired,
-        onSave: React.PropTypes.func,
-        settings: React.PropTypes.object,
-        initial: React.PropTypes.bool,
-        strings: React.PropTypes.object,
-        refreshData: React.PropTypes.func
+        toggleOpen: PropTypes.any.isRequired,
+        onSave: PropTypes.func,
+        settings: PropTypes.object,
+        initial: PropTypes.bool,
+        strings: PropTypes.object,
+        refreshData: PropTypes.func
     }
 
     componentWillMount () {

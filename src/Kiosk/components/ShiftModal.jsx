@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createNewShift, setShiftModalOpen } from '../actions'
 import { getShift, getLoggedInCashier, getStrings } from '../selectors'
@@ -9,11 +10,11 @@ import moment from 'moment'
 
 class ShiftModal extends React.Component {
     static propTypes = {
-        shift: React.PropTypes.object,
-        dispatchCreateNewShift: React.PropTypes.func,
-        card: React.PropTypes.string,
-        closeModal: React.PropTypes.func,
-        strings: React.PropTypes.object
+        shift: PropTypes.object,
+        dispatchCreateNewShift: PropTypes.func,
+        card: PropTypes.string,
+        closeModal: PropTypes.func,
+        strings: PropTypes.object
     }
 
     newShift = () => {

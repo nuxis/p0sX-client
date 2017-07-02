@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import TextField from 'material-ui/TextField'
 
 class NetworkPrinterSettings extends React.Component {
     static propTypes = {
-        settings: React.PropTypes.object.isRequired,
-        updateSettings: React.PropTypes.func.isRequired,
-        strings: React.PropTypes.object.isRequired
+        settings: PropTypes.object.isRequired,
+        updateSettings: PropTypes.func.isRequired,
+        strings: PropTypes.object.isRequired
     }
 
     handleAddressChange = (event) => this.props.updateSettings({address: event.target.value})

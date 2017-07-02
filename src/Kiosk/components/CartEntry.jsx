@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
@@ -7,15 +8,15 @@ import {red500} from 'material-ui/styles/colors'
 
 class CartEntry extends React.Component {
     static propTypes = {
-        name: React.PropTypes.string.isRequired,
-        price: React.PropTypes.number.isRequired,
-        ingredients: React.PropTypes.array.isRequired,
-        onRemoveItem: React.PropTypes.func.isRequired,
-        onEditItem: React.PropTypes.func.isRequired,
-        image: React.PropTypes.string,
-        index: React.PropTypes.number.isRequired,
-        editable: React.PropTypes.bool.isRequired,
-        price_text: React.PropTypes.string.isRequired
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        ingredients: PropTypes.array.isRequired,
+        onRemoveItem: PropTypes.func.isRequired,
+        onEditItem: PropTypes.func.isRequired,
+        image: PropTypes.string,
+        index: PropTypes.number.isRequired,
+        editable: PropTypes.bool.isRequired,
+        price_text: PropTypes.string.isRequired
     }
 
     removeItem = (e) => {

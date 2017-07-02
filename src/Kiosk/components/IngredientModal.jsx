@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toggleIngredient, addCurrentItemToCart } from '../actions'
 import { getCurrentItem, getIngredientModalOpen, getStrings } from '../selectors'
@@ -9,10 +10,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 class IngredientCheckbox extends React.Component {
     static propTypes = {
-        ingredient: React.PropTypes.object.isRequired,
-        checked: React.PropTypes.bool.isRequired,
-        onClick: React.PropTypes.func.isRequired,
-        strings: React.PropTypes.object.isRequired
+        ingredient: PropTypes.object.isRequired,
+        checked: PropTypes.bool.isRequired,
+        onClick: PropTypes.func.isRequired,
+        strings: PropTypes.object.isRequired
     }
 
     click = (e) => {
@@ -23,13 +24,14 @@ class IngredientCheckbox extends React.Component {
 
     render () {
         const { ingredient, checked, strings } = this.props
-
+        const price = ' +' + ingredient.price + strings.price_short
+        const label = ingredient.name + (ingredient.price > 0 ? price : '')
         return (
             <RaisedButton
                 style={{margin: '5px'}}
                 primary={checked}
                 onTouchTap={this.click}
-                label={ingredient.name + ' ' + ingredient.price + ' ' + strings.price_text}
+                label={label}
             />
         )
     }
@@ -37,12 +39,12 @@ class IngredientCheckbox extends React.Component {
 
 class IngredientModal extends React.Component {
     static propTypes = {
-        currentItem: React.PropTypes.object,
-        onClose: React.PropTypes.func,
-        onIngredientClick: React.PropTypes.func,
-        toggleOpen: React.PropTypes.any.isRequired,
-        open: React.PropTypes.any,
-        strings: React.PropTypes.object
+        currentItem: PropTypes.object,
+        onClose: PropTypes.func,
+        onIngredientClick: PropTypes.func,
+        toggleOpen: PropTypes.any.isRequired,
+        open: PropTypes.any,
+        strings: PropTypes.object
     }
 
     close = () => {

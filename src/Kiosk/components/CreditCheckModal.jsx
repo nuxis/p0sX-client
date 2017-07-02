@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getCreditForCrew, setCreditModalOpen, clearCreditInfo } from '../actions'
 import { getStrings } from '../selectors'
@@ -9,10 +10,10 @@ import { sprintf } from 'printj'
 
 class PreviousOrderModal extends React.Component {
     static propTypes = {
-        credit: React.PropTypes.object,
-        checkCredit: React.PropTypes.func,
-        strings: React.PropTypes.object,
-        closeModal: React.PropTypes.func
+        credit: PropTypes.object,
+        checkCredit: PropTypes.func,
+        strings: PropTypes.object,
+        closeModal: PropTypes.func
     }
 
     focusTextField = () => this.refs.creditBadge.focus()
