@@ -5,10 +5,10 @@ import rootReducer from './reducer'
 import rootSaga from './sagas'
 
 export default function configureStore (history) {
-    const reactRouterReduxMiddleware = routerMiddleware(history)
+    // const reactRouterReduxMiddleware = routerMiddleware(history)
     const sagaMiddleware = createSagaMiddleware()
 
-    const middleware = [sagaMiddleware, reactRouterReduxMiddleware]
+    const middleware = [sagaMiddleware]
 
     const store = createStore(
         rootReducer,

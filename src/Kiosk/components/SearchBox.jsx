@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { setSearchString, addItemToCart, openIngredientModalForItem } from '../actions'
-import { getItemsByCategory, getSearch } from '../selectors'
+import { getItemsByCategory, getSearch, getStrings } from '../selectors'
 import TextField from 'material-ui/TextField'
 
 class SearchBox extends React.Component {
@@ -10,15 +10,16 @@ class SearchBox extends React.Component {
         setSearchValue: PropTypes.func,
         shownItems: PropTypes.array,
         addItemToCart: PropTypes.func,
-        searchValue: PropTypes.string
+        searchValue: PropTypes.string,
+        strings: PropTypes.object
     }
 
     render () {
-        const { searchValue } = this.props
+        const { searchValue, strings } = this.props
 
         return (
             <TextField
-                hintText='Search...'
+                hintText={strings.search}
                 onKeyUp={this.keyPress}
                 id='search'
                 ref='search'
@@ -50,7 +51,8 @@ class SearchBox extends React.Component {
 const mapStateToProps = (state) => {
     return {
         shownItems: getItemsByCategory(state),
-        searchValue: getSearch(state)
+        searchValue: getSearch(state),
+        strings: getStrings(state)
     }
 }
 

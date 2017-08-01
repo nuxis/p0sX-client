@@ -41,6 +41,8 @@ class Wrapper extends React.Component {
         logout: PropTypes.func.isRequired,
         cashierName: PropTypes.string,
         printReceipt: PropTypes.func.isRequired,
+        purchaseExists: PropTypes.bool.isRequired,
+        hasPreviousOrder: PropTypes.bool.isRequired,
         toggleSettingsModal: PropTypes.func.isRequired,
         toggleIngredientModal: PropTypes.func.isRequired,
         openLastOrderModal: PropTypes.func.isRequired,
@@ -73,7 +75,9 @@ class Wrapper extends React.Component {
 
     render () {
         const {logout, cashierName, children, printReceipt, toggleSettingsModal, toggleIngredientModal, strings,
-            openLastOrderModal, openCreditModal, openShiftModal} = this.props
+            openLastOrderModal, openCreditModal, openShiftModal, purchaseExists, hasPreviousOrder} = this.props
+
+        const loggedIn = cashierName.length > 0
 
         const style = {
             backgroundColor: cyan500
@@ -91,6 +95,10 @@ class Wrapper extends React.Component {
             margin: '0'
         }
 
+        const hideStyle = {
+            display: loggedIn ? 'inline-block' : 'none'
+        }
+
         return (
             <div>
                 <Toolbar style={style}>
@@ -99,16 +107,17 @@ class Wrapper extends React.Component {
                         <SearchBox />
                     </ToolbarGroup>
                     <ToolbarGroup lastChild>
-                        <FlatButton style={buttonStyle} label={cashierName} disabled icon={<CashierIcon />} />
-                        <IconButton tooltip={strings.receipt} iconStyle={buttonStyle} onClick={printReceipt} ><ReceiptIcon /></IconButton>
-                        <IconButton tooltip={strings.credit_check} iconStyle={buttonStyle} onClick={openCreditModal} ><CreditIcon /></IconButton>
-                        <IconButton tooltip={strings.logout} iconStyle={buttonStyle} onClick={logout} ><LogoutIcon /></IconButton>
+                        <FlatButton style={buttonStyle} label={cashierName} disabled icon={<CashierIcon style={hideStyle} />} />
+                        <IconButton disabled={!loggedIn || !purchaseExists} tooltip={strings.receipt} iconStyle={buttonStyle} onClick={printReceipt} ><ReceiptIcon /></IconButton>
+                        <IconButton disabled={!loggedIn} tooltip={strings.credit_check} iconStyle={buttonStyle} onClick={openCreditModal} ><CreditIcon /></IconButton>
+                        <IconButton disabled={!loggedIn} tooltip={strings.logout} iconStyle={buttonStyle} onClick={logout} ><LogoutIcon /></IconButton>
                         <IconMenu
-                            iconButtonElement={<IconButton iconStyle={buttonStyle}><MoreVertIcon /></IconButton>}
+                            iconButtonElement={<IconButton disabled={!loggedIn} iconStyle={buttonStyle}><MoreVertIcon /></IconButton>}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                            disabled={!loggedIn}
                         >
-                            <MenuItem leftIcon={<LastIcon />} onClick={openLastOrderModal} primaryText={strings.previous_order} />
+                            <MenuItem disabled={!hasPreviousOrder} leftIcon={<LastIcon />} onClick={hasPreviousOrder ? openLastOrderModal : () => {}} primaryText={strings.previous_order} />
                             <MenuItem leftIcon={<ShiftIcon />} onClick={openShiftModal} primaryText={strings.manage_shifts} />
                             <MenuItem leftIcon={<SettingsIcon />} onClick={toggleSettingsModal} primaryText={strings.settings} />
                         </IconMenu>
@@ -135,6 +144,8 @@ const mapStateToProps = (state) => {
         strings: selectors.getStrings(state),
         settingsEmpty: !selectors.getSettings(state).server_address,
         notification: selectors.getNotification(state),
+        purchaseExists: selectors.getLastCart(state).length > 0,
+        hasPreviousOrder: selectors.getLastOrder(state).id !== 0,
         printReceipt: () => {
             const total = selectors.getTotalPriceOfLastCart(state)
             const settings = selectors.getSettings(state)

@@ -6,8 +6,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Provider } from 'react-redux'
 import Kiosk from './Kiosk/Kiosk'
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import settings from './common/settings'
 
 import configureStore from './configureStore'
@@ -30,19 +28,14 @@ axios.defaults.transformResponse = axios.defaults.transformResponse.concat((data
 // eslint-disable-next-line immutable/no-mutation
 axios.defaults.headers.common['Authorization'] = `Token ${settings.get('api_auth_token')}`
 
-const store = configureStore(hashHistory)
-
-// Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(hashHistory, store)
+const store = configureStore()
 
 const routes = (
     <MuiThemeProvider>
         <Provider store={store}>
-            <Router history={history}>
-                <Route path='/(!)' component={Wrapper}>
-                    <IndexRoute component={Kiosk} />
-                </Route>
-            </Router>
+            <Wrapper>
+                <Kiosk />
+            </Wrapper>
         </Provider>
     </MuiThemeProvider>
 )

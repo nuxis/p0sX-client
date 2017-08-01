@@ -31,6 +31,6 @@ export default combineReducers({
     purchaseInProgress,
     settings,
     notifications,
-    strings,
-    routing: routerReducer
+    strings
+    // routing: routerReducer
 })
