@@ -96,7 +96,9 @@ class Wrapper extends React.Component {
         }
 
         const hideStyle = {
-            display: loggedIn ? 'inline-block' : 'none'
+            display: loggedIn ? 'inline-block' : 'none',
+            height: '30px',
+            width: '30px'
         }
 
         return (

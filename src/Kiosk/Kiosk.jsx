@@ -5,7 +5,7 @@ import Cart from './components/Cart'
 
 function Kiosk () {
     return (
-        <div id='content' className='row pos-container'>
+        <div className='wrapper'>
             <CategoryList />
             <ItemList />
             <Cart />

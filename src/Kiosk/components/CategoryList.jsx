@@ -23,7 +23,7 @@ class CategoryList extends React.Component {
     render () {
         const {categories, selectedCategory} = this.props
         return (
-            <div className='col col-xs-2 col-sm-2 col-md-2 col-lg-2'>
+            <div className='categories'>
                 <SelectableList value={selectedCategory} onChange={this.handleSelectionChange}>
                     {categories.map((category) =>
                         [

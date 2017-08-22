@@ -14,7 +14,10 @@ const createWindow = async () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1024,
-        height: 768
+        height: 768,
+        webPreferences: {
+            experimentalFeatures: true
+        }
     })
 
     // and load the app.html of the app.

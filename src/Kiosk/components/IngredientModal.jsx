@@ -79,7 +79,7 @@ class IngredientModal extends React.Component {
         ]
 
         const price = currentItem.item.price + currentItem.ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
-        const title = `${strings.select_ingredients} ${currentItem.item.name} - ${price} ${strings.price_text}`
+        const title = `${strings.select_ingredients} ${currentItem.item.name} | ${price} ${strings.price_text}`
 
         return (
             <Dialog autoScrollBodyContent actions={currentItem.edit ? editActions : addActions} modal onRequestClose={toggleOpen} open={open} title={title}>

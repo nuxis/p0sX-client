@@ -110,6 +110,7 @@ class PaymentModal extends React.Component {
         if (paymentState.paymentMethod === PAYMENT_METHOD.CASH) {
             completeString = `${strings.return} ${amount - total} ${strings.price_text}`
         } else if (paymentState.paymentMethod === PAYMENT_METHOD.CREW) {
+            setTimeout(() => this.onClose(), 5000)
             completeString = 'YAY!'
         }
 
@@ -242,8 +243,11 @@ class PaymentModal extends React.Component {
     }
 
     onClose = () => {
-        this.setState({amount: ''})
-        this.props.onClose()
+        const { paymentState } = this.props
+        if (paymentState.modalOpen) {
+            this.setState({amount: ''})
+            this.props.onClose()
+        }
     }
 
     title = (stateIndex, strings, total) => {
