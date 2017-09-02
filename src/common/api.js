@@ -10,7 +10,7 @@ const ORDER_STATE = {
 const PAYMENT_METHOD = {
     'SELECT': -1,
     'CASH': 0,
-    'CREW': 1,
+    'CREDIT': 1,
     'CARD': 2,
     'VIPPS': 3,
     'MCASH': 4,
@@ -51,8 +51,8 @@ const getCreditForCrew = (badge) => {
         })
 }
 
-const getCrew = (card = '') => {
-    return axios.get(`/crew/?format=json&card=${card}`).then(res => res.data).catch(() => showPurchaseError())
+const getUser = (card = '') => {
+    return axios.get(`/user/?format=json&card=${card}`).then(res => res.data).catch(() => showPurchaseError())
 }
 
 const createShift = (data) => {
@@ -81,7 +81,7 @@ export {
     getOrders,
     getDiscounts,
     getCreditForCrew,
-    getCrew,
+    getUser,
     createShift,
     getCurrentShift
 }

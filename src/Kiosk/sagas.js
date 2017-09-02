@@ -83,7 +83,7 @@ function * postPurchase (action) {
             return
         }
 
-        if (options.payment_method === api.PAYMENT_METHOD.CREW) {
+        if (options.payment_method === api.PAYMENT_METHOD.CREDIT) {
             const credit = yield call(api.getCreditForCrew, options.card)
             if (!credit) {
                 yield put(actions.setPurchaseInProgress(false))
@@ -213,11 +213,11 @@ export function * watchGetCreditForCrew () {
 
 function * cashierLogin (action) {
     try {
-        const crew = yield call(api.getCrew, action.card)
-        if (crew.length === 1) {
-            yield put(actions.cashierSuccess(crew[0]))
+        const user = yield call(api.getUser, action.card)
+        if (user.length === 1 && user[0].is_cashier) {
+            yield put(actions.cashierSuccess(user[0]))
         } else {
-            NotificationManager.error('Login failed', 'Are you crew?!', 5000)
+            NotificationManager.error('Make sure you have access to be a cashier!', 'Login failed', 5000)
             yield put(actions.cashierClear())
         }
     } catch (error) {

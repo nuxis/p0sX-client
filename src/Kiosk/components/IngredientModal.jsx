@@ -24,8 +24,16 @@ class IngredientCheckbox extends React.Component {
 
     render () {
         const { ingredient, checked, strings } = this.props
-        const price = ' +' + ingredient.price + strings.price_short
-        const label = ingredient.name + (ingredient.price > 0 ? price : '')
+        var price = ''
+        if (ingredient.price !== 0) {
+            price = ' '
+            if (ingredient.price > 0) {
+                price += '+'
+            }
+            price += ingredient.price + strings.price_short
+        }
+
+        const label = ingredient.name + price
         return (
             <RaisedButton
                 style={{margin: '5px'}}

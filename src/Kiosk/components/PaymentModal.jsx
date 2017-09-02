@@ -39,7 +39,7 @@ class PaymentModal extends React.Component {
                     <h5>{strings.cash}</h5>
                     <i className='fa fa-money payment-glyph' aria-hidden='true' />
                 </Paper>
-                <Paper onClick={selectMethod} data-method={PAYMENT_METHOD.CREW} zDepth={2} className='item-card'>
+                <Paper onClick={selectMethod} data-method={PAYMENT_METHOD.CREDIT} zDepth={2} className='item-card'>
                     <h5>{strings.crew}</h5>
                     <i className='fa fa-credit-card payment-glyph' aria-hidden='true' />
                 </Paper>
@@ -104,12 +104,15 @@ class PaymentModal extends React.Component {
         const { paymentState, strings } = this.props
         const total = this.state.total
         var amount = parseInt(this.state.amount)
-        amount = amount === 0 ? total : amount
+        amount = amount === 0 || isNaN(amount) ? total : amount
         var completeString = ''
 
         if (paymentState.paymentMethod === PAYMENT_METHOD.CASH) {
             completeString = `${strings.return} ${amount - total} ${strings.price_text}`
-        } else if (paymentState.paymentMethod === PAYMENT_METHOD.CREW) {
+            if (amount - total === 0) {
+                setTimeout(() => this.onClose(), 5000)
+            }
+        } else if (paymentState.paymentMethod === PAYMENT_METHOD.CREDIT) {
             setTimeout(() => this.onClose(), 5000)
             completeString = 'YAY!'
         }
@@ -153,7 +156,7 @@ class PaymentModal extends React.Component {
         if (e.keyCode === 13) {
             const { paymentState } = this.props
             switch (paymentState.paymentMethod) {
-            case PAYMENT_METHOD.CREW:
+            case PAYMENT_METHOD.CREDIT:
                 this.purchaseCrew()
                 break
             case PAYMENT_METHOD.CASH:
@@ -171,22 +174,24 @@ class PaymentModal extends React.Component {
 
         if (value.length > 0) {
             const purchase = {
-                payment_method: PAYMENT_METHOD.CREW,
+                payment_method: PAYMENT_METHOD.CREDIT,
                 total: total,
                 card: value,
                 message: '',
                 cashier_card: cashierCard
             }
-            onPurchase(purchase)
             // eslint-disable-next-line immutable/no-mutation
-            this.refs.rfid.value = ''
+            this.refs.rfid.input.value = ''
+            onPurchase(purchase)
         }
     }
 
     purchaseCash = () => {
         const { onPurchase, total, cashierCard } = this.props
         var value = this.refs.amount.getValue()
-
+        if (value === '') {
+            value = '0'
+        }
         // If crew badge is scanned in cash amount field we will get a stupidly high value. Cap at 1000000
         if (parseInt(value) > 1000000) {
             NotificationManager.error('Sales in excess of 1000000 is not supported', '', 3000)
@@ -216,7 +221,7 @@ class PaymentModal extends React.Component {
         }
 
         if (stateIndex === 1) {
-            if (paymentMethod === PAYMENT_METHOD.CREW) {
+            if (paymentMethod === PAYMENT_METHOD.CREDIT) {
                 setTimeout(() => this.refs.rfid.focus(), 250)
             } else if (paymentMethod === PAYMENT_METHOD.CASH) {
                 setTimeout(() => this.refs.amount.focus(), 250)
@@ -229,7 +234,7 @@ class PaymentModal extends React.Component {
         case 0:
             return this.getPaymentSelect()
         case 1:
-            if (paymentMethod === PAYMENT_METHOD.CREW) {
+            if (paymentMethod === PAYMENT_METHOD.CREDIT) {
                 return this.getCrew()
             } else if (paymentMethod === PAYMENT_METHOD.CASH) {
                 return this.getCash()
