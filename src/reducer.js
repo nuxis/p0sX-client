@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
 import { categories, selectedCategory, currentItem, cart, items, search, payment, cashier, discounts, creditCheck, lastOrder, shift, lastCart, purchaseInProgress, settings, notifications } from './Kiosk/reducer'
 import * as actions from './actions'
 import getStrings from './strings'
@@ -32,5 +31,4 @@ export default combineReducers({
     settings,
     notifications,
     strings
-    // routing: routerReducer
 })
