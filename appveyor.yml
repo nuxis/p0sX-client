@@ -5,11 +5,11 @@ environment:
   nodejs_version: "7"
 install:
   - ps: Install-Product node $env:nodejs_version x64
-  - ps: $VERSION = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
-  - ps: Update-AppveyorBuild -Version "${VERSION}-$env:APPVEYOR_BUILD_NUMBER"
-  - npm install -g electron-forge
-  - npm install -g electron-builder
-  - npm install
+  - ps: $env:VERSION = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
+  - ps: Update-AppveyorBuild -Version "${env:VERSION}-$env:APPVEYOR_BUILD_NUMBER"
+  - npm install -q
+build_script: 
+  - npm run dist:win64
 artifacts:
   - path: "out/make/squirrel.windows/x64/p0sX-${VERSION} Setup.exe" 
     name: p0sX
@@ -18,4 +18,4 @@ notifications:
     channel: "#teknisk-dev"
     incoming_webhook:
       secure: RBlBJGOo7pPJsyY3FTs1lKx9sP2y/mzc8huvRUup6jyg5GohAFTOszX69KY43oMfWLrz8zfO6O7Y3fJlzVbhSKNF2Ri5Gcu6D4qG1XeQNH0=
-build_script: npm run dist:win64
+test: off
