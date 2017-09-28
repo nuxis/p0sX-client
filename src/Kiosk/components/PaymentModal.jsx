@@ -62,7 +62,7 @@ class PaymentModal extends React.Component {
         return (
             <div className='row'>
                 <div className='col-xs-6'>
-                    <div className='row' style={{height: '266px'}}>
+                    <div className='row' style={{height: '252px'}}>
                         <div className='bill-pad col-xs-12'>
                             <div onClick={this.billClick} className='col-xs-4 bill'>1</div>
                             <div onClick={this.billClick} className='col-xs-4 bill'>5</div>
@@ -79,7 +79,13 @@ class PaymentModal extends React.Component {
                             <TextField ref='amount' id='amount' type='number' fullWidth value={this.state.amount} onChange={this.handleAmountChange} onKeyUp={this.onEnter} hintText={strings.amount_received} />
                         </div>
                         <div className='col-xs-12'>
-                            <RaisedButton onClick={this.purchaseCash} primary label={strings.purchase} disabled={purchaseInProgress} />
+                            <RaisedButton primary
+                                fullWidth
+                                style={{height: '50px'}}
+                                labelStyle={{lineHeight: '50px'}}
+                                onClick={this.purchaseCash}
+                                label={strings.purchase}
+                                disabled={purchaseInProgress} />
                         </div>
                     </div>
                 </div>

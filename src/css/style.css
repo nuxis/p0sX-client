@@ -51,7 +51,7 @@ body {
 }
 
 .cart-items {
-    height: calc(100% - 50px);
+    height: calc(100% - 8.3vh);
     margin-right: 5px;
     margin-bottom: 5px;
     overflow-y: auto;
@@ -166,7 +166,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 ::-webkit-scrollbar-track {
     background-color: lightgrey;
@@ -193,7 +193,7 @@ body {
 }
 
 .bill-pad {
-    height: 88px;
+    height: 176px;
     display: flex;
     flex-flow: row wrap;
     margin-bottom: 10px;

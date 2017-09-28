@@ -46,8 +46,8 @@ class Cart extends React.Component {
                 <div className='purchase-button'>
                     <RaisedButton onClick={onPurchase}
                         disabled={items.length === 0}
-                        style={{height: '45px'}}
-                        labelStyle={{lineHeight: '45px'}}
+                        style={{height: '7vh'}}
+                        labelStyle={{lineHeight: '7vh'}}
                         fullWidth
                         primary
                         label={strings.total + ' ' + total + strings.price_short}
@@ -56,11 +56,11 @@ class Cart extends React.Component {
                 <div className='cart-clear'>
                     <RaisedButton disabled={items.length === 0}
                         onClick={onEmptyCart}
-                        style={{height: '45px'}}
-                        labelStyle={{lineHeight: '45px'}}
+                        style={{height: '7vh'}}
+                        labelStyle={{lineHeight: '7vh'}}
                         fullWidth
                         backgroundColor={red500}
-                        icon={<Delete style={{marginTop: '6px'}} color={white} />}
+                        icon={<Delete style={{marginTop: '2.1vh'}} color={white} />}
                     />
                 </div>
             </div>
