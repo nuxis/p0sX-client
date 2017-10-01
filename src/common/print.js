@@ -120,7 +120,7 @@ export const printShift = async (adapter, config, shift, name) => {
         .writeLine('Started: ' + moment(new Date(shift.start)).format('DD.MM.YYYY HH:mm:ss'))
         .writeLine('Now:     ' + moment().format('DD.MM.YYYY HH:mm:ss'))
         .writeLine('Cash:    ' + shift.cash + ',-')
-        .writeLine('Crew:    ' + shift.crew + ',-')
+        .writeLine('Credit:    ' + shift.credit + ',-')
         .openDrawer()
         .feed(5)
         .cut(true)

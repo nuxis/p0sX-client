@@ -42,8 +42,8 @@ class SearchBox extends React.Component {
             const items = shownItems
             if (items.length === 1) {
                 addItemToCart(items[0])
-                setSearchValue('')
             }
+            setSearchValue('')
         }
     }
 }

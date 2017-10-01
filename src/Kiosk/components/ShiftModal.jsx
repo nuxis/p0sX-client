@@ -56,8 +56,8 @@ class ShiftModal extends React.Component {
                             <TableRowColumn>{shift.cash}</TableRowColumn>
                         </TableRow>
                         <TableRow selectable={false}>
-                            <TableRowColumn>{strings.crew}</TableRowColumn>
-                            <TableRowColumn>{shift.crew}</TableRowColumn>
+                            <TableRowColumn>{strings.credit}</TableRowColumn>
+                            <TableRowColumn>{shift.credit}</TableRowColumn>
                         </TableRow>
                     </TableBody>
                 </Table>

@@ -31,7 +31,7 @@
   "badge_number": "Badge number",
   "scan_to_pay": "Scan badge to pay",
   "cash": "Cash",
-  "crew": "Credit",
+  "credit": "Credit",
   "return": "Return",
   "order": "Order",
   "credit_check_result": "This person has %d%s of %d%s remaining",
