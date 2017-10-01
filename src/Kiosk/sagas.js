@@ -128,8 +128,8 @@ function * postPurchase (action) {
             }
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(2))
-            yield put(actions.setPurchaseInProgress(false))
         }
+        yield put(actions.setPurchaseInProgress(false))
     } catch (error) {
         console.error(error)
     }

@@ -36,7 +36,7 @@ const getItems = () => {
 }
 
 const postPurchase = (purchase) => {
-    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch(() => showPurchaseError())
+    return axios.post('/purchases/?format=json', purchase).then(res => res.data).catch((e) => showPurchaseError(e))
 }
 
 const getOrders = () => {
@@ -67,8 +67,12 @@ const showFetchDataError = () => {
     NotificationManager.error('Failed to get data from the server', '', 5000)
 }
 
-const showPurchaseError = () => {
-    NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
+const showPurchaseError = (e) => {
+    if (e.response.data.detail !== undefined) {
+        NotificationManager.error(e.response.data.detail, 'Purchase failed', 5000)
+    } else {
+        NotificationManager.error('Try again. If the error persists contact Tech crew', 'Purchase failed', 5000)
+    }
 }
 
 export {

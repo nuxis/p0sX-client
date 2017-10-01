@@ -40,7 +40,7 @@ class PaymentModal extends React.Component {
                     <i className='fa fa-money payment-glyph' aria-hidden='true' />
                 </Paper>
                 <Paper onClick={selectMethod} data-method={PAYMENT_METHOD.CREDIT} zDepth={2} className='item-card'>
-                    <h5>{strings.crew}</h5>
+                    <h5>{strings.credit}</h5>
                     <i className='fa fa-credit-card payment-glyph' aria-hidden='true' />
                 </Paper>
             </div>
