@@ -138,7 +138,8 @@ function * postPurchase (action) {
 function * undoOrder () {
     try {
         const lastOrder = yield select(selectors.getLastOrder)
-        if (lastOrder.lines.isEmpty()) {
+        console.log(lastOrder.lines)
+        if (lastOrder.lines.length === 0) {
             NotificationManager.error('There is nothing to undo', '', 5000)
         } else {
             var options = lastOrder
