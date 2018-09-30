@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onItemClick: (item) => {
             // eslint-disable-next-line camelcase
-            if (item.created_in_the_kitchen) {
+            if (item.created_in_the_kitchen && item.ingredients.length > 0) {
                 dispatch(openIngredientModalForItem(item))
             } else {
                 dispatch(addItemToCart(item))

@@ -96,6 +96,7 @@ export const customerOrderReceipt = async (adapter, config, entries, id, openDra
                 .feed(1)
         }
     })
+
     if (openDrawer) {
         printer.openDrawer()
     }
@@ -120,7 +121,7 @@ export const printShift = async (adapter, config, shift, name) => {
         .writeLine('Started: ' + moment(new Date(shift.start)).format('DD.MM.YYYY HH:mm:ss'))
         .writeLine('Now:     ' + moment().format('DD.MM.YYYY HH:mm:ss'))
         .writeLine('Cash:    ' + shift.cash + ',-')
-        .writeLine('Credit:    ' + shift.credit + ',-')
+        .writeLine('Credit:  ' + shift.credit + ',-')
         .openDrawer()
         .feed(5)
         .cut(true)

@@ -1,6 +1,6 @@
 {
   "add_to_cart": "Legg til handlevogn",
-  "settings": "Instillinger",
+  "settings": "Innstillinger",
   "receipt": "Kvittering",
   "logout": "Logg ut",
   "cancel": "Avbryt",
@@ -37,7 +37,7 @@
   "address": "Adresse",
   "network": "Nettverk",
   "serial": "Seriell",
-  "console": "Konsoll (debug)",
+  "console": "Konsoll (feilsøking)",
   "receipt_printer": "Kviteringsskriver",
   "kitchen_printer": "Kjøkkenskriver",
   "confirm_new_shift": "Er du sikker på at du vil starte et nytt skift?",
