@@ -61,5 +61,6 @@
   "clear_image": "Clear image",
   "select_image": "Select image",
   "select": "Select",
-  "search": "Search..."
+  "search": "Search...",
+  "order_number": "Order number"
 }

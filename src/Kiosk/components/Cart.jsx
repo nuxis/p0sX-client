@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CartEntry from './CartEntry.jsx'
 import { connect } from 'react-redux'
-import { emptyCart, removeItemFromCart, editCartItem, setPaymentModalOpen } from '../actions'
+import { emptyCart, removeItemFromCart, editCartItem, setPaymentModalOpen, applyDiscounts } from '../actions'
 import { getRenderedCart, getTotalPriceOfCart, getStrings } from '../selectors'
 import {List} from 'material-ui/List'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -88,6 +88,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(editCartItem(itemIndex))
         },
         onPurchase: () => {
+            dispatch(applyDiscounts(1))
             dispatch(setPaymentModalOpen(true))
         }
     }

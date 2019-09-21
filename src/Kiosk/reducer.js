@@ -1,6 +1,7 @@
 import * as actions from './actions'
 import SettingsFile from '../common/settings'
 import axios from 'axios'
+import { PAYMENT_METHOD } from '../common/api'
 
 // NOTFICATIONS
 
@@ -335,8 +336,8 @@ export function items (state = itemsInit, action) {
 // PAYMENT
 
 const paymentInit = {
-    stateIndex: 0,
-    paymentMethod: 0,
+    stateIndex: 1,
+    paymentMethod: PAYMENT_METHOD.CREDIT,
     modalOpen: false
 }
 

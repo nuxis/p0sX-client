@@ -10,10 +10,12 @@ if (!settings.has('language')) {
             type: 'Console',
             config: {}
         },
-        kitchenPrinter: {
-            type: 'Console',
-            config: {}
-        },
+        kitchenPrinters: [
+            {
+                type: 'Console',
+                config: {}
+            }
+        ],
         receipt: {
             header: '',
             name: '',

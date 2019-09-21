@@ -78,8 +78,9 @@ function * postPurchase (action) {
         if (options.total < 0) {
             NotificationManager.error('The cart has a negative total sum', '', 5000)
             yield put(actions.setPaymentModalOpen(false))
-            yield put(actions.setPaymentState(0))
+            yield put(actions.setPaymentState(1))
             yield put(actions.setPurchaseInProgress(false))
+            yield put(actions.removeDiscounts())
             return
         }
 
@@ -91,8 +92,9 @@ function * postPurchase (action) {
             } else if (options.total > credit.left) {
                 NotificationManager.error('Not enough credit left on card', '', 5000)
                 yield put(actions.setPaymentModalOpen(false))
-                yield put(actions.setPaymentState(0))
+                yield put(actions.setPaymentState(1))
                 yield put(actions.setPurchaseInProgress(false))
+                yield put(actions.removeDiscounts())
                 return
             }
         }
@@ -104,7 +106,7 @@ function * postPurchase (action) {
 
             var receiptItems = yield select(selectors.getRenderedCart)
             const receiptConfig = settings.get('receiptPrinter')
-            const kitchenConfig = settings.get('kitchenPrinter')
+            const kitchenConfigs = settings.get('kitchenPrinters')
 
             receiptItems = receiptItems.filter(entry => entry.item.created_in_the_kitchen)
             if (receiptItems.length > 0) {
@@ -121,7 +123,9 @@ function * postPurchase (action) {
                 customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.id, options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
                 // Print separate notes for the kitchen
                 for (const entry of receiptItems) {
-                    kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.id).then(() => {})
+                    for (const kitchenConfig of kitchenConfigs) {
+                        kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.id).then(() => {})
+                    }
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
                 cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
@@ -130,7 +134,12 @@ function * postPurchase (action) {
             yield put(actions.setPaymentState(2))
         }
         yield put(actions.setPurchaseInProgress(false))
+        yield put(actions.removeDiscounts())
     } catch (error) {
+        yield put(actions.setPaymentModalOpen(false))
+        yield put(actions.setPaymentState(1))
+        yield put(actions.setPurchaseInProgress(false))
+        yield put(actions.removeDiscounts())
         console.error(error)
     }
 }

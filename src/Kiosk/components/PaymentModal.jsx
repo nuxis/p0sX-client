@@ -24,7 +24,8 @@ class PaymentModal extends React.Component {
         total: PropTypes.number,
         cashierCard: PropTypes.string,
         strings: PropTypes.object,
-        purchaseInProgress: PropTypes.bool
+        purchaseInProgress: PropTypes.bool,
+        lastOrder: PropTypes.object
     }
 
     componentDidMount () {
@@ -107,7 +108,7 @@ class PaymentModal extends React.Component {
     }
 
     getOrderComplete () {
-        const { paymentState, strings } = this.props
+        const { paymentState, strings, lastOrder } = this.props
         const total = this.state.total
         var amount = parseInt(this.state.amount)
         amount = amount === 0 || isNaN(amount) ? total : amount
@@ -126,6 +127,7 @@ class PaymentModal extends React.Component {
         return (
             <div className='row center-xs'>
                 <div className='col-xs-6'>
+                    <h1>{strings.order_number}: <b><u>{lastOrder.id}</u></b></h1>
                     <DoneIcon style={{height: '150px', width: '150px', color: green500}} />
                     <h2>{completeString}</h2>
                 </div>
@@ -216,25 +218,6 @@ class PaymentModal extends React.Component {
         }
     }
 
-    componentDidUpdate (prevProps) {
-        const { paymentState } = this.props
-        const paymentMethod = paymentState.paymentMethod
-        const stateIndex = paymentState.stateIndex
-        const prevStateIndex = prevProps.paymentState.stateIndex
-
-        if (prevStateIndex === stateIndex) {
-            return
-        }
-
-        if (stateIndex === 1) {
-            if (paymentMethod === PAYMENT_METHOD.CREDIT) {
-                setTimeout(() => this.refs.rfid.focus(), 250)
-            } else if (paymentMethod === PAYMENT_METHOD.CASH) {
-                setTimeout(() => this.refs.amount.focus(), 250)
-            }
-        }
-    }
-
     getStepContent (stepIndex, paymentMethod) {
         switch (stepIndex) {
         case 0:
@@ -277,6 +260,24 @@ class PaymentModal extends React.Component {
         const paymentMethod = paymentState.paymentMethod
         const stateIndex = paymentState.stateIndex
 
+        if (stateIndex === 1 && paymentState.modalOpen) {
+            if (paymentMethod === PAYMENT_METHOD.CREDIT) {
+                setTimeout(() => {
+                    if (!this.refs.rfid) {
+                        return
+                    }
+                    this.refs.rfid.focus()
+                }, 250)
+            } else if (paymentMethod === PAYMENT_METHOD.CASH) {
+                setTimeout(() => {
+                    if (!this.refs.amount) {
+                        return
+                    }
+                    this.refs.amount.focus()
+                }, 250)
+            }
+        }
+
         const actions = [
             <FlatButton
                 label={strings.close}
@@ -289,7 +290,7 @@ class PaymentModal extends React.Component {
             <Dialog open={paymentState.modalOpen} modal={stateIndex !== 2} onRequestClose={this.onClose} actions={actions} title={this.title(stateIndex, strings, total)}>
                 <Stepper activeStep={stateIndex} linear={false}>
                     <Step>
-                        <StepButton onClick={onBack} completed={stateIndex > 0} disabled={stateIndex === 2}>{strings.select_payment_method}</StepButton>
+                        <StepButton onClick={onBack} completed={stateIndex > 0} disabled>{strings.select_payment_method}</StepButton>
                     </Step>
                     <Step>
                         <StepLabel completed={stateIndex === 2} disabled={stateIndex !== 1}>{strings.get_money}</StepLabel>
@@ -311,7 +312,8 @@ const mapStateToProps = (state) => {
         total: getTotalPriceOfCart(state),
         cashierCard: getLoggedInCashier(state).card,
         strings: getStrings(state),
-        purchaseInProgress: getPurchaseInProgress(state)
+        purchaseInProgress: getPurchaseInProgress(state),
+        lastOrder: state.lastOrder
     }
 }
 
@@ -327,12 +329,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(applyDiscounts(method))
         },
         onBack: () => {
-            dispatch(setPaymentState(0))
+            dispatch(setPaymentState(1))
             dispatch(removeDiscounts())
         },
         onClose: () => {
             dispatch(setPaymentModalOpen(false))
-            dispatch(setPaymentState(0))
+            dispatch(setPaymentState(1))
             dispatch(removeDiscounts())
         }
     }

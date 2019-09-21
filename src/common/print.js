@@ -26,7 +26,9 @@ export const printReceipt = async (adapter, config, companyInfo, cart, total) =>
             .raster(image, RasterMode.Normal)
     }
 
-    await printer.setJustification(Justification.Center)
+    await printer
+        .resetToDefault()
+        .setJustification(Justification.Center)
         .setFont(Font.A)
         .setCodeTable(CodeTable.PC865)
         .writeLine(companyInfo.header)
@@ -52,7 +54,9 @@ export const printReceipt = async (adapter, config, companyInfo, cart, total) =>
 export const kitchenReceipt = async (adapter, config, entry, id) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
-    printer.setFont(Font.B)
+    printer
+        .resetToDefault()
+        .setFont(Font.B)
         .setCodeTable(CodeTable.PC865)
         .setJustification(Justification.Center)
         .setTextMode(TextMode.DualWidthAndHeight)
@@ -77,7 +81,9 @@ export const kitchenReceipt = async (adapter, config, entry, id) => {
 export const customerOrderReceipt = async (adapter, config, entries, id, openDrawer) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
-    printer.setFont(Font.B)
+    printer
+        .resetToDefault()
+        .setFont(Font.B)
         .setCodeTable(CodeTable.PC865)
         .setJustification(Justification.Center)
         .setTextMode(TextMode.DualWidthAndHeight)
@@ -114,7 +120,9 @@ export const cashDraw = async (adapter, config) => {
 export const printShift = async (adapter, config, shift, name) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device).open()
-    await printer.setFont(Font.B)
+    await printer
+        .resetToDefault()
+        .setFont(Font.B)
         .setTextMode(TextMode.Normal)
         .setJustification(Justification.Left)
         .writeLine('Kasse:   ' + name)

@@ -10,7 +10,6 @@ import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import PrinterSettings from './PrinterSettings'
 import {Tabs, Tab} from 'material-ui/Tabs'
 import { remote } from 'electron'
 import { red500 } from 'material-ui/styles/colors'
@@ -27,14 +26,12 @@ class SettingsModal extends React.Component {
     }
 
     componentWillMount () {
-        const {api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt} = this.props.settings
+        const {api_auth_token, server_address, language, name, receipt} = this.props.settings
         this.setState({
             api_auth_token,
             server_address,
             language: language,
             name,
-            receiptPrinter: receiptPrinter,
-            kitchenPrinter: kitchenPrinter,
             receipt: receipt
         })
     }
@@ -99,7 +96,7 @@ class SettingsModal extends React.Component {
 
     render () {
         const { settings, strings, initial, refreshData } = this.props
-        const { api_auth_token, server_address, language, name, receiptPrinter, kitchenPrinter, receipt } = this.state
+        const { api_auth_token, server_address, language, name, receipt } = this.state
         const actions = [
             <FlatButton
                 label={strings.close}
@@ -151,16 +148,7 @@ class SettingsModal extends React.Component {
                         /><br /><br />
                         <RaisedButton label='Refresh data' onClick={refreshData} primary />
                     </Tab>
-                    <Tab label={strings.printing}>
-                        <div className='row'>
-                            <div className='col-xs-6'>
-                                <PrinterSettings label={strings.receipt_printer} printer={receiptPrinter} updateSettings={this.handleReceiptPrinterConfigChange} strings={strings} />
-                            </div>
-                            <div className='col-xs-6'>
-                                <PrinterSettings label={strings.kitchen_printer} printer={kitchenPrinter} updateSettings={this.handleKitchenPrinterConfigChange} strings={strings} />
-                            </div>
-                        </div>
-                    </Tab>
+
                     <Tab label={strings.receipt}>
                         <TextField
                             id='receipt-header'
