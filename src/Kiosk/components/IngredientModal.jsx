@@ -57,7 +57,8 @@ class IngredientModal extends React.Component {
 
     close = () => {
         const { onClose, currentItem } = this.props
-        onClose(currentItem, '')
+        const message = this.refs.message.getValue()
+        onClose(currentItem, message)
     }
 
     render () {
@@ -101,6 +102,16 @@ class IngredientModal extends React.Component {
                         />
                     )}
                 </div>
+                <TextField
+                    id='item-message'
+                    ref='message'
+                    hintText={strings.message}
+                    defaultValue={currentItem.message}
+                    fullWidth
+                    style={{marginTop: '15px'}}
+                    multiLine
+                    rowsMax={5}
+                />
             </Dialog>
         )
     }
