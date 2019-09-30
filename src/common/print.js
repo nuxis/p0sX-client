@@ -27,6 +27,7 @@ export const printReceipt = async (adapter, config, companyInfo, cart, total) =>
     }
 
     await printer
+        .init()
         .resetToDefault()
         .setJustification(Justification.Center)
         .setFont(Font.A)
@@ -55,6 +56,7 @@ export const kitchenReceipt = async (adapter, config, entry, id) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
     printer
+        .init()
         .resetToDefault()
         .setFont(Font.B)
         .setCodeTable(CodeTable.PC865)
@@ -82,6 +84,7 @@ export const customerOrderReceipt = async (adapter, config, entries, id, openDra
     const device = getDevice(adapter, config)
     const printer = await new Printer(device, 'CP865').open()
     printer
+        .init()
         .resetToDefault()
         .setFont(Font.B)
         .setCodeTable(CodeTable.PC865)
@@ -121,6 +124,7 @@ export const printShift = async (adapter, config, shift, name) => {
     const device = getDevice(adapter, config)
     const printer = await new Printer(device).open()
     await printer
+        .init()
         .resetToDefault()
         .setFont(Font.B)
         .setTextMode(TextMode.Normal)
