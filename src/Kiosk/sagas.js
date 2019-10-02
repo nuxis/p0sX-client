@@ -110,10 +110,20 @@ function * postPurchase (action) {
 
             receiptItems = receiptItems.filter(entry => entry.item.created_in_the_kitchen)
             if (receiptItems.length > 0) {
+                const compare = (a, b) => {
+                    if (a.name < b.name) {
+                        return -1
+                    }
+                    if (a.name > b.name) {
+                        return 1
+                    }
+                    return 0
+                }
+
                 receiptItems = receiptItems.map(entry => {
                     return {
                         name: entry.item.name,
-                        ingredients: entry.ingredients,
+                        ingredients: entry.ingredients.sort(compare),
                         price: entry.item.price,
                         message: entry.message
                     }
