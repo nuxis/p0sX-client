@@ -71,7 +71,7 @@
         "eslint-plugin-standard": "^3.0.1"
     },
     "dependencies": {
-        "axios": "^0.16.1",
+        "axios": "^0.21.1",
         "electron-compile": "^6.4.0",
         "electron-devtools-installer": "^2.2.0",
         "electron-react-devtools": "^0.4.0",
