@@ -21,18 +21,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          npm lint
+          npm run lint
 
   dist-win64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
-          npm dist:win64
+          npm run dist:win64
 
   dist-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
-          npm dist:linux64
+          npm run dist:linux64
