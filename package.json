@@ -99,6 +99,6 @@
         "redux-saga": "^0.15.4",
         "reselect": "^3.0.0",
         "roboto-fontface": "^0.7.0",
-        "serialport": "^4.0.7"
+        "serialport": "^9.2.0"
     }
 }
