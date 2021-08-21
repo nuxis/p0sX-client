@@ -25,7 +25,7 @@
   "config": {
     "forge": {
       "make_targets": {
-        "win": ["squirrel", "wix"], 
+        "win": ["wix"], 
         "zip": ["zip"],
         "linux": ["deb"],
         "all": ["deb", "wix", "zip"] 
