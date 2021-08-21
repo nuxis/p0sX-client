@@ -33,11 +33,11 @@ jobs:
 
       - name: dist-win64
         run: |
-            npm run dist:win64
+            npm run dist:win
         
       - name: dist-linux
         run: |
-            npm run dist:linux64
+            npm run dist:linux
 
       - uses: actions/upload-artifact@v2
         with:
