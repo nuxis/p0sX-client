@@ -40,6 +40,6 @@ jobs:
             npm run dist:linux64
 
       - uses: actions/upload-artifact@v2
-      with:
-        name: p0sX-client.deb
-        path: out/make/p0sx-client_0.0.1_amd64.deb
+        with:
+          name: p0sX-client.deb
+          path: out/make/p0sx-client_0.0.1_amd64.deb
