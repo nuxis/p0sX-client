@@ -13,29 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          npm install
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm run lint
+      - name: install
+      - run: npm install
 
-  dist-win64:
-    needs: build
+      - name: lint
+      - run: npm run lint
+
+  dist:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          npm run dist:win64
 
-  dist-linux:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm run dist:linux64
+      - run: npm install   
+
+      - name: dist-win64
+      - run: npm run dist:win64
+        
+      - name: dist-linux
+      - run: npm run dist:linux64
