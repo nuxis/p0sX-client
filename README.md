@@ -83,3 +83,7 @@ You will probably have a hard time building for other platforms than the one you
 The distribution files will be located at [https://kradalby.no/p0sX/](https://kradalby.no/p0sX/)
 
 
+### linux files
+The .deb package will be put in ./out/make/p0sx-client_0.0.1_amd64.deb
+Installing this package the the client will live in: /usr/lib/p0sx-client/p0sX 
+
