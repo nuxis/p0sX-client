@@ -1,4 +1,4 @@
-name: 'Build'
+name: 'Build & Dist'
 on: 
   push:
     branches:
@@ -31,7 +31,7 @@ jobs:
       - run: |
             npm install
 
-      - name: dist-win64
+      - name: dist-win
         run: |
             npm run dist:win
         
@@ -42,4 +42,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: p0sX-client.deb
-          path: out/make/p0sx-client_0.0.1_amd64.deb
+          path: out/make
