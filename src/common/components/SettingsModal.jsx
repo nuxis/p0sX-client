@@ -26,10 +26,10 @@ class SettingsModal extends React.Component {
     }
 
     componentWillMount () {
-        const {api_auth_token, server_address, language, name, receipt} = this.props.settings
+        const {apiAuthToken, serverAddress, language, name, receipt} = this.props.settings
         this.setState({
-            api_auth_token,
-            server_address,
+            apiAuthToken,
+            serverAddress,
             language: language,
             name,
             receipt: receipt
@@ -96,7 +96,7 @@ class SettingsModal extends React.Component {
 
     render () {
         const { settings, strings, initial, refreshData } = this.props
-        const { api_auth_token, server_address, language, name, receipt } = this.state
+        const { apiAuthToken, serverAddress, language, name, receipt } = this.state
         const actions = [
             <FlatButton
                 label={strings.close}
@@ -131,18 +131,18 @@ class SettingsModal extends React.Component {
                             <MenuItem value='nb' primaryText='Norsk bokmål' />
                         </SelectField><br />
                         <TextField
-                            id='server_address'
+                            id='serverAddress'
                             floatingLabelText={strings.server}
                             // eslint-disable-next-line camelcase
-                            defaultValue={server_address}
+                            defaultValue={serverAddress}
                             onChange={this.handleSettingChange}
                             fullWidth
                         /><br />
                         <TextField
-                            id='api_auth_token'
+                            id='apiAuthToken'
                             floatingLabelText={strings.token}
                             // eslint-disable-next-line camelcase
-                            defaultValue={api_auth_token}
+                            defaultValue={apiAuthToken}
                             onChange={this.handleSettingChange}
                             fullWidth
                         /><br /><br />
@@ -209,7 +209,7 @@ class SettingsModal extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        initial: !getSettings(state).server_address,
+        initial: !getSettings(state).serverAddress,
         settings: getSettings(state),
         strings: getStrings(state)
     }

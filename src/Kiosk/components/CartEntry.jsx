@@ -16,7 +16,7 @@ class CartEntry extends React.Component {
         image: PropTypes.string,
         index: PropTypes.number.isRequired,
         editable: PropTypes.bool.isRequired,
-        price_text: PropTypes.string.isRequired
+        priceText: PropTypes.string.isRequired
     }
 
     removeItem = (e) => {
@@ -31,7 +31,7 @@ class CartEntry extends React.Component {
     }
 
     render () {
-        const { name, price, ingredients, image, editable, price_text } = this.props
+        const { name, price, ingredients, image, editable, priceText } = this.props
 
         const textStyle = {
             whiteSpace: 'nowrap',
@@ -45,7 +45,7 @@ class CartEntry extends React.Component {
                 leftAvatar={<Avatar src={image} />}
                 primaryText={<div style={textStyle}>{name}</div>}
                 // eslint-disable-next-line camelcase
-                secondaryText={(!ingredients.length === 0 ? '+ingredients ' : '') + price + price_text}
+                secondaryText={(!ingredients.length === 0 ? '+ingredients ' : '') + price + priceText}
                 secondaryTextLines={1}
                 disabled={!editable}
                 rightIconButton={<IconButton onClick={this.removeItem} disableTouchRipple><Delete color={red500} /></IconButton>}
