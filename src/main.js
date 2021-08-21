@@ -23,7 +23,7 @@ const createWindow = async () => {
     // and load the app.html of the app.
     mainWindow.loadURL(`file://${__dirname}/app.html`)
     // Open the DevTools.
-    if (isDevMode) {
+    if (true) { //(isDevMode) {
         await installExtension(REACT_DEVELOPER_TOOLS)
         mainWindow.webContents.openDevTools()
     }
