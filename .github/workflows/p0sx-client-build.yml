@@ -37,8 +37,8 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: out-linux
-          path: out/make
+          name: p0sx-client_0.0.1_amd64.deb
+          path: out/make/p0sx-client_0.0.1_amd64.deb
 
   dist-win:
     runs-on: windows-latest
@@ -55,8 +55,6 @@ jobs:
 
        - uses: actions/upload-artifact@v2
          with:
-           name: out-win
-           path: out/make
-
-            
+           name: "p0sx-client-0.0.1 Setup.exe"
+           path: "out/make/squirrel.windows/x64/p0sx-client-0.0.1 Setup.exe"
 
