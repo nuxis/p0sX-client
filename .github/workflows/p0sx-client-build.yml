@@ -22,7 +22,7 @@ jobs:
         run: |
             npm run lint
 
-  dist:
+  dist-linux:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -31,15 +31,32 @@ jobs:
       - run: |
             npm install
 
-      - name: dist-win
-        run: |
-            npm run dist:win
-        
       - name: dist-linux
         run: |
             npm run dist:linux
 
       - uses: actions/upload-artifact@v2
         with:
-          name: p0sX-client.deb
+          name: out-linux
           path: out/make
+
+  dist-win:
+    runs-on: windows-latest
+    needs: build
+    steps: 
+       - uses: actions/checkout@v2
+       
+       - run: |
+           npm install
+
+       - name: dist-win
+         run: |
+           npm run dist:win
+
+       - uses: actions/upload-artifact@v2
+         with:
+           name: out-win
+           path: out/make
+
+            
+
