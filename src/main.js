@@ -4,7 +4,7 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow
-const isDevMode = process.execPath.match(/[\\/]electron/)
+const isDevMode = true // process.execPath.match(/[\\/]electron/)
 
 if (require('electron-squirrel-startup')) {
     app.quit()
@@ -23,7 +23,7 @@ const createWindow = async () => {
     // and load the app.html of the app.
     mainWindow.loadURL(`file://${__dirname}/app.html`)
     // Open the DevTools.
-    if (true) { //(isDevMode) {
+    if (isDevMode) {
         await installExtension(REACT_DEVELOPER_TOOLS)
         mainWindow.webContents.openDevTools()
     }
