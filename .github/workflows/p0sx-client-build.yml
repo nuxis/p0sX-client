@@ -18,9 +18,9 @@ jobs:
         run: |
             npm install
 
-      - name: lint
-        run: |
-            npm run lint
+      #- name: lint
+      #  run: |
+      #      npm run lint
 
   dist:
     runs-on: ubuntu-latest
