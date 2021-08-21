@@ -78,7 +78,7 @@
         "electron-react-devtools": "^0.4.0",
         "electron-settings": "^3.0.14",
         "electron-squirrel-startup": "^1.0.0",
-        "escpos-print": "^1.1.1",
+        "escpos-print": "2.0.0",
         "flexboxgrid": "^6.3.1",
         "font-awesome": "^4.7.0",
         "history": "^4.6.1",
