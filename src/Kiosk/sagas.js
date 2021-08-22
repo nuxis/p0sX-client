@@ -4,7 +4,7 @@ import * as api from '../common/api'
 import * as actions from './actions'
 import * as selectors from './selectors'
 import { NotificationManager } from 'react-notifications'
-import { cashDraw, kitchenReceipt, customerOrderReceipt, printShift } from '../common/print'
+// import { cashDraw, kitchenReceipt, customerOrderReceipt, printShift } from '../common/print'
 import settings from '../common/settings'
 
 export function * watchKioskData () {
@@ -130,15 +130,19 @@ function * postPurchase (action) {
                 })
 
                 // Print receipt for the customer
-                customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.id, options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
+                console.log('customerOrderReceipt')
+                // customerOrderReceipt(receiptConfig.type, receiptConfig.config, receiptItems, result.id, options.payment_method === api.PAYMENT_METHOD.CASH).then(() => {})
+
                 // Print separate notes for the kitchen
                 for (const entry of receiptItems) {
                     for (const kitchenConfig of kitchenConfigs) {
-                        kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.id).then(() => {})
+                        console.log('kitchenReceipt')
+                        // kitchenReceipt(kitchenConfig.type, kitchenConfig.config, entry, result.id).then(() => {})
                     }
                 }
             } else if (options.payment_method === api.PAYMENT_METHOD.CASH) {
-                cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
+                console.log('cashDraw')
+                // cashDraw(receiptConfig.type, receiptConfig.config).then(() => {})
             }
             yield put(actions.emptyCart())
             yield put(actions.setPaymentState(2))
@@ -293,7 +297,10 @@ function * createNewShift (action) {
             const settings = yield select(selectors.getSettings)
             const receiptConfig = settings.receiptPrinter
             const name = settings.name
-            yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
+
+            console.log('printShift')
+            // yield printShift(receiptConfig.type, receiptConfig.config, shift, name)
+
             yield put(actions.openAndGetCurrentShift())
         }
     } catch (error) {

@@ -14,7 +14,7 @@ import Wrapper from './Wrapper'
 injectTapEventPlugin()
 
 // Disables zoom
-electron.webFrame.setZoomLevelLimits(1, 1)
+// electron.webFrame.setZoomLevelLimits(1, 1) // TODO fix? / Needed?
 
 // Global axios defaults
 // eslint-disable-next-line immutable/no-mutation
